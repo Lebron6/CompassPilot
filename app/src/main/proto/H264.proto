@@ -1,0 +1,9 @@
+//apron/product/tingyuan/uplink_signal_quality
+syntax = "proto3";
+option java_package = "com.apron.mobilesdk.state";
+option java_outer_classname = "ProtoH264";
+message H264 {
+  //无线链路的信号质量百分比。(平台目前使用此参数作为遥控器信号质量)
+  int32 size =1;
+  bytes h264=2;
+}

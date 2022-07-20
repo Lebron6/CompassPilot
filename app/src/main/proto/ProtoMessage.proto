@@ -1,0 +1,25 @@
+syntax = "proto3";
+option java_package = "com.apron.mobilesdk.state";
+option java_outer_classname = "ProtoMessage"; 
+
+
+//这里是注释juanq
+message Message  { 
+
+   string requestId = 1;
+
+   string equipmentId = 2;
+
+   string method = 3;
+
+   map<string,string> para = 4;
+
+   sint32 code = 5;
+
+   string result = 6;
+
+   string requestTime = 7;
+
+   string responseTime = 8;
+}
+
