@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.compass.ux"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 4
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -107,7 +107,7 @@ android {
 }
 
 dependencies {
-
+    implementation project(path: ':OpenCV')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

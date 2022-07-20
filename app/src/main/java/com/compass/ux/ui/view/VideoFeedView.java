@@ -109,7 +109,6 @@ public class VideoFeedView extends TextureView implements SurfaceTextureListener
             //For M300RTK, you need to actively request an I frame.
             codecManager.resetKeyFrame();
         }
-
     }
 
     @Override

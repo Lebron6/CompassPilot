@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.compass.ux"
-        >
+    package="com.compass.ux">
     <!-- Permissions and features -->
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -32,6 +31,7 @@
     <uses-feature
         android:name="android.hardware.usb.accessory"
         android:required="true" />
+
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
@@ -44,21 +44,22 @@
     <!--弃用硬件加速-->
     <!-- android:hardwareAccelerated="false"-->
     <application
-            android:name=".app.ApronApp"
-            android:allowBackup="true"
-            android:hardwareAccelerated="true"
-            android:requestLegacyExternalStorage="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:largeHeap="true"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/ApronTheme"
-            android:networkSecurityConfig="@xml/network_security_config"
-            android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.ConnectionActivity"
-                android:screenOrientation="landscape"
-                android:configChanges="orientation|screenSize|keyboardHidden">
+        android:name=".app.ApronApp"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/ApronTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.activity.ConnectionActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -69,74 +70,72 @@
         </activity>
 
         <uses-library
-                android:name="org.apache.http.legacy"
-                android:required="false" />
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <uses-library android:name="com.android.future.usb.accessory" />
 
 
         <!--这里为开通了会员的DJI开发者账号注册的APP，不受注册设备数量限制-->
         <meta-data
-                android:name="com.dji.sdk.API_KEY"
-                android:value="8a46b20ad0f263b51431bdda" />
+            android:name="com.dji.sdk.API_KEY"
+            android:value="8a46b20ad0f263b51431bdda" />
         <!-- 启用高德地图服务 -->
         <!-- <meta-data
              android:name="com.amap.api.v2.apikey"
              android:value="a5cde3f241e787f1ef5efee127c63e29" />-->
         <meta-data
-                android:name="com.amap.api.v2.apikey"
-                android:value="2364a59c159f6772d7c567532ac90352" />
+            android:name="com.amap.api.v2.apikey"
+            android:value="2364a59c159f6772d7c567532ac90352" />
 
         <activity
-                android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
-                android:theme="@android:style/Theme.Translucent">
+            android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
+            android:theme="@android:style/Theme.Translucent">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
             </intent-filter>
 
             <meta-data
-                    android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
-                    android:resource="@xml/accessory_filter" />
+                android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+                android:resource="@xml/accessory_filter" />
         </activity>
 
         <service android:name="dji.sdk.sdkmanager.DJIGlobalService" /> <!-- DJI SDK -->
         <service android:name="com.amap.api.location.APSService"></service>
 
         <activity
-                android:name=".ui.activity.MainActivity"
-                android:configChanges="orientation"
-                android:screenOrientation="landscape"
-                android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
-                android:name=".ui.activity.MissionActivity"
-                android:configChanges="orientation"
-                android:screenOrientation="landscape"
-                android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:name=".ui.activity.MissionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
 
         <!-- 开机启动 -->
         <receiver
-                android:name=".receiver.AutoStartReceiver"
-                android:enabled="true"
-                android:exported="true">
+            android:name=".receiver.AutoStartReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <!--.接收启动完成的广播-->
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.HOME"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
 
         <meta-data
-                android:name="com.taobao.android.hotfix.IDSECRET"
-                android:value="333432605-1" />
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="333432605-1" />
         <meta-data
-                android:name="com.taobao.android.hotfix.APPSECRET"
-                android:value="08f79ddfe3104d11b58575f4fbc51717" />
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="08f79ddfe3104d11b58575f4fbc51717" />
         <meta-data
-                android:name="com.taobao.android.hotfix.RSASECRET"
-                android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCv5cGP8ajPrdw64UOO0NfkW5g9WTf9WzfgckGiSVn1u60AKDf9D6cfmZihBMb/+e/EhonHV/ZlhvT7VQGwv4bb8QeHg9yfvlCbD1HIVYQKHUKJiGdiRoyYbaGc0P3/4K5YkZX5ulwMn+14RCQ9z850MFW3gWaULshZ5U4dk/aLsK7pZW3PKikYtEEcsHKla62fSH/9+Mb2px0Ho8mWOzQs/IhPUTYnNg8fsS8cSUFw0YnIC3hV7gG9ysQppCJ/FeAZ72DcLRShEDWKLedjEF5Gn/j5NeeAFXJyM8/9Gi7NvP4CQAwkmA0VcpDOPl5uk4QDeWwnGWzbf/52B90nw4blAgMBAAECggEAYgG+jBm2WaEh6JzDK7wpzs9KUER58ez1gVWoRGhie40Ko9/E8nfaQr0uUel7h/0XH4VnF29nlsJPlgqTWowc9EekTlmmgEtmVj9+7gTYAVq0TDV4hUWR6QyM0/eOzxe9jRPxYKf5yf8CLdSp7NbwzcRwvkKXiVFXyN7/W3OqF8J3LsfNjL3BBQzeLOSL/Og//qEOnPsT04wYeiHGwKWEdkvHJeCZ6Aex8Tj8ZbUcKIUzBBpURb5Rq6cZohPHD93yLoCMUlp7pqCZEzxQKGb2+zsxdqioWoOOjnnyrMDAhppye25qzlvcmNKm4K0ktw9+HhM67fiONfVUuhxr71xPAQKBgQD3awQ4xFfEImB9lsB15G4CuYtm9Vg+OwY1FhT3yGTWjS9X1AXz7NdPoF5EHr2NlDM+mn5JVZo95O/4hIatSPKn3e5KmQjrLWAJmZWcf3Url3j004J22ou5r2a4DDVe4XWcjPdhf9H/fUGtnABM+SLISGI0wLb02gK4gWDsphcYMQKBgQC1/6mqrT+4Qb+Qh5Kn2+j3Q9eIfQUIZFxet0w9je02bA+5X54nYwxt8X4QYVaiEkg8Bp57sm9c6tMTJSWxwfp80r3ZavEjeJgHdSuMR3jEIBB3FJux6EeeN+5fNMK7Scech9BK34EFEJUraRC95AKvsImJ5H7RhySj37lu5Udg9QKBgAm/Z50s7yBFEnQgOljqtQLaeImH5QAepzH0OsNAW+iwC0t0iP+BN0Jl2RDp/SHU0ugGgi81diw2FtY9smilVRoT/k1mFhnd4ci/CkvuIZmkEBnlM2CnX5XjOTLLGFcynsWaMCzhMk7Uin/ig4iE0D//yg62AP9Ij47hWgY4zPQhAoGAR7eMQz5r6o62DxztVIoavj0UlKs3LXxmzcgLGgJwZE6mz5R3POwR/Mz5sTi6K7lqj4TINNQ2f/Xk4Rl1Rhu7Oi7NMvyqMyEVP3MTiv6q/xXnhxUu2Sc/+X/uxcODrMvBBdSa5rY2ICnNrkKDn2BXEqZNPHI26xgG/zBs4N8mhnUCgYBXTk8wug2iaIPK2VEcbR6r7mAiPoRN3EqdrhvngPaLb4JqtmgZTUsivDUY+AOsZr2ycfoP7iE1rlD04VF+UnTJErZnOBNEqNOoTFVlvG7nKwiq958j5j9yS3p7KdgzSVBTi+PSsYT1l5S7cQ7LzToFlPbiz6wsJwdZpjZmF3QcLQ==" />
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCv5cGP8ajPrdw64UOO0NfkW5g9WTf9WzfgckGiSVn1u60AKDf9D6cfmZihBMb/+e/EhonHV/ZlhvT7VQGwv4bb8QeHg9yfvlCbD1HIVYQKHUKJiGdiRoyYbaGc0P3/4K5YkZX5ulwMn+14RCQ9z850MFW3gWaULshZ5U4dk/aLsK7pZW3PKikYtEEcsHKla62fSH/9+Mb2px0Ho8mWOzQs/IhPUTYnNg8fsS8cSUFw0YnIC3hV7gG9ysQppCJ/FeAZ72DcLRShEDWKLedjEF5Gn/j5NeeAFXJyM8/9Gi7NvP4CQAwkmA0VcpDOPl5uk4QDeWwnGWzbf/52B90nw4blAgMBAAECggEAYgG+jBm2WaEh6JzDK7wpzs9KUER58ez1gVWoRGhie40Ko9/E8nfaQr0uUel7h/0XH4VnF29nlsJPlgqTWowc9EekTlmmgEtmVj9+7gTYAVq0TDV4hUWR6QyM0/eOzxe9jRPxYKf5yf8CLdSp7NbwzcRwvkKXiVFXyN7/W3OqF8J3LsfNjL3BBQzeLOSL/Og//qEOnPsT04wYeiHGwKWEdkvHJeCZ6Aex8Tj8ZbUcKIUzBBpURb5Rq6cZohPHD93yLoCMUlp7pqCZEzxQKGb2+zsxdqioWoOOjnnyrMDAhppye25qzlvcmNKm4K0ktw9+HhM67fiONfVUuhxr71xPAQKBgQD3awQ4xFfEImB9lsB15G4CuYtm9Vg+OwY1FhT3yGTWjS9X1AXz7NdPoF5EHr2NlDM+mn5JVZo95O/4hIatSPKn3e5KmQjrLWAJmZWcf3Url3j004J22ou5r2a4DDVe4XWcjPdhf9H/fUGtnABM+SLISGI0wLb02gK4gWDsphcYMQKBgQC1/6mqrT+4Qb+Qh5Kn2+j3Q9eIfQUIZFxet0w9je02bA+5X54nYwxt8X4QYVaiEkg8Bp57sm9c6tMTJSWxwfp80r3ZavEjeJgHdSuMR3jEIBB3FJux6EeeN+5fNMK7Scech9BK34EFEJUraRC95AKvsImJ5H7RhySj37lu5Udg9QKBgAm/Z50s7yBFEnQgOljqtQLaeImH5QAepzH0OsNAW+iwC0t0iP+BN0Jl2RDp/SHU0ugGgi81diw2FtY9smilVRoT/k1mFhnd4ci/CkvuIZmkEBnlM2CnX5XjOTLLGFcynsWaMCzhMk7Uin/ig4iE0D//yg62AP9Ij47hWgY4zPQhAoGAR7eMQz5r6o62DxztVIoavj0UlKs3LXxmzcgLGgJwZE6mz5R3POwR/Mz5sTi6K7lqj4TINNQ2f/Xk4Rl1Rhu7Oi7NMvyqMyEVP3MTiv6q/xXnhxUu2Sc/+X/uxcODrMvBBdSa5rY2ICnNrkKDn2BXEqZNPHI26xgG/zBs4N8mhnUCgYBXTk8wug2iaIPK2VEcbR6r7mAiPoRN3EqdrhvngPaLb4JqtmgZTUsivDUY+AOsZr2ycfoP7iE1rlD04VF+UnTJErZnOBNEqNOoTFVlvG7nKwiq958j5j9yS3p7KdgzSVBTi+PSsYT1l5S7cQ7LzToFlPbiz6wsJwdZpjZmF3QcLQ==" />
 
         <!-- mqtt服务-->
         <service android:name="org.eclipse.paho.android.service.MqttService" />

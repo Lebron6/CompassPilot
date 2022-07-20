@@ -25,6 +25,7 @@ public class SerialNumberCallBack implements CommonCallbacks.CompletionCallbackW
 
     @Override
     public void onSuccess(String o) {
+        Logger.e("获取飞机SN码：",o+"---------");
         MqttConfig.SERIAL_NUMBER=o;
         try {
             mqttAndroidClient.subscribe(MqttConfig.MQTT_REGISTER_REPLY_TOPIC, 1);//订阅主题:注册

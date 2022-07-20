@@ -60,6 +60,7 @@ public class MqttCallBack implements MqttCallbackExtended {
         switch (message.getMethod()) {
             //推流地址
             case Constant.LIVE_PATH:
+                Logger.e("获取推流地址"+message.getPara().get("desRtmpUrl"));
                 DataCache.getInstance().setRtmp_address(message.getPara().get("desRtmpUrl"));
                 break;
             //起飞

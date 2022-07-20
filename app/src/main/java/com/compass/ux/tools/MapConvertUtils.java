@@ -64,8 +64,7 @@ public class MapConvertUtils {
 
 
   /**
-   * 坐标转换-转为大疆坐标系 GCJ02=>WGS84   火星坐标系=>地球坐标系（精确）
-   *
+   * 坐标转换-转为大疆坐标系 GCJ02(高德等使用)=>WGS84(大疆)   火星坐标系=>地球坐标系（精确）
    * @param gcjLat
    * @param gcjLon
    * @return

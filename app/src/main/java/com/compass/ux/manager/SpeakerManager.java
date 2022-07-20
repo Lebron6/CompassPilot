@@ -159,7 +159,6 @@ public class SpeakerManager extends BaseManager {
 
     /**
      * 发送即时语音指令
-     *
      * @param mqttAndroidClient
      * @param message
      */
@@ -173,7 +172,6 @@ public class SpeakerManager extends BaseManager {
                     sendErrorMsg2Server(mqttAndroidClient, message, "未检测到喊话内容");
                     return;
                 }
-
                 payload.sendDataToPayload(AudioDecodeUtils.MP3STARTSINS, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(DJIError djiError) {

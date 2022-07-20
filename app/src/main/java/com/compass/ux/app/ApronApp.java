@@ -3,14 +3,12 @@ package com.compass.ux.app;
 
 import android.app.Application;
 import android.content.Context;
-import com.compass.ux.ui.activity.ConnectionActivity;
 import com.compass.ux.xclog.XcFileLog;
 import com.compass.ux.xclog.XcLogConfig;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 import com.secneo.sdk.Helper;
-
 import dji.common.product.Model;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.mission.MissionControl;
@@ -39,7 +37,6 @@ public class ApronApp extends Application{
         context=this;
         initConfig();
     }
-
 
     /**
      * Logger 初始化配置

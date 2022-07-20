@@ -2,7 +2,6 @@ package com.compass.ux.callback;
 
 import com.apron.mobilesdk.state.ProtoFlightController;
 import com.apron.mobilesdk.state.ProtoMessage;
-import com.apron.mobilesdk.state.ProtoRegister;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.Communication;
@@ -37,12 +36,30 @@ public class MqttActionCallBack implements IMqttActionListener {
         ToastUtil.showToast("MQtt连接成功");
         Logger.e("MQtt连接成功:" + asyncActionToken.toString());
         XcFileLog.getInstace().i(TAG, "MQtt连接成功：-------");
-        if (Helper.isFlightControllerAvailable()) {
-            FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
-            flightController.getSerialNumber(new SerialNumberCallBack(mqttAndroidClient));//获取SN码
+//        if (Helper.isFlightControllerAvailable()) {
+//            FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+//            flightController.getSerialNumber(new SerialNumberCallBack(mqttAndroidClient));//获取SN码
+//        }
+        try {
+            mqttAndroidClient.subscribe(MqttConfig.MQTT_REGISTER_REPLY_TOPIC, 1);//订阅主题:注册
+            mqttAndroidClient.subscribe(MqttConfig.MQTT_FLIGHT_CONTROLLER_TOPIC, 1);//订阅主题:飞控            publish(topic,"注册",0);
+            publish(MqttConfig.MQTT_REGISTER_TOPIC);
+
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
-
+    public void publish(String topic) throws MqttException {
+        if (mqttAndroidClient.isConnected()) {
+            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
+            builder.setMethod("online").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
+            registerMessage.setQos(1);
+            mqttAndroidClient.publish(topic, registerMessage);
+        } else {
+            XcFileLog.getInstace().e(TAG, "推送失败：MQtt未连接");
+        }
+    }
     @Override
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
         Logger.e("MQtt连接失败:" + exception.toString());

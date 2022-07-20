@@ -24,7 +24,7 @@ public class MqttConfig {
     /**
      * SN码
      */
-    public static String SERIAL_NUMBER = "";
+    public static String SERIAL_NUMBER = "1ZNBHBA00C00YP";//测试
 
     /**
      * 注册

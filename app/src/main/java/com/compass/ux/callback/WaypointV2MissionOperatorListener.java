@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.apron.mobilesdk.state.ProtoMissionExecution;
 import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
+import com.compass.ux.entity.DataCache;
 import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -38,15 +39,10 @@ public class WaypointV2MissionOperatorListener extends BaseCallback implements d
 
     @Override
     public void onExecutionUpdate(@NonNull WaypointV2MissionExecutionEvent event) {
-        ProtoMissionExecution.MissionExecution.Builder builder=ProtoMissionExecution.MissionExecution.newBuilder();
         if (event!=null&&event.getProgress()!=null){
-            builder.setTargetWaypointIndex(event.getProgress().getTargetWaypointIndex())
-                    .setWaypointV2MissionExecuteState(ProtoMissionExecution.MissionExecution.WaypointV2MissionExecuteState.values()[event.getProgress().getExecuteState().ordinal()]);
-            if (isFlyClickTime()) {
-                MqttMessage diagnosticsMessage = new MqttMessage(builder.build().toByteArray());
-                diagnosticsMessage.setQos(1);
-                publish(client, MqttConfig.MQTT_MISSION_EXECUTE_STATE_TOPIC, diagnosticsMessage);
-            }
+            //更新客户端缓存航线执行状态
+            DataCache.getInstance().setMissionExecuteState(event.getProgress().getExecuteState().ordinal());
+            DataCache.getInstance().setTargetWaypointIndex(event.getProgress().getTargetWaypointIndex());
         }
         if (event.getError()!=null){
             XcFileLog.getInstace().i("onExecutionUpdate：", event.getError().getDescription());
@@ -68,15 +64,6 @@ public class WaypointV2MissionOperatorListener extends BaseCallback implements d
 
     }
 
-    private static long lastTime;
 
-    private boolean isFlyClickTime() {
-        long time = System.currentTimeMillis();
-        if (time - lastTime > 1000) {
-            lastTime = time;
-            return true;
-        }
-        return false;
-    }
 
 }

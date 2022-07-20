@@ -1,7 +1,9 @@
 package com.compass.ux.manager;
 
 import com.apron.mobilesdk.state.ProtoMessage;
+import com.compass.ux.entity.DataCache;
 import com.compass.ux.tools.DJIWaypointV2ErrorMessageUtils;
+import com.compass.ux.xclog.XcFileLog;
 import com.google.gson.Gson;
 
 import android.text.TextUtils;
@@ -85,9 +87,24 @@ public class MissionManager extends BaseManager {
 
     //开始航线任务
     public void startType(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (Exception e) {
+        WaypointV2MissionState state = null;
+        int i = 0;
+        while (++i < 8) {
+            state = getWaypointV2MissionOperator().getCurrentState();
+            if (state == WaypointV2MissionState.READY_TO_EXECUTE) {
+                break;
+            }
+            XcFileLog.getInstace().i("waypoint_fly_start_v2 航线开始飞行", "循环回调，当前状态为：" + state.name() + "  " + state);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception e) {
+            }
+        }
+        if (i == 8) {
+            XcFileLog.getInstace().i("waypoint_fly_start_v2 航线开始飞行", "等待了8秒，state 不为 READY_TO_EXECUTE , 当前状态为 ：" + state);
+            sendErrorMsg2Server(mqttAndroidClient,message,"waypoint_fly_start_v2 fail:" + state.name());
+        } else {
+            XcFileLog.getInstace().i("waypoint_fly_start_v2 航线开始飞行", "第" + i + "秒，获取到state正常状态成功，状态为" + state);
         }
         startWaypointsV2Mission(message, mqttAndroidClient);
     }
@@ -165,11 +182,37 @@ public class MissionManager extends BaseManager {
                     .setRepeatTimes(1)
                     .addwaypoints(waypointV2List);
             WaypointV2Mission waypointV2Mission = waypointV2MissionBuilder.build();
+            int i = 0;
+            while (++i < 8) {
+                WaypointV2MissionState state = getWaypointV2MissionOperator().getCurrentState();
+                if (state.equals(WaypointV2MissionState.READY_TO_UPLOAD) || state.equals(WaypointV2MissionState.READY_TO_EXECUTE)) {
+                    break;
+                }
+                XcFileLog.getInstace().i("waypoint_plan_V2 航线开始规划", "循环回调，当前状态为：" + state.name() + "  " + state);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (Exception e) {
+                }
+            }
+            if (i == 8) {
+                XcFileLog.getInstace().i("waypoint_plan_V2 航线开始规划", "等待了8秒，state 不为 READY_TO_UPLOAD 或 READY_TO_EXECUTE , 当前状态为 ：" + getWaypointV2MissionOperator().getCurrentState().name());
+                if (getWaypointV2MissionOperator().getCurrentState().name().equals("RECOVERING")) {
+                    sendErrorMsg2Server(mqttAndroidClient, message, "飞机状态同步中,请稍等或重启飞行器后尝试起飞:" +  getWaypointV2MissionOperator().getCurrentState().name());
+
+                } else {
+                    sendErrorMsg2Server(mqttAndroidClient, message, "waypoint_plan_V2 fail:" +  getWaypointV2MissionOperator().getCurrentState().name());
+                }
+            } else {
+                XcFileLog.getInstace().i("waypoint_plan_V2 航线开始规划", "第" + i + "秒，获取到state正常状态成功，状态为" + getWaypointV2MissionOperator().getCurrentState().name());
+            }
             //加载
             getWaypointV2MissionOperator().loadMission(waypointV2Mission, new CommonCallbacks.CompletionCallback<DJIWaypointV2Error>() {
                 @Override
                 public void onResult(DJIWaypointV2Error djiWaypointV2Error) {
                     if (djiWaypointV2Error == null) {
+                        if (waypointV2List != null && waypointV2List.size() > 0) {
+                            DataCache.getInstance().setMissionWaypointSize(waypointV2List.size());
+                        }
                         uploadWayPointV2Mission(message, mqttAndroidClient);
                     } else {
                         sendErrorMsg2Server(mqttAndroidClient, message, "loadMission fail：" + DJIWaypointV2ErrorMessageUtils.getDJIWaypointV2ErrorMsg(djiWaypointV2Error));
@@ -183,10 +226,6 @@ public class MissionManager extends BaseManager {
 
     //上传航点任务
     private void uploadWayPointV2Mission(ProtoMessage.Message message, MqttAndroidClient mqttAndroidClient) {
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (Exception e) {
-        }
         getWaypointV2MissionOperator().uploadMission(new CommonCallbacks.CompletionCallback<DJIWaypointV2Error>() {
             @Override
             public void onResult(DJIWaypointV2Error djiWaypointV2Error) {

@@ -4,6 +4,8 @@ public class Constant {
 
     public static final String FLAG_DISCONNECT = "disconnect";
     public static final String FLAG_CONNECT = "connect";
+    public static final String FLAG_START_DETECT_ARUCO = "start_detect_aruco";
+    public static final String FLAG_DOWN_LAND = "start_down_land";
     public static final String LOG_TAG = "UAV_APP";
     public static final String VISUAL_ANGLE_TYPE = "VISUAL_ANGLE_TYPE";
     public static final String CONFIRM_LANDING = "CONFIRM_LANDING";

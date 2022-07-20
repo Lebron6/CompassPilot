@@ -1,22 +1,29 @@
 package com.compass.ux.callback;
 
+import static com.compass.ux.constant.Constant.FLAG_DOWN_LAND;
+import static com.compass.ux.constant.Constant.FLAG_START_DETECT_ARUCO;
 import static dji.keysdk.FlightControllerKey.WIND_DIRECTION;
 import static dji.keysdk.FlightControllerKey.WIND_SPEED;
 
 import androidx.annotation.NonNull;
 
+import com.apron.mobilesdk.state.ProtoDownlink;
 import com.apron.mobilesdk.state.ProtoFlightController;
+import com.apron.mobilesdk.state.ProtoMissionExecution;
+import com.apron.mobilesdk.state.ProtoUplink;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
+import com.compass.ux.entity.DataCache;
 import com.compass.ux.tools.LocationUtils;
-import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.greenrobot.eventbus.EventBus;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
+import dji.common.flightcontroller.GoHomeExecutionState;
 import dji.common.flightcontroller.WindDirection;
 import dji.keysdk.DiagnosticsKey;
 import dji.keysdk.FlightControllerKey;
@@ -134,13 +141,56 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
             public void onFailure(@NonNull DJIError djiError) {
             }
         });
+        ProtoMissionExecution.MissionExecution.Builder missionBuilder = ProtoMissionExecution.MissionExecution.newBuilder();
+        missionBuilder.setTargetMissionWaypointSize(DataCache.getInstance().getTargetWaypointIndex());
+        missionBuilder.setWaypointV2MissionExecuteState(
+                ProtoMissionExecution.MissionExecution.WaypointV2MissionExecuteState.values()[DataCache.getInstance().getMissionExecuteState()]);
+        missionBuilder.setTargetMissionWaypointSize(DataCache.getInstance().getMissionWaypointSize());
+
+        ProtoDownlink.Downlink.Builder downLinkBuilder = ProtoDownlink.Downlink.newBuilder();
+        downLinkBuilder.setQuality(DataCache.getInstance().getDownlinkQuality());
+
+        ProtoUplink.Uplink.Builder upLinkBuilder = ProtoUplink.Uplink.newBuilder();
+        upLinkBuilder.setQuality(DataCache.getInstance().getUplinkQuality());
 
         if (isFlyClickTime()) {
+            //推送飞行状态
             MqttMessage flightMessage = new MqttMessage(builder.build().toByteArray());
             flightMessage.setQos(1);
             publish(mqttAndroidClient, MqttConfig.MQTT_FLIGHT_STATE_TOPIC, flightMessage);
+            //推送航线状态
+            MqttMessage missionInfo = new MqttMessage(missionBuilder.build().toByteArray());
+            missionInfo.setQos(1);
+            publish(mqttAndroidClient, MqttConfig.MQTT_MISSION_EXECUTE_STATE_TOPIC, missionInfo);
+            //推送图传信号
+            MqttMessage downLinkInfo = new MqttMessage(downLinkBuilder.build().toByteArray());
+            downLinkInfo.setQos(1);
+            publish(mqttAndroidClient, MqttConfig.MQTT_DOWNlINK_TOPIC, downLinkInfo);
+            //推送遥控器信号
+            MqttMessage upLinkInfo = new MqttMessage(upLinkBuilder.build().toByteArray());
+            upLinkInfo.setQos(1);
+            publish(mqttAndroidClient, MqttConfig.MQTT_UPLINK_TOPIC, upLinkInfo);
+        }
+
+        //当飞机处于降落的状态
+        if (state.getGoHomeExecutionState().equals(GoHomeExecutionState.GO_DOWN_TO_GROUND) && state.isFlying() == true) {
+            //开始视觉识别降落
+            //当前高度<20米并且>0.3米，并且没有发送开始视觉识别的时候,
+            // 发送一次开始视觉识别，将isSendDetect变成已发送的状态
+            if (flyingHeight < 10 && flyingHeight > 0.15 && isSendDetect == false) {
+                EventBus.getDefault().post(FLAG_START_DETECT_ARUCO);
+                isSendDetect = true;
+            }
+        }
+        //当飞机距离返航点0.3米，停止视觉识别，直接降落
+        // 将isSendDetect变成未发送的状态，以便下次起飞降落可以继续触发视觉识别
+        if (flyingHeight <= 0.15 && isSendDetect == true && state.isFlying() == true) {
+            EventBus.getDefault().post(FLAG_DOWN_LAND);
+            isSendDetect = false;
         }
     }
+
+    private boolean isSendDetect = false;
 
     private static long lastTime;
 

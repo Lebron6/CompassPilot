@@ -22,6 +22,7 @@ message Battery {
   //获取电池的子电池电压。电池中的每个子电池都有一个电压。
   string cellVoltage =2;
 
+
   //电池连接状态。0 表示正常，1 表示无效，2 表示通信中的异常。
   enum ConnectionState {
     NORMAL = 0;

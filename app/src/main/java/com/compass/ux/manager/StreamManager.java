@@ -2,6 +2,7 @@ package com.compass.ux.manager;
 
 import static dji.sdk.sdkmanager.LiveVideoBitRateMode.AUTO;
 import static dji.sdk.sdkmanager.LiveVideoResolution.VIDEO_RESOLUTION_1920_1080;
+
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -12,7 +13,10 @@ import com.compass.ux.entity.DataCache;
 import com.compass.ux.entity.Communication;
 import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.w3c.dom.Text;
+
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.sdkmanager.LiveStreamManager;
 
@@ -32,12 +36,12 @@ public class StreamManager extends BaseManager {
         return StreamManager.LiveStreamHolder.INSTANCE;
     }
 
-    public void initStreamManager(){
-       LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
+    public void initStreamManager() {
+        LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
         if (liveStreamManager != null) {
             liveStreamManager.registerListener(new LiveShowStatusCallback());
         } else {
-            XcFileLog.getInstace().i(this.getClass().getSimpleName(),"initStreamManager:liveStreamManager is null");
+            XcFileLog.getInstace().i(this.getClass().getSimpleName(), "initStreamManager:liveStreamManager is null");
         }
     }
 
@@ -49,30 +53,37 @@ public class StreamManager extends BaseManager {
     }
 
     public void startLiveShow(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
-        if(isLiveStreamManagerOn()){
-            LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
-            liveStreamManager.setLiveUrl(DataCache.getInstance().getRtmp_address());
-            liveStreamManager.setAudioStreamingEnabled(false);
-            liveStreamManager.setAudioMuted(false);
-            liveStreamManager.setVideoEncodingEnabled(true);
-            liveStreamManager.setLiveVideoBitRateMode(AUTO);
-            liveStreamManager.setLiveVideoResolution(VIDEO_RESOLUTION_1920_1080);//分辨率低，FPS越高
-            liveStreamManager.setVideoSource(LiveStreamManager.LiveStreamVideoSource.Primary);
-            int result = liveStreamManager.startStream();
-            liveStreamManager.setStartTime();
-            Logger.e("startLive:" + result + "-" + DataCache.getInstance().getRtmp_address());
-            sendCorrectMsg2Server(mqttAndroidClient,message, "重启推流:"+String.valueOf(result));
-        }else{
-            sendErrorMsg2Server(mqttAndroidClient,message, "重启推流失败");
+
+        Logger.e("startLive:" + "-" + DataCache.getInstance().getRtmp_address());
+        if (TextUtils.isEmpty(DataCache.getInstance().getRtmp_address())) {
+            sendErrorMsg2Server(mqttAndroidClient, message, "未获取到推流地址");
+        } else {
+            if (isLiveStreamManagerOn()) {
+                LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
+                liveStreamManager.setLiveUrl(DataCache.getInstance().getRtmp_address());
+                liveStreamManager.setAudioStreamingEnabled(false);
+                liveStreamManager.setAudioMuted(false);
+                liveStreamManager.setVideoEncodingEnabled(true);
+                liveStreamManager.setLiveVideoBitRateMode(AUTO);
+                liveStreamManager.setLiveVideoResolution(VIDEO_RESOLUTION_1920_1080);//分辨率低，FPS越高
+                liveStreamManager.setVideoSource(LiveStreamManager.LiveStreamVideoSource.Primary);
+                int result = liveStreamManager.startStream();
+                liveStreamManager.setStartTime();
+                Logger.e("startLive:" + result + "-" + DataCache.getInstance().getRtmp_address());
+                sendCorrectMsg2Server(mqttAndroidClient, message, "重启推流:" + String.valueOf(result));
+            } else {
+                sendErrorMsg2Server(mqttAndroidClient, message, "重启推流失败");
+            }
         }
+
     }
 
     public void stopLiveShow(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         if (!isLiveStreamManagerOn()) {
-            sendErrorMsg2Server(mqttAndroidClient,message, "推流暂未开始");
+            sendErrorMsg2Server(mqttAndroidClient, message, "推流暂未开始");
         } else {
             DJISDKManager.getInstance().getLiveStreamManager().stopStream();
-            sendErrorMsg2Server(mqttAndroidClient,message, "推流已结束");
+            sendErrorMsg2Server(mqttAndroidClient, message, "推流已结束");
         }
     }
 

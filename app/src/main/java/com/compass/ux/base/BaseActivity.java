@@ -1,5 +1,6 @@
 package com.compass.ux.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,6 +16,7 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.greenrobot.eventbus.EventBus;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -24,11 +26,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected AppManager appManager = AppManager.getAppManager();
 
-   public MqttAndroidClient mqttAndroidClient; //ltz change
-   public MqttConnectOptions mMqttConnectOptions;
+    public MqttAndroidClient mqttAndroidClient; //ltz change
+    public MqttConnectOptions mMqttConnectOptions;
 
     protected String TAG;
     protected boolean useEventBus = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         appManager.addActivity(this);
     }
 
-    public void needConnect (){
+    public void needConnect() {
 //        if (nettyListener!=null) {
 //            NettyClient.getInstance().setListener(nettyListener);
 //            connect();
@@ -78,7 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private boolean isConnectIsNomarl() {
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        @SuppressLint("MissingPermission") NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isAvailable()) {
             String name = info.getTypeName();
             Log.i(TAG, "当前网络名称：" + name);
@@ -114,7 +117,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            }).start();
 //        }
 //    }
-
     public abstract boolean useEventBus();
 
     public void loggerSimpleName() {

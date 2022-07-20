@@ -7,6 +7,9 @@ message MissionExecution {
   //飞机将执行的下一个任务的航路点索引。(平台取此值表示已过航点)
   int32 targetWaypointIndex = 1;
 
+  //飞机当前航线的总航点数(航线开始-结束)
+  int32 targetMissionWaypointSize = 3;
+
   //航线任务执行的状态
   enum WaypointV2MissionExecuteState{
     //航点任务正在初始化，这意味着任务已经开始。

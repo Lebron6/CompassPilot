@@ -23,6 +23,16 @@ public final class ProtoMissionExecution {
     int getTargetWaypointIndex();
 
     /**
+     * <pre>
+     *飞机当前航线的总航点数(航线开始-结束)
+     * </pre>
+     *
+     * <code>int32 targetMissionWaypointSize = 3;</code>
+     * @return The targetMissionWaypointSize.
+     */
+    int getTargetMissionWaypointSize();
+
+    /**
      * <code>.MissionExecution.WaypointV2MissionExecuteState waypointV2MissionExecuteState = 2;</code>
      * @return The enum numeric value on the wire for waypointV2MissionExecuteState.
      */
@@ -326,6 +336,44 @@ public final class ProtoMissionExecution {
       targetWaypointIndex_ = 0;
     }
 
+    public static final int TARGETMISSIONWAYPOINTSIZE_FIELD_NUMBER = 3;
+    private int targetMissionWaypointSize_;
+    /**
+     * <pre>
+     *飞机当前航线的总航点数(航线开始-结束)
+     * </pre>
+     *
+     * <code>int32 targetMissionWaypointSize = 3;</code>
+     * @return The targetMissionWaypointSize.
+     */
+    @java.lang.Override
+    public int getTargetMissionWaypointSize() {
+      return targetMissionWaypointSize_;
+    }
+    /**
+     * <pre>
+     *飞机当前航线的总航点数(航线开始-结束)
+     * </pre>
+     *
+     * <code>int32 targetMissionWaypointSize = 3;</code>
+     * @param value The targetMissionWaypointSize to set.
+     */
+    private void setTargetMissionWaypointSize(int value) {
+      
+      targetMissionWaypointSize_ = value;
+    }
+    /**
+     * <pre>
+     *飞机当前航线的总航点数(航线开始-结束)
+     * </pre>
+     *
+     * <code>int32 targetMissionWaypointSize = 3;</code>
+     */
+    private void clearTargetMissionWaypointSize() {
+      
+      targetMissionWaypointSize_ = 0;
+    }
+
     public static final int WAYPOINTV2MISSIONEXECUTESTATE_FIELD_NUMBER = 2;
     private int waypointV2MissionExecuteState_;
     /**
@@ -504,6 +552,46 @@ public final class ProtoMissionExecution {
       }
 
       /**
+       * <pre>
+       *飞机当前航线的总航点数(航线开始-结束)
+       * </pre>
+       *
+       * <code>int32 targetMissionWaypointSize = 3;</code>
+       * @return The targetMissionWaypointSize.
+       */
+      @java.lang.Override
+      public int getTargetMissionWaypointSize() {
+        return instance.getTargetMissionWaypointSize();
+      }
+      /**
+       * <pre>
+       *飞机当前航线的总航点数(航线开始-结束)
+       * </pre>
+       *
+       * <code>int32 targetMissionWaypointSize = 3;</code>
+       * @param value The targetMissionWaypointSize to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTargetMissionWaypointSize(int value) {
+        copyOnWrite();
+        instance.setTargetMissionWaypointSize(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *飞机当前航线的总航点数(航线开始-结束)
+       * </pre>
+       *
+       * <code>int32 targetMissionWaypointSize = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTargetMissionWaypointSize() {
+        copyOnWrite();
+        instance.clearTargetMissionWaypointSize();
+        return this;
+      }
+
+      /**
        * <code>.MissionExecution.WaypointV2MissionExecuteState waypointV2MissionExecuteState = 2;</code>
        * @return The enum numeric value on the wire for waypointV2MissionExecuteState.
        */
@@ -567,10 +655,11 @@ public final class ProtoMissionExecution {
             java.lang.Object[] objects = new java.lang.Object[] {
               "targetWaypointIndex_",
               "waypointV2MissionExecuteState_",
+              "targetMissionWaypointSize_",
             };
             java.lang.String info =
-                "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u0004\u0002\f" +
-                "";
+                "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\u0004\u0002\f" +
+                "\u0003\u0004";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through

@@ -3,13 +3,18 @@ package com.compass.ux.callback;
 import com.apron.mobilesdk.state.ProtoBattery;
 import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.Arrays;
+
 import dji.common.battery.BatteryState;
 import dji.common.error.DJIError;
 import dji.common.util.CommonCallbacks;
+import dji.internal.util.ArrayUtil;
 import dji.sdk.battery.Battery;
 
 /**
@@ -27,33 +32,31 @@ public class BatteryAStateCallback extends BaseCallback implements BatteryState.
 
     @Override
     public void onUpdate(BatteryState state) {
-        ProtoBattery.Battery.Builder builder = ProtoBattery.Battery.newBuilder()
-                .setVoltage(state.getVoltage())
-                .setNumberOfDischarges(state.getNumberOfDischarges())
-                .setTemperature(state.getTemperature())
-                .setLifetimeRemaining(state.getLifetimeRemaining())
-                .setChargeRemainingInPercent(state.getChargeRemainingInPercent());
+        ProtoBattery.Battery.Builder builder = ProtoBattery.Battery.newBuilder();
+        builder.setVoltage(state.getVoltage());
+        builder.setNumberOfDischarges(state.getNumberOfDischarges());
+        builder.setTemperature(state.getTemperature());
+        builder.setLifetimeRemaining(state.getLifetimeRemaining());
+        builder.setChargeRemainingInPercent(state.getChargeRemainingInPercent());
         if (state.getConnectionState()!=null){
             builder .setConnectionState(ProtoBattery.Battery.ConnectionState.values()[state.getConnectionState().ordinal()]);
-
         }
-
         battery.getCellVoltages(new CommonCallbacks.CompletionCallbackWith<Integer[]>() {
             @Override
             public void onSuccess(Integer[] integers) {
-                builder.setCellVoltage(integers.toString());
+                builder.setCellVoltage(Arrays.toString(integers));
+                if (isFlyClickTime()){
+                    MqttMessage batteryMessage = new MqttMessage(builder.build().toByteArray());
+                    batteryMessage.setQos(1);
+                    publish(client, MqttConfig.MQTT_BATTERY_A_TOPIC, batteryMessage);
+                }
             }
-
             @Override
             public void onFailure(DJIError djiError) {
 
             }
         });
-        if (isFlyClickTime()){
-            MqttMessage batteryMessage = new MqttMessage(builder.build().toByteArray());
-            batteryMessage.setQos(1);
-            publish(client, MqttConfig.MQTT_BATTERY_A_TOPIC, batteryMessage);
-        }
+
     }
     private static long lastTime;
     public boolean isFlyClickTime() {
