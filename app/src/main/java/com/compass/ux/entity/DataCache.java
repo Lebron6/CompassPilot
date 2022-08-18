@@ -13,7 +13,7 @@ public class DataCache {
     }
 
     //rtmp地址
-    private  String rtmp_address;
+    private String rtmp_address;
 
     private int missionWaypointSize;
 
