@@ -29,6 +29,7 @@ public class ApronApp extends Application{
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
         Helper.install(ApronApp.this);
+        Logger.e("test");
     }
 
     @Override

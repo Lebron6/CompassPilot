@@ -171,7 +171,6 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
                             Log.e("DroneHelper", "land failed: " + djiError.getDescription());
                         }else{
                             Toast.makeText(MainActivity.this,"直接降落成功",Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });
