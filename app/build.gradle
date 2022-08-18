@@ -131,6 +131,9 @@ dependencies {
 //    implementation 'com.google.protobuf:protobuf-java-util:3.8.0'
     implementation 'com.google.protobuf:protobuf-javalite:4.0.0-rc-2'
 
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9'
     implementation 'com.orhanobut:logger:2.1.1'
 
     implementation('com.dji:dji-uxsdk:4.16', {

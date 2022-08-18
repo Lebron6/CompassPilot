@@ -43,29 +43,12 @@ public class ConnectionActivity extends BaseActivity implements View.OnClickList
     private TextView mVersionTv;
 
     private Button mBtnOpen;
-    private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
-            Manifest.permission.VIBRATE,
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.WAKE_LOCK,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.CHANGE_NETWORK_STATE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkAndRequestPermissions();
+        registerDJISDK();
         setContentView(R.layout.activity_connection);
         initUI();
     }
@@ -116,25 +99,7 @@ public class ConnectionActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    /**
-     * Checks if there is any missing permissions, and requests runtime permission if needed.
-     */
-    private void checkAndRequestPermissions() {
-        AndPermission.with(this)
-                .runtime()
-                .permission(REQUIRED_PERMISSION_LIST)
-                .onGranted(permissions -> {
-                    // If there is enough permission, we will start the registration
-                        registerDJISDK();
-                })
-                .onDenied(permissions -> {
-                    // Storage permission are not allowed.
-                    showToast("Missing permissions!!!");
-                    finish();
-                })
-                .start();
 
-    }
 
 
     private void initUI() {
