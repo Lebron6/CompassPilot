@@ -2,25 +2,39 @@ package com.compass.ux.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.compass.ux.R;
 import com.compass.ux.api.HttpUtil;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
+import com.compass.ux.callback.DJISDKRegistrationCallback;
+import com.compass.ux.constant.Constant;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.LoginResult;
 import com.compass.ux.entity.LoginValues;
+import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
+import com.orhanobut.logger.Logger;
 import com.yanzhenjie.permission.AndPermission;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import dji.common.error.DJIError;
+import dji.common.util.CommonCallbacks;
+import dji.sdk.flightcontroller.FlightController;
+import dji.sdk.sdkmanager.DJISDKManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +42,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     private EditText etAccount;
     private EditText etPassword;
+    private EditText etSn;
     private TextView tvLogin;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
@@ -50,7 +65,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override
@@ -59,11 +74,57 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         initView();
         checkAndRequestPermissions();
+        registerDJISDK();
+    }
+
+    private void registerDJISDK() {
+        //Check the permissions before registering the application for android system 6.0 above.
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheck2 = ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_PHONE_STATE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (permissionCheck == 0 && permissionCheck2 == 0)) {
+            DJISDKManager.getInstance().registerApp(getApplicationContext(), new DJISDKRegistrationCallback(this));
+        } else {
+            Toast.makeText(getApplicationContext(), "Please check if the permission is granted.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(String message) {
+        switch (message) {
+            case Constant.FLAG_CONNECT:
+                if (Helper.isFlightControllerAvailable()) {
+                    FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+                    flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    etSn.setText(s);
+                                    ApronApp.SERIAL_NUMBER=s;
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(DJIError djiError) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    etSn.setText("获取sn失败");
+                                }
+                            });
+                        }
+                    });//获取SN码
+                }
+                break;
+        }
     }
 
     private void initView() {
         etAccount = findViewById(R.id.et_account);
         etPassword = findViewById(R.id.et_password);
+        etSn = findViewById(R.id.et_sn);
         tvLogin = findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +145,10 @@ public class LoginActivity extends BaseActivity {
         }
         if (TextUtils.isEmpty(etPassword.getText().toString())) {
             ToastUtil.showToast("请输入密码");
+            return;
+        }
+        if (TextUtils.isEmpty(etSn.getText().toString())) {
+            ToastUtil.showToast("请等待SDK获取到SN码");
             return;
         }
         LoginValues loginValues = new LoginValues();

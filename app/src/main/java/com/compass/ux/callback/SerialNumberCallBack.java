@@ -1,6 +1,7 @@
 package com.compass.ux.callback;
 
 import com.apron.mobilesdk.state.ProtoMessage;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
@@ -26,7 +27,7 @@ public class SerialNumberCallBack implements CommonCallbacks.CompletionCallbackW
     @Override
     public void onSuccess(String o) {
         Logger.e("获取飞机SN码：",o+"---------");
-        MqttConfig.SERIAL_NUMBER=o;
+        ApronApp.SERIAL_NUMBER=o;
         try {
             mqttAndroidClient.subscribe(MqttConfig.MQTT_REGISTER_REPLY_TOPIC, 1);//订阅主题:注册
             mqttAndroidClient.subscribe(MqttConfig.MQTT_FLIGHT_CONTROLLER_TOPIC, 1);//订阅主题:飞控            publish(topic,"注册",0);

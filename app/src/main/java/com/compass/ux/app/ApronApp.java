@@ -18,7 +18,10 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 
 public class ApronApp extends Application{
-
+    /**
+     * SN码
+     */
+    public static String SERIAL_NUMBER ;//测试
     private static BaseProduct mProduct;
     private static Context context;
     public static Context getApplication() {

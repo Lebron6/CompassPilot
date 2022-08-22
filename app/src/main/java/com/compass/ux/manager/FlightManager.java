@@ -7,7 +7,6 @@ import com.apron.mobilesdk.state.ProtoMessage;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseManager;
 import com.compass.ux.callback.FlightControllerStateCallBack;
-import com.compass.ux.callback.SerialNumberCallBack;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.entity.Communication;
 import com.compass.ux.entity.LocalSource;

@@ -48,21 +48,11 @@ public class ConnectionActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        registerDJISDK();
         setContentView(R.layout.activity_connection);
         initUI();
     }
 
-    private void registerDJISDK() {
-        //Check the permissions before registering the application for android system 6.0 above.
-        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int permissionCheck2 = ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_PHONE_STATE);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || (permissionCheck == 0 && permissionCheck2 == 0)) {
-            DJISDKManager.getInstance().registerApp(getApplicationContext(), new DJISDKRegistrationCallback(this));
-        } else {
-            Toast.makeText(getApplicationContext(), "Please check if the permission is granted.", Toast.LENGTH_LONG).show();
-        }
-    }
+
 
     @Override
     public boolean useEventBus() {
