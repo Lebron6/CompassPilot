@@ -93,6 +93,7 @@ public class LoginActivity extends BaseActivity {
         switch (message) {
             case Constant.FLAG_CONNECT:
                 if (Helper.isFlightControllerAvailable()) {
+
                     FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
                     flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
                         @Override
@@ -148,7 +149,7 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         if (TextUtils.isEmpty(etSn.getText().toString())) {
-            ToastUtil.showToast("请等待SDK获取到SN码");
+            ToastUtil.showToast("请接入飞行器获取SN码");
             return;
         }
         LoginValues loginValues = new LoginValues();
@@ -167,13 +168,13 @@ public class LoginActivity extends BaseActivity {
                             MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
                             MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
                             MqttConfig.USER_NAME = response.body().getData().getUsername();
-                            startActivity(new Intent(LoginActivity.this, ConnectionActivity.class));
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                             break;
 
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "网络异常:登陆失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "网络异常:登陆失败111", Toast.LENGTH_SHORT).show();
                 }
             }
 

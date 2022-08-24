@@ -100,6 +100,7 @@
 
     </RelativeLayout>
     <LinearLayout
+        android:visibility="gone"
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
@@ -171,8 +172,8 @@
     </LinearLayout>
     <TextureView
         android:id="@+id/modified_videostream_preview"
-        android:layout_width="480dp"
-        android:layout_height="270dp"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         />

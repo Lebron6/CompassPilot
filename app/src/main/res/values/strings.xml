@@ -1,5 +1,5 @@
 <resources>
-    <string name="app">罗盘机场</string>
+    <string name="app">飞手端</string>
     <string name="action_settings">Settings</string>
     <string name="disconnected">Disconnected</string>
     <string name="product_information">Product Information</string>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
@@ -23,7 +24,7 @@
             android:hint="请输入用户名"
             android:paddingLeft="@dimen/x30"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/button_normal"
             android:textSize="13sp" />
 
 
@@ -50,7 +51,7 @@
             android:inputType="textPassword"
             android:paddingLeft="@dimen/x30"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/button_normal"
             android:textSize="13sp" />
 
 
@@ -83,10 +84,10 @@
             android:background="@null"
             android:enabled="false"
             android:gravity="center_vertical"
-            android:hint="正在获取SN码"
+            android:hint="接入飞行器获取SN码"
             android:paddingLeft="@dimen/x30"
             android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:textColorHint="@color/button_normal"
             android:textSize="13sp" />
 
 
@@ -103,7 +104,7 @@
     <TextView
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x120"
+        android:layout_height="@dimen/x100"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/x100"
         android:layout_marginRight="@dimen/x100"

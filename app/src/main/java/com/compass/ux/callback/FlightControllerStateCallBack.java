@@ -173,21 +173,21 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         }
 
         //当飞机处于降落的状态
-        if (state.getGoHomeExecutionState().equals(GoHomeExecutionState.GO_DOWN_TO_GROUND) && state.isFlying() == true) {
-            //开始视觉识别降落
-            //当前高度<20米并且>0.3米，并且没有发送开始视觉识别的时候,
-            // 发送一次开始视觉识别，将isSendDetect变成已发送的状态
-            if (flyingHeight < 10 && flyingHeight > 0.15 && isSendDetect == false) {
-                EventBus.getDefault().post(FLAG_START_DETECT_ARUCO);
-                isSendDetect = true;
-            }
-        }
+//        if (state.getGoHomeExecutionState().equals(GoHomeExecutionState.GO_DOWN_TO_GROUND) && state.isFlying() == true) {
+//            //开始视觉识别降落
+//            //当前高度<20米并且>0.3米，并且没有发送开始视觉识别的时候,
+//            // 发送一次开始视觉识别，将isSendDetect变成已发送的状态
+//            if (flyingHeight < 10 && flyingHeight > 0.15 && isSendDetect == false) {
+//                EventBus.getDefault().post(FLAG_START_DETECT_ARUCO);
+//                isSendDetect = true;
+//            }
+//        }
         //当飞机距离返航点0.3米，停止视觉识别，直接降落
         // 将isSendDetect变成未发送的状态，以便下次起飞降落可以继续触发视觉识别
-        if (flyingHeight <= 0.15 && isSendDetect == true && state.isFlying() == true) {
-            EventBus.getDefault().post(FLAG_DOWN_LAND);
-            isSendDetect = false;
-        }
+//        if (flyingHeight <= 0.15 && isSendDetect == true && state.isFlying() == true) {
+//            EventBus.getDefault().post(FLAG_DOWN_LAND);
+//            isSendDetect = false;
+//        }
     }
 
     private boolean isSendDetect = false;
