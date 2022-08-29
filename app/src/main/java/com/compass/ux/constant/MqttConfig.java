@@ -19,9 +19,15 @@ public class MqttConfig {
 //
 
     /**
-     * 服务器IP地址
+     * 服务器IP地址正式环境
      */
-    public static   String SOCKET_HOST = "tcp://36.154.125.61:8098";
+//    public static   String SOCKET_HOST = "tcp://36.154.125.61:8098";
+
+    /**
+     * 服务器IP地址测试环境
+     */
+    public static   String SOCKET_HOST = "tcp://124.70.162.197:1883";
+
 
     /**
      * 设备号

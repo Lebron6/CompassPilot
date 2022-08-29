@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import dji.common.error.DJIWaypointV2Error;
 import dji.common.gimbal.Rotation;
 import dji.common.gimbal.RotationMode;
+import dji.common.mission.MissionState;
 import dji.common.mission.waypointv2.Action.ActionState;
 import dji.common.mission.waypointv2.Action.ActionTypes;
 import dji.common.mission.waypointv2.Action.InterruptRecoverActionType;
@@ -102,7 +103,7 @@ public class MissionManager extends BaseManager {
         }
         if (i == 8) {
             XcFileLog.getInstace().i("waypoint_fly_start_v2 航线开始飞行", "等待了8秒，state 不为 READY_TO_EXECUTE , 当前状态为 ：" + state);
-            sendErrorMsg2Server(mqttAndroidClient,message,"waypoint_fly_start_v2 fail:" + state.name());
+            sendErrorMsg2Server(mqttAndroidClient, message, "waypoint_fly_start_v2 fail:" + state.name());
         } else {
             XcFileLog.getInstace().i("waypoint_fly_start_v2 航线开始飞行", "第" + i + "秒，获取到state正常状态成功，状态为" + state);
         }
@@ -135,7 +136,6 @@ public class MissionManager extends BaseManager {
                 }
             }
         });
-
     }
 
     //结束航线任务(只有航线任务状态为EXECUTING或者INTERRUPTED时可调用)
@@ -197,10 +197,10 @@ public class MissionManager extends BaseManager {
             if (i == 8) {
                 XcFileLog.getInstace().i("waypoint_plan_V2 航线开始规划", "等待了8秒，state 不为 READY_TO_UPLOAD 或 READY_TO_EXECUTE , 当前状态为 ：" + getWaypointV2MissionOperator().getCurrentState().name());
                 if (getWaypointV2MissionOperator().getCurrentState().name().equals("RECOVERING")) {
-                    sendErrorMsg2Server(mqttAndroidClient, message, "飞机状态同步中,请稍等或重启飞行器后尝试起飞:" +  getWaypointV2MissionOperator().getCurrentState().name());
+                    sendErrorMsg2Server(mqttAndroidClient, message, "飞机状态同步中,请稍等或重启飞行器后尝试起飞:" + getWaypointV2MissionOperator().getCurrentState().name());
 
                 } else {
-                    sendErrorMsg2Server(mqttAndroidClient, message, "waypoint_plan_V2 fail:" +  getWaypointV2MissionOperator().getCurrentState().name());
+                    sendErrorMsg2Server(mqttAndroidClient, message, "waypoint_plan_V2 fail:" + getWaypointV2MissionOperator().getCurrentState().name());
                 }
             } else {
                 XcFileLog.getInstace().i("waypoint_plan_V2 航线开始规划", "第" + i + "秒，获取到state正常状态成功，状态为" + getWaypointV2MissionOperator().getCurrentState().name());
@@ -403,9 +403,9 @@ public class MissionManager extends BaseManager {
             }
         }
 
-        if (actionList==null||actionList.size()==0){
+        if (actionList == null || actionList.size() == 0) {
             sendCorrectMsg2Server(mqttAndroidClient, message, "uploadAction success：" + "Can start mission");
-        }else{
+        } else {
             try {
                 TimeUnit.SECONDS.sleep(2);
             } catch (InterruptedException e) {
@@ -423,7 +423,6 @@ public class MissionManager extends BaseManager {
                 }
             });
         }
-
     }
 
     /*******************************************************************************************************************************/

@@ -155,6 +155,7 @@ public class LoginActivity extends BaseActivity {
         LoginValues loginValues = new LoginValues();
         loginValues.setUsername(etAccount.getText().toString());
         loginValues.setPassword(etPassword.getText().toString());
+        loginValues.setUavSn(etSn.getText().toString());
         HttpUtil httpUtil = new HttpUtil();
         httpUtil.createRequest().userLogin(loginValues).enqueue(new Callback<LoginResult>() {
             @Override
