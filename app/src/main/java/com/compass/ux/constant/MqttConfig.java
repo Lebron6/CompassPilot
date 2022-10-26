@@ -21,13 +21,12 @@ public class MqttConfig {
     /**
      * 服务器IP地址正式环境
      */
-//    public static   String SOCKET_HOST = "tcp://36.154.125.61:8098";
+//    public static String SOCKET_HOST = "tcp://36.154.125.61:8098";
 
     /**
      * 服务器IP地址测试环境
      */
-    public static   String SOCKET_HOST = "tcp://124.70.162.197:1883";
-
+    public static String SOCKET_HOST = "tcp://124.70.162.197:1883";
 
     /**
      * 设备号
@@ -44,8 +43,8 @@ public class MqttConfig {
      */
     public static String USER_PASSWORD = "pilot123";
 
-   
-//    public static String ApronApp.SERIAL_NUMBER = "1ZNBHBA00C00YP";//测试
+
+//   public static String ApronApp.SERIAL_NUMBER = "1ZNBHBA00C00YP";//测试
 
     /**
      * 注册

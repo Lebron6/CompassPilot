@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
+        classpath 'com.android.tools.build:gradle:7.1.3'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.16'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -16,15 +16,17 @@ buildscript {
 allprojects {
     repositories {
         google()
-//        jcenter()
-        jcenter(){ url 'http://jcenter.bintray.com/'}
+        jcenter()
+        jcenter(){ url 'https://jcenter.bintray.com/'}
         maven { url 'https://jitpack.io' }
         maven {
-            url "http://maven.aliyun.com/nexus/content/repositories/releases"
-            maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+            url "https://maven.aliyun.com/nexus/content/repositories/releases"
+            maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
             maven { url 'https://maven.aliyun.com/repository/public' }
-            maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
-
+            maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        }
+        maven {
+            url "https://s3.amazonaws.com/repo.commonsware.com"
         }
     }
 }
