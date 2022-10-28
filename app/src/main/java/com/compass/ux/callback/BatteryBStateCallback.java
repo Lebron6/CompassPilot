@@ -49,7 +49,6 @@ public class BatteryBStateCallback extends BaseCallback implements BatteryState.
                 if (isFlyClickTime()){
                     MqttMessage batteryMessage = new MqttMessage(builder.build().toByteArray());
                     batteryMessage.setQos(1);
-                    Logger.e("当前主题,"+MqttConfig.MQTT_BATTERY_B_TOPIC);
                     publish(client, MqttConfig.MQTT_BATTERY_B_TOPIC, batteryMessage);
                 }
             }

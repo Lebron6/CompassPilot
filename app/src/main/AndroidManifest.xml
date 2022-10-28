@@ -58,6 +58,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.ConnectionActivity"
+            android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape">
         </activity>

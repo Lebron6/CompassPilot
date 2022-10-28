@@ -53,28 +53,40 @@ public class StreamManager extends BaseManager {
     }
 
     public void startLiveShow(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
+        new Handler().postDelayed(new Runnable() {//测试延时两秒重启推流
+            @Override
+            public void run() {
+                if (TextUtils.isEmpty(DataCache.getInstance().getRtmp_address())) {
+                    sendErrorMsg2Server(mqttAndroidClient, message, "未获取到推流地址");
+                } else {
+                    if (isLiveStreamManagerOn()) {
+                        LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
+                        liveStreamManager.stopStream();
+                        liveStreamManager.setLiveUrl(DataCache.getInstance().getRtmp_address());
+                        liveStreamManager.setAudioStreamingEnabled(false);
+                        liveStreamManager.setAudioMuted(false);
+                        liveStreamManager.setVideoEncodingEnabled(true);
+                        liveStreamManager.setLiveVideoBitRateMode(AUTO);
+                        liveStreamManager.setLiveVideoResolution(VIDEO_RESOLUTION_1920_1080);//分辨率低，FPS越高
+                        liveStreamManager.setVideoSource(LiveStreamManager.LiveStreamVideoSource.Primary);
+                        int result = liveStreamManager.startStream();
+                        liveStreamManager.setStartTime();
+                        Logger.e("startLive:" + result + "-" + DataCache.getInstance().getRtmp_address());
 
+                        if (mqttAndroidClient != null) {
+                            sendCorrectMsg2Server(mqttAndroidClient, message, "重启推流:" + String.valueOf(result));
+
+                        }
+                    } else {
+                        if (mqttAndroidClient!=null){
+                            sendErrorMsg2Server(mqttAndroidClient, message, "重启推流失败");
+
+                        }
+                    }
+                }            }
+        }, 2000);
         Logger.e("startLive:" + "-" + DataCache.getInstance().getRtmp_address());
-        if (TextUtils.isEmpty(DataCache.getInstance().getRtmp_address())) {
-            sendErrorMsg2Server(mqttAndroidClient, message, "未获取到推流地址");
-        } else {
-            if (isLiveStreamManagerOn()) {
-                LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();
-                liveStreamManager.setLiveUrl(DataCache.getInstance().getRtmp_address());
-                liveStreamManager.setAudioStreamingEnabled(false);
-                liveStreamManager.setAudioMuted(false);
-                liveStreamManager.setVideoEncodingEnabled(true);
-                liveStreamManager.setLiveVideoBitRateMode(AUTO);
-                liveStreamManager.setLiveVideoResolution(VIDEO_RESOLUTION_1920_1080);//分辨率低，FPS越高
-                liveStreamManager.setVideoSource(LiveStreamManager.LiveStreamVideoSource.Primary);
-                int result = liveStreamManager.startStream();
-                liveStreamManager.setStartTime();
-                Logger.e("startLive:" + result + "-" + DataCache.getInstance().getRtmp_address());
-                sendCorrectMsg2Server(mqttAndroidClient, message, "重启推流:" + String.valueOf(result));
-            } else {
-                sendErrorMsg2Server(mqttAndroidClient, message, "重启推流失败");
-            }
-        }
+
 
     }
 

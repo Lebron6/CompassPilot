@@ -100,7 +100,7 @@
 
     </RelativeLayout>
 <LinearLayout
-    android:visibility="gone"
+    android:visibility="visible"
     android:orientation="vertical"
     android:layout_centerVertical="true"
     android:layout_alignParentRight="true"

@@ -118,8 +118,9 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
             @Override
             public void onClick(View view) {
 //                MissionV1Manager.getInstance().startWaypointMission();
-                openCVHelper.startDetectAruco(droneHelper);
-                            needDetectAruco=true;
+//                openCVHelper.startDetectAruco(droneHelper);
+//                            needDetectAruco=true;
+                StreamManager.getInstance().startLiveShow(null,null);
             }
         });
         mTextureView = findViewById(R.id.video_previewer_surface);

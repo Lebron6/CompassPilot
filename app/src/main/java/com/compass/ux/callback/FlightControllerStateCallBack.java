@@ -16,6 +16,7 @@ import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.DataCache;
 import com.compass.ux.tools.LocationUtils;
+import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
