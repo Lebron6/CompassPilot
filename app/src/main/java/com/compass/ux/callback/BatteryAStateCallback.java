@@ -3,18 +3,12 @@ package com.compass.ux.callback;
 import com.apron.mobilesdk.state.ProtoBattery;
 import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
-import com.google.android.gms.common.util.ArrayUtils;
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import java.util.Arrays;
-
 import dji.common.battery.BatteryState;
 import dji.common.error.DJIError;
 import dji.common.util.CommonCallbacks;
-import dji.internal.util.ArrayUtil;
 import dji.sdk.battery.Battery;
 
 /**

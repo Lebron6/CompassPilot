@@ -151,7 +151,7 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "开始连接基站");
+                        sendCorrectMsg2Server(mqttAndroidClient,message, "设置基站类型成功");
                     } else {
                         sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
                     }
