@@ -169,6 +169,7 @@ public class LoginActivity extends BaseActivity {
                             MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
                             MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
                             MqttConfig.USER_NAME = response.body().getData().getUsername();
+                            ApronApp.SERIAL_NUMBER = etSn.getText().toString();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                             break;

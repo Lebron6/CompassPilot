@@ -1,5 +1,7 @@
 package com.compass.ux.constant;
 
+import static com.compass.ux.app.ApronApp.SERIAL_NUMBER;
+
 public class MqttConfig {
     /**
      * 服务器IP地址
@@ -25,10 +27,7 @@ public class MqttConfig {
      */
     public static String USER_PASSWORD = "pilot123";
 
-    /**
-     * SN码
-     */
-    public static String SERIAL_NUMBER = "QAZSIAOEBYAA";//测试
+
 
     /**
      * 注册
