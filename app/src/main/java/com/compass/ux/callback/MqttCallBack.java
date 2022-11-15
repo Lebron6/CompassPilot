@@ -1,8 +1,7 @@
 package com.compass.ux.callback;
 
-import android.util.Log;
-
 import com.apron.mobilesdk.state.ProtoMessage;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.DataCache;
@@ -14,12 +13,12 @@ import com.compass.ux.manager.FlightManager;
 import com.compass.ux.manager.GimbalManager;
 import com.compass.ux.manager.InitializationManager;
 import com.compass.ux.manager.MissionManager;
+import com.compass.ux.manager.MissionV1Manager;
 import com.compass.ux.manager.PlayBackManager;
 import com.compass.ux.manager.RTKManager;
 import com.compass.ux.manager.SpeakerManager;
 import com.compass.ux.manager.StreamManager;
 import com.compass.ux.manager.SystemManager;
-import com.compass.ux.entity.Communication;
 import com.compass.ux.xclog.XcFileLog;
 import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -27,9 +26,11 @@ import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.greenrobot.eventbus.EventBus;
+
+import dji.sdk.sdkmanager.DJISDKManager;
 
 public class MqttCallBack implements MqttCallbackExtended {
 
@@ -41,8 +42,8 @@ public class MqttCallBack implements MqttCallbackExtended {
 
     @Override
     public void connectionLost(Throwable cause) {
-        if (cause!=null){
-            Logger.e("监听到MQtt断开连接:"+cause.toString());
+        if (cause != null) {
+            Logger.e("监听到MQtt断开连接:" + cause.toString());
         }
         XcFileLog.getInstace().i("监听到MQtt断开连接：", "-----");
     }
@@ -53,15 +54,16 @@ public class MqttCallBack implements MqttCallbackExtended {
         try {
             message = ProtoMessage.Message.parseFrom(mqttMessage.getPayload());
         } catch (InvalidProtocolBufferException e) {
-            Logger.e("接收异常:"+e.toString());
+            Logger.e("接收异常:" + e.toString());
             e.printStackTrace();
         }
         Logger.e("测试监听：" + topic + "：" + new Gson().toJson(message));
         switch (message.getMethod()) {
             //推流地址
             case Constant.LIVE_PATH:
-                Logger.e("获取推流地址"+message.getPara().get("desRtmpUrl"));
+                Logger.e("获取推流地址" + message.getPara().get("desRtmpUrl"));
                 DataCache.getInstance().setRtmp_address(message.getPara().get("desRtmpUrl"));
+                EventBus.getDefault().post(Constant.FLAG_STREAM_URL);
                 break;
             //起飞
             case Constant.START_TAKE_OFF:
@@ -125,23 +127,43 @@ public class MqttCallBack implements MqttCallbackExtended {
                 break;
             //航点规划V2
             case Constant.WAYPOINT_PLAN_V2:
-                MissionManager.getInstance().createWayPointV2Mission(mqttAndroidClient, message);
+                if (ApronApp.isM300Product()) {
+                    MissionManager.getInstance().createWayPointV2Mission(mqttAndroidClient, message);
+                } else {
+                    MissionV1Manager.getInstance().createWayPointMission(mqttAndroidClient, message);
+                }
                 break;
             //航线自动飞行开始V2
             case Constant.WAYPOINT_FLY_START_V2:
-                MissionManager.getInstance().startType(mqttAndroidClient, message);
+                if (ApronApp.isM300Product()) {
+                    MissionManager.getInstance().startType(mqttAndroidClient, message);
+                } else {
+                    MissionV1Manager.getInstance().startWaypointMission(mqttAndroidClient, message);
+                }
                 break;
             //航线自动飞行停止V2
             case Constant.WAYPOINT_FLY_STOP_V2:
-                MissionManager.getInstance().endType(mqttAndroidClient, message);
+                if (ApronApp.isM300Product()) {
+                    MissionManager.getInstance().endType(mqttAndroidClient, message);
+                } else {
+                    MissionV1Manager.getInstance().stopWaypointMission(mqttAndroidClient, message);
+                }
                 break;
             //航线暂停V2
             case Constant.WAYPOINT_FLY_PAUSE_V2:
-                MissionManager.getInstance().suspendType(mqttAndroidClient, message);
+                if (ApronApp.isM300Product()) {
+                    MissionManager.getInstance().suspendType(mqttAndroidClient, message);
+                } else {
+                    MissionV1Manager.getInstance().pauseWaypointMission(mqttAndroidClient, message);
+                }
                 break;
             //航线恢复V2
             case Constant.WAYPOINT_FLY_RESUME_V2:
-                MissionManager.getInstance().continueType(mqttAndroidClient, message);
+                if (ApronApp.isM300Product()) {
+                    MissionManager.getInstance().continueType(mqttAndroidClient, message);
+                } else {
+                    MissionV1Manager.getInstance().resumeWaypointMission(mqttAndroidClient, message);
+                }
                 break;
             //回家
             case Constant.GO_HOME:
@@ -234,7 +256,7 @@ public class MqttCallBack implements MqttCallbackExtended {
                 break;
             //登录
             case Constant.LOGIN:
-                AccountManager.getInstance().loginAccount();
+//                AccountManager.getInstance().loginAccount();
                 break;
             //注销
             case Constant.LOGINOUT:
@@ -427,19 +449,19 @@ public class MqttCallBack implements MqttCallbackExtended {
                 SpeakerManager.getInstance().sendTTSStop2Payload(mqttAndroidClient, message);
                 break;
             case Constant.PHOTO_ALBUM:
-                PlayBackManager.getInstance().photoAlbum(mqttAndroidClient,message);
+                PlayBackManager.getInstance().photoAlbum(mqttAndroidClient, message);
                 break;
             case Constant.EXIT_PLAY_BACK:
-                PlayBackManager.getInstance().exitPlayback(mqttAndroidClient,message);
+                PlayBackManager.getInstance().exitPlayback(mqttAndroidClient, message);
                 break;
             case Constant.DOWNLOAD_PHOTO_BY_NAME:
-                PlayBackManager.getInstance().exitPlayback(mqttAndroidClient,message);
+                PlayBackManager.getInstance().downLoadPhoto(mqttAndroidClient, message);
                 break;
             case Constant.DELETE_PHOTO:
-
+                PlayBackManager.getInstance().deletePhoto(mqttAndroidClient, message);
                 break;
             case Constant.GET_PREVIEW_BY_NAME:
-
+                PlayBackManager.getInstance().downLoadPreview(mqttAndroidClient, message);
                 break;
         }
     }

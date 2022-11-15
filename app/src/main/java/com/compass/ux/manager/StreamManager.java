@@ -75,15 +75,15 @@ public class StreamManager extends BaseManager {
 
                         if (mqttAndroidClient != null) {
                             sendCorrectMsg2Server(mqttAndroidClient, message, "重启推流:" + String.valueOf(result));
-
                         }
                     } else {
-                        if (mqttAndroidClient!=null){
+                        if (mqttAndroidClient != null) {
                             sendErrorMsg2Server(mqttAndroidClient, message, "重启推流失败");
 
                         }
                     }
-                }            }
+                }
+            }
         }, 2000);
         Logger.e("startLive:" + "-" + DataCache.getInstance().getRtmp_address());
 

@@ -2,29 +2,32 @@ package com.compass.ux.ui.activity;
 
 import static dji.sdk.codec.DJICodecManager.VideoSource.CAMERA;
 import static dji.sdk.codec.DJICodecManager.VideoSource.FPV;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.apron.mobilesdk.state.ProtoFlightController;
 import com.compass.ux.BuildConfig;
 import com.compass.ux.R;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.constant.MqttConfig;
+import com.compass.ux.entity.DataCache;
 import com.compass.ux.entity.LocalSource;
+import com.compass.ux.manager.AccountManager;
 import com.compass.ux.manager.AirLinkManager;
 import com.compass.ux.manager.AssistantManager;
 import com.compass.ux.manager.BatteryManager;
@@ -36,17 +39,15 @@ import com.compass.ux.manager.MissionManager;
 import com.compass.ux.manager.MissionV1Manager;
 import com.compass.ux.manager.RTKManager;
 import com.compass.ux.manager.StreamManager;
+import com.compass.ux.manager.SystemManager;
+import com.compass.ux.tools.AppManager;
 import com.compass.ux.tools.DroneHelper;
 import com.compass.ux.tools.OpenCVHelper;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
-import com.compass.ux.ui.view.VideoFeedView;
 import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.opencv.android.BaseLoaderCallback;
@@ -62,15 +63,21 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
+import dji.common.mission.waypointv2.WaypointV2MissionState;
+import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
+import dji.sdk.basestation.BaseStation;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
+import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.sdkmanager.LiveStreamManager;
+import dji.sdk.useraccount.UserAccountManager;
 
 public class MainActivity extends BaseActivity implements TextureView.SurfaceTextureListener {
 
@@ -85,9 +92,10 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
     Aircraft aircraft;
     TextureView mTextureView;
     TextureView modifiedVideoStreamPreview;
-    protected DJICodecManager mCodecManager = null;
 
     private LongTouchBtn btnUp, btnDown, btnForward, btnBackward, btnLeft, btnRight;
+
+    private TextView tvFPS, tvBitRate, tvStreamUrl, tvFirmwareVersion;
 
     private Canvas canvas;
     private Bitmap edgeBitmap;
@@ -95,6 +103,8 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
     private CascadeClassifier faceDetector;
     private DroneHelper droneHelper;
     private OpenCVHelper openCVHelper;
+    private Button btn_login;
+    private Button btn_startlive;
 
 
     @Override
@@ -108,39 +118,77 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
         droneHelper = new DroneHelper();
         initDJIManager();
         intiVirtualStick();
-
+        refreshSDKRelativeUI();
     }
 
 
     private void initViews() {
-        btn_start_mission = findViewById(R.id.btn_start_mission);
-        btn_start_mission.setOnClickListener(new View.OnClickListener() {
+        tvFirmwareVersion = findViewById(R.id.tv_firmware_version);
+        tvBitRate = findViewById(R.id.tv_bitRate);
+        tvFPS = findViewById(R.id.tv_Fps);
+        tvStreamUrl = findViewById(R.id.tv_stream_url);
+
+        btn_login = findViewById(R.id.btn_login);
+        btn_startlive = findViewById(R.id.btn_start_live);
+        btn_startlive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                MissionV1Manager.getInstance().startWaypointMission();
-//                openCVHelper.startDetectAruco(droneHelper);
-//                            needDetectAruco=true;
+                StreamManager.getInstance().initStreamManager();
                 StreamManager.getInstance().startLiveShow(null,null);
+            }
+        });
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AccountManager.getInstance().loginAccount(MainActivity.this);
             }
         });
         mTextureView = findViewById(R.id.video_previewer_surface);
         modifiedVideoStreamPreview = findViewById(R.id.modified_videostream_preview);
-        btnUp=findViewById(R.id.btn_up);
-        btnDown=findViewById(R.id.btn_down);
-        btnLeft=findViewById(R.id.btn_left);
-        btnRight=findViewById(R.id.btn_right);
-        btnForward=findViewById(R.id.btn_forward);
-        btnBackward=findViewById(R.id.btn_backward);
+        btnUp = findViewById(R.id.btn_up);
+        btnDown = findViewById(R.id.btn_down);
+        btnLeft = findViewById(R.id.btn_left);
+        btnRight = findViewById(R.id.btn_right);
+        btnForward = findViewById(R.id.btn_forward);
+        btnBackward = findViewById(R.id.btn_backward);
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
         }
     }
+
+    int time = 0;
+    boolean connectStatus;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(String message) {
         switch (message) {
             case Constant.FLAG_CONNECT:
                 initDJIManager();
+                connectStatus = true;
+                break;
+            case Constant.FLAG_DISCONNECT:
+                Logger.e("断开连接---");
+//                connectStatus = false;
+//                Handler mHandler = new Handler();
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (connectStatus == false) {
+//                            if (time == 10) {
+//                                SystemManager.getInstance().restartApp();
+//                            } else {
+//                                time = time + 1;
+//                                try {
+//                                    mHandler.postDelayed(this, 1000);
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                }, 1000);
+
                 break;
             case Constant.VISUAL_ANGLE_TYPE:
                 changeFPVOrGimbalView();
@@ -151,32 +199,67 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
                             ToastUtil.showToast("取消返航失败");
-                        }else{
-                            Toast.makeText(MainActivity.this,"触发降落",Toast.LENGTH_SHORT).show();
-                            Logger.e("触发降落"+"触发降落");
+                        } else {
+                            Toast.makeText(MainActivity.this, "触发降落", Toast.LENGTH_SHORT).show();
+                            Logger.e("触发降落" + "触发降落");
                             openCVHelper.startDetectAruco(droneHelper);
-                            needDetectAruco=true;
+                            needDetectAruco = true;
                         }
                     }
                 });
 
                 break;
             case Constant.FLAG_DOWN_LAND:
-                Toast.makeText(MainActivity.this,"直接降落",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "直接降落", Toast.LENGTH_SHORT).show();
 //                droneHelper.exitVirtualStickMode();
                 droneHelper.land(new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(DJIError djiError) {
                         if (djiError != null) {
-                            Toast.makeText(MainActivity.this,"直接降落失败",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "直接降落失败", Toast.LENGTH_SHORT).show();
                             Log.e("DroneHelper", "land failed: " + djiError.getDescription());
-                        }else{
-                            Toast.makeText(MainActivity.this,"直接降落成功",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "直接降落成功", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-                needDetectAruco=false;
+                needDetectAruco = false;
                 break;
+            case Constant.FLAG_STREAM_URL:
+                tvStreamUrl.setText("rtmpAddr: " + DataCache.getInstance().getRtmp_address());
+                break;
+        }
+    }
+
+    //更新当前连接信息
+    private void refreshSDKRelativeUI() {
+        aircraft = ApronApp.getAircraftInstance();
+        if (aircraft != null && aircraft.isConnected()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (TextUtils.isEmpty(aircraft.getFirmwarePackageVersion())) {
+                        tvFirmwareVersion.setText("固件版本: N/A");
+                    } else {
+                        tvFirmwareVersion.setText("固件版本: " + aircraft.getFirmwarePackageVersion());
+                    }
+                }
+            });
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (DJISDKManager.getInstance().getLiveStreamManager() != null) {
+                        tvFPS.setText("fps: " + DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoFps());
+                        tvBitRate.setText("bitRate: " + DJISDKManager.getInstance().getLiveStreamManager().getLiveVideoBitRate() + "kpbs");
+                    }
+                    try {
+                        mHandler.postDelayed(this, 1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 1000);
         }
     }
 
@@ -207,6 +290,19 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
             initLiveStreamManager();
             //航线任务
             initMission();
+            Button viewById = findViewById(R.id.btn_sl);
+            viewById.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    BaseStation baseStation = ApronApp.getAircraftInstance().getBaseStation();
+                    if (baseStation == null) {
+                        showToast("无法获取实例");
+                    } else {
+                        showToast("已获取实例");
+                    }
+                }
+            });
+
         } else {
             showToast("aircraft disconnect");
         }
@@ -290,8 +386,8 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
     VideoFeeder.VideoDataListener mReceivedVideoDataListener = new VideoFeeder.VideoDataListener() {
         @Override
         public void onReceive(byte[] videoBuffer, int size) {
-            if (mCodecManager != null) {
-                mCodecManager.sendDataToDecoder(videoBuffer, size);
+            if (codecManager != null) {
+                codecManager.sendDataToDecoder(videoBuffer, size);
             }
         }
     };
@@ -365,8 +461,8 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (mCodecManager == null) {
-            mCodecManager = new DJICodecManager(this, surface, width, height);
+        if (codecManager == null) {
+            codecManager = new DJICodecManager(this, surface, width, height);
             //For M300RTK, you need to actively request an I frame.
 //            codecManager.resetKeyFrame();
         }
@@ -389,8 +485,8 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        if (needDetectAruco==true) {
-            mCodecManager.getBitmap(new DJICodecManager.OnGetBitmapListener() {
+        if (needDetectAruco == true) {
+            codecManager.getBitmap(new DJICodecManager.OnGetBitmapListener() {
                 @Override
                 public void onGetBitmap(Bitmap bitmap) {
                     drawProcessedVideo(bitmap);
@@ -437,8 +533,7 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
         Mat output;
         if (needDetectAruco) {
             output = openCVHelper.detectArucoTags(input, dictionary, droneHelper);
-        }
-        else {
+        } else {
             output = openCVHelper.defaultImageProcessing(input);
         }
         return output;
@@ -452,44 +547,43 @@ public class MainActivity extends BaseActivity implements TextureView.SurfaceTex
             btnUp.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(0f,0f,0f,1f);
+                    droneHelper.moveVxVyYawrateHeight(0f, 0f, 0f, 1f);
                 }
             }, 200);
             btnDown.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(0f,0f,0f,-1f);
+                    droneHelper.moveVxVyYawrateHeight(0f, 0f, 0f, -1f);
                 }
             }, 200);
             btnForward.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(0f,0.5f,0f,0f);
+                    droneHelper.moveVxVyYawrateHeight(0f, 0.5f, 0f, 0f);
                 }
             }, 200);
             btnBackward.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(0f,-0.5f,0f,0f);
+                    droneHelper.moveVxVyYawrateHeight(0f, -0.5f, 0f, 0f);
                 }
             }, 200);
 
             btnLeft.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(-0.8f,0f,0f,0f);
+                    droneHelper.moveVxVyYawrateHeight(-0.8f, 0f, 0f, 0f);
                 }
             }, 200);
 
             btnRight.setOnLongTouchListener(new LongTouchBtn.LongTouchListener() {
                 @Override
                 public void onLongTouch() {
-                    droneHelper.moveVxVyYawrateHeight(0.8f,0f,0f,0f);
+                    droneHelper.moveVxVyYawrateHeight(0.8f, 0f, 0f, 0f);
                 }
             }, 200);
         }
 
     }
 
-private Button btn_start_mission;
 }

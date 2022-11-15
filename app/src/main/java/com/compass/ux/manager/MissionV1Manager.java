@@ -1,9 +1,17 @@
 package com.compass.ux.manager;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
+import com.apron.mobilesdk.state.ProtoMessage;
+import com.compass.ux.base.BaseManager;
+import com.compass.ux.entity.MissionV2;
 import com.compass.ux.tools.MapConvertUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +30,7 @@ import dji.sdk.mission.waypoint.WaypointV2MissionOperator;
 /**
  * 航线飞行任务V1(Mobile客户端控制)
  */
-public class MissionV1Manager {
+public class MissionV1Manager extends BaseManager {
 
     private List<Waypoint> waypointList = new ArrayList<>();
 
@@ -42,49 +50,59 @@ public class MissionV1Manager {
         return MissionV1Manager.WayPointMissionManagerHolder.INSTANCE;
     }
 
-    public void createWayPointMission() {
+    public void createWayPointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         getWaypointMissionV1Operator().clearMission();
         if (waypointList != null) {
             waypointList.clear();
         }
-        Waypoint mWaypoint1 = new Waypoint(120.6383088098564, 31.282999077497713, 80);
-        Waypoint mWaypoint2 = new Waypoint(120.6383088098564, 31.283132027935732, 80);
-        Waypoint mWaypoint3 = new Waypoint(120.63829271660231, 31.283223717783724, 80);
-        Waypoint mWaypoint4 = new Waypoint(120.63845901356123, 31.28319621083872, 80);
-//        waypointList.add(mWaypoint1);
-//        waypointList.add(mWaypoint2);
-        waypointList.add(mWaypoint3);
-        waypointList.add(mWaypoint4);
-        waypointMissionBuilder = new WaypointMission.Builder().finishedAction(mFinishedAction)
-                .headingMode(mHeadingMode)
-                .autoFlightSpeed(6f)
-                .maxFlightSpeed(6f)
-                .finishedAction(WaypointMissionFinishedAction.GO_HOME)
-                .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
-        waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+        List<MissionV2.WayPointsBean> wayPoints = new Gson().fromJson(message.getPara().get("wayPoints"), new TypeToken<List<MissionV2.WayPointsBean>>() {
+        }.getType());
+        if (wayPoints!=null&&wayPoints.size()>0){
+            for (int i = 0; i <wayPoints.size() ; i++) {
+                Waypoint mWayoint=new Waypoint(Double.parseDouble(wayPoints.get(i).getLatitude()),Double.parseDouble(wayPoints.get(i).getLongitude()),Float.valueOf(wayPoints.get(i).getAltitude()));
+                mWayoint.speed=Float.parseFloat(wayPoints.get(i).getSpeed());
+                waypointList.add(mWayoint);
+            }
+            waypointMissionBuilder = new WaypointMission.Builder().finishedAction(mFinishedAction)
+                    .headingMode(mHeadingMode)
+                    .autoFlightSpeed(TextUtils.isEmpty(message.getPara().get("speed")) ? 15f : Float.parseFloat(message.getPara().get("speed")))
+                    .maxFlightSpeed(TextUtils.isEmpty(message.getPara().get("speed")) ? 15f : Float.parseFloat(message.getPara().get("speed")))
+                    .finishedAction(WaypointMissionFinishedAction.GO_HOME)
+                    .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
+            waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+        }else {
+            sendErrorMsg2Server(mqttAndroidClient, message, "loadMission fail：" + "Wrong parameter");
+        }
         DJIError error = getWaypointMissionV1Operator().loadMission(waypointMissionBuilder.build());
         if (error == null) {
             Logger.e("loadWaypoint succeeded");
-            uploadWayPointMission();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    uploadWayPointMission(mqttAndroidClient,message);
+                }
+            },1000);
         } else {
             Logger.e("loadWaypoint failed " + error.getDescription());
         }
 
     }
 
-    public void uploadWayPointMission() {
+    public void uploadWayPointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
 
         getWaypointMissionV1Operator().uploadMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
                 if (error == null) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startWaypointMission();
-                        }
-                    }, 2000);
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            startWaypointMission(mqttAndroidClient,message);
+//                        }
+//                    }, 2000);
+                    sendCorrectMsg2Server(mqttAndroidClient,message,"航线V1上传成功");
                 } else {
+                    sendErrorMsg2Server(mqttAndroidClient,message,"上传V1航线失败:"+error.getDescription());
                     getWaypointMissionV1Operator().retryUploadMission(null);
                 }
             }
@@ -92,26 +110,56 @@ public class MissionV1Manager {
 
     }
 
-    public void startWaypointMission() {
+    public void startWaypointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         getWaypointMissionV1Operator().startMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
                 if (error == null) {
+                    sendCorrectMsg2Server(mqttAndroidClient,message,"开始航线任务成功");
                     Logger.e("startMission success");
                 } else {
+                    sendErrorMsg2Server(mqttAndroidClient,message,"任务开始失败:"+error.getDescription());
                     Logger.e("startMission fail" + error.getDescription());
                 }
             }
         });
     }
 
-    public void stopWaypointMission() {
+    public void stopWaypointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         getWaypointMissionV1Operator().stopMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
-//                Toast.makeText(this,"aircraft disconnect!",Toast.LENGTH_SHORT).show();
-//
-//                ToastUtil.showToast("Mission Stop: " + (error == null ? "Successfully" : error.getDescription()));
+                if (error == null) {
+                    sendCorrectMsg2Server(mqttAndroidClient,message,"航线任务已终止");
+                } else {
+                    sendErrorMsg2Server(mqttAndroidClient,message,"任务终止失败:"+error.getDescription());
+                }
+            }
+        });
+    }
+
+    public void resumeWaypointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
+        getWaypointMissionV1Operator().resumeMission(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError error) {
+                if (error == null) {
+                    sendCorrectMsg2Server(mqttAndroidClient,message,"航线任务已恢复");
+                } else {
+                    sendErrorMsg2Server(mqttAndroidClient,message,"任务恢复失败:"+error.getDescription());
+                }
+            }
+        });
+    }
+
+    public void pauseWaypointMission(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
+        getWaypointMissionV1Operator().pauseMission(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError error) {
+                if (error == null) {
+                    sendCorrectMsg2Server(mqttAndroidClient,message,"航线任务已暂停");
+                } else {
+                    sendErrorMsg2Server(mqttAndroidClient,message,"任务暂停失败:"+error.getDescription());
+                }
             }
         });
     }

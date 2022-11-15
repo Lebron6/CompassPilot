@@ -6,6 +6,9 @@ public class Constant {
     public static final String FLAG_CONNECT = "connect";
     public static final String FLAG_START_DETECT_ARUCO = "start_detect_aruco";
     public static final String FLAG_DOWN_LAND = "start_down_land";
+    public static final String FLAG_SN = "sn";
+    public static final String FLAG_RTK_STATUS = "rtk_status";
+    public static final String FLAG_STREAM_URL = "stream_url";
     public static final String LOG_TAG = "UAV_APP";
     public static final String VISUAL_ANGLE_TYPE = "VISUAL_ANGLE_TYPE";
     public static final String CONFIRM_LANDING = "CONFIRM_LANDING";
@@ -142,6 +145,7 @@ public class Constant {
     public static String SPEED = "speed";
     public static String ANGLE = "angle";
     public static String TYPE = "type";
+    public static String ZOOM = "zoom";
     public static String VALUE = "value";
     public static String MIN_VALUE = "min_value";
     public static String MAX_VALUE = "max_value";
@@ -159,6 +163,8 @@ public class Constant {
     public static String FLIGHT_CONTROLLER_BEAN = "flightControllerBean";
     public static String BATTERY_STATE_BEAN = "batteryStateBean";
     public static String flightController = "flightController";
+
+
 
 
 }
