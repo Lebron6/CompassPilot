@@ -48,30 +48,23 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
     public void onUpdate(@NonNull FlightControllerState state) {
 
         ProtoFlightController.FlightController.Builder builder = ProtoFlightController.FlightController.newBuilder();
-        //是否正在飞行
         builder.setIsFlying(state.isFlying());
-        //风速
         Object windSpeed = KeyManager.getInstance().getValue((FlightControllerKey.create(WIND_SPEED)));
         if (windSpeed != null && windSpeed instanceof Integer) {
             builder.setWindSpeed((int) windSpeed);
         }
-        //风向
         Object windDirection = KeyManager.getInstance().getValue((FlightControllerKey.create(WIND_DIRECTION)));
         if (windDirection != null && windDirection instanceof WindDirection) {
             builder.setWindDirection(ProtoFlightController.FlightController.WindDirection.values()[((WindDirection) windDirection).ordinal()]);
         }
-        //返航距离
         double distance = LocationUtils.getDistance(state.getHomeLocation().getLongitude() + "",
                 state.getHomeLocation().getLatitude() + ""
                 , state.getAircraftLocation().getLongitude() + "",
                 state.getAircraftLocation().getLatitude() + "");
         builder.setGoHomeLength(distance);
-        //电机状态
         builder.setAreMotorsOn(state.areMotorsOn());
-        //飞行高度
         float flyingHeight = state.getAircraftLocation().getAltitude();
         builder.setAltitude(flyingHeight);
-        //飞机当前坐标
         if ((state.getAircraftLocation().getLatitude() + "").equals("NaN")) {
             builder.setLatitude(0.0);
         } else {
@@ -82,18 +75,15 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         } else {
             builder.setLongitude(state.getAircraftLocation().getLongitude());
         }
-        //飞机原点位置相对于海平面的相对高度
         if ((state.getTakeoffLocationAltitude() + "").equals("NaN")) {
             builder.setTakeoffLocationAltitude(0);
         } else {
             builder.setTakeoffLocationAltitude(state.getTakeoffLocationAltitude());
         }
-        //获取方向度数
         Compass compass = ApronApp.getAircraftInstance().getFlightController().getCompass();
         if (compass != null) {
             builder.setCompassHeading(compass.getHeading());
         }
-        //返航点经纬度
         if ((state.getHomeLocation().getLatitude() + "").equals("NaN")) {
             builder.setHomeLocationLatitude(0.0);
         } else {
@@ -104,18 +94,14 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         } else {
             builder.setHomeLocationLongitude(state.getHomeLocation().getLongitude());
         }
-        //返航高度
         builder.setGoHomeHeight(state.getGoHomeHeight());
-        //GPS信号
         builder.setGPSsignalLevel(ProtoFlightController.FlightController.GPSSignalLevel.values()[state.getGPSSignalLevel().ordinal()]);
-        //飞机当前的定向模式。
         builder.setOrientationMode(ProtoFlightController.FlightController.OrientationMode.values()[state.getOrientationMode().ordinal()]);
         builder.setFlightWindWarning(ProtoFlightController.FlightController.FlightWindWarning.values()[state.getFlightWindWarning().ordinal()]);
-        //根据剩余电池寿命建议采取的措施
         builder.setBatteryThresholdBehavior(ProtoFlightController.FlightController.BatteryThresholdBehavior.values()[state.getBatteryThresholdBehavior().ordinal()]);
-      if (state.getFlightModeString()!=null){
-          builder.setFlightModeString(state.getFlightModeString());
-      }
+        if (state.getFlightModeString() != null) {
+            builder.setFlightModeString(state.getFlightModeString());
+        }
         builder.setYaw(state.getAttitude().yaw);
         builder.setRoll(state.getAttitude().roll);
         builder.setPitch(state.getAttitude().pitch);
@@ -133,7 +119,6 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         builder.setFlightCount(state.getFlightCount());
         builder.setGoHomeExecutionState(ProtoFlightController.FlightController.GoHomeExecutionState.values()[state.getGoHomeExecutionState().ordinal()]);
 
-        //飞机飞行状态
         KeyManager.getInstance().getValue(diagnosticsKey, new GetCallback() {
             @Override
             public void onSuccess(@NonNull Object o) {
