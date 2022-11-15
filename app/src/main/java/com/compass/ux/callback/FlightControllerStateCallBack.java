@@ -113,7 +113,9 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         builder.setFlightWindWarning(ProtoFlightController.FlightController.FlightWindWarning.values()[state.getFlightWindWarning().ordinal()]);
         //根据剩余电池寿命建议采取的措施
         builder.setBatteryThresholdBehavior(ProtoFlightController.FlightController.BatteryThresholdBehavior.values()[state.getBatteryThresholdBehavior().ordinal()]);
-        builder.setFlightModeString(state.getFlightModeString());
+      if (state.getFlightModeString()!=null){
+          builder.setFlightModeString(state.getFlightModeString());
+      }
         builder.setYaw(state.getAttitude().yaw);
         builder.setRoll(state.getAttitude().roll);
         builder.setPitch(state.getAttitude().pitch);
