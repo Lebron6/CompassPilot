@@ -25,7 +25,6 @@ import com.compass.ux.entity.LoginValues;
 import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
-import com.orhanobut.logger.Logger;
 import com.yanzhenjie.permission.AndPermission;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -130,7 +129,8 @@ public class LoginActivity extends BaseActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toLogin();
+                MainActivity.actionStart(LoginActivity.this);
+//                toLogin();
             }
         });
         if (!TextUtils.isEmpty(PreferenceUtils.getInstance().getUserName())) {
@@ -170,13 +170,13 @@ public class LoginActivity extends BaseActivity {
                             MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
                             MqttConfig.USER_NAME = response.body().getData().getUsername();
                             ApronApp.SERIAL_NUMBER = etSn.getText().toString();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            MainActivity.actionStart(LoginActivity.this);
                             finish();
                             break;
 
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "网络异常:登陆失败111", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "网络异常:登陆失败", Toast.LENGTH_SHORT).show();
                 }
             }
 

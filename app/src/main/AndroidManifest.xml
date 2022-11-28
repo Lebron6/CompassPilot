@@ -58,10 +58,9 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.ConnectionActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape">
-        </activity>
+            android:exported="true"
+            android:screenOrientation="landscape"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -96,16 +95,11 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="landscape"
-            android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                <!--                <category android:name="android.intent.category.HOME" />-->
-                <!--                <category android:name="android.intent.category.DEFAULT" />-->
-                <!--                <category android:name="android.intent.category.MONKEY"/>-->
             </intent-filter>
         </activity>
 
@@ -113,7 +107,7 @@
         <service android:name="com.amap.api.location.APSService"></service>
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.FlightActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
@@ -122,6 +116,11 @@
             android:configChanges="orientation"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".ui.activity.MainActivity"></activity>
+        <activity android:name=".ui.activity.EquipmentDetailsActivity"></activity>
+        <activity android:name=".ui.activity.TaskReportActivity"></activity>
+        <activity android:name=".ui.activity.MessageActivity"></activity>
+        <activity android:name=".ui.activity.GalleryActivity"></activity>
 
 
         <!-- 开机启动 -->

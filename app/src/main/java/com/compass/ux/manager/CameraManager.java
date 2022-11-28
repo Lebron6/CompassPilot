@@ -1,6 +1,7 @@
 package com.compass.ux.manager;
 
 import com.apron.mobilesdk.state.ProtoMessage;
+import com.compass.ux.tools.ToastUtil;
 import com.google.gson.Gson;
 
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.logging.Logger;
 
 import dji.common.camera.CameraVideoStreamSource;
+import dji.common.camera.FocusState;
 import dji.common.camera.PhotoTimeLapseSettings;
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.WatermarkSettings;
@@ -27,6 +29,8 @@ import dji.common.error.DJIError;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.camera.Camera;
 
+import static com.compass.ux.constant.Constant.FLAG_CONNECT;
+import static com.compass.ux.constant.Constant.FLAG_ZOOM_FOCAL_LENGTH;
 import static com.compass.ux.tools.Utils.getbigZoomValue;
 import static dji.common.camera.CameraVideoStreamSource.DEFAULT;
 import static dji.common.camera.CameraVideoStreamSource.INFRARED_THERMAL;
@@ -39,6 +43,8 @@ import static dji.common.camera.SettingsDefinitions.ThermalDigitalZoomFactor.X_1
 import static dji.common.camera.SettingsDefinitions.ThermalDigitalZoomFactor.X_2;
 import static dji.common.camera.SettingsDefinitions.ThermalDigitalZoomFactor.X_4;
 import static dji.common.camera.SettingsDefinitions.ThermalDigitalZoomFactor.X_8;
+
+import androidx.annotation.NonNull;
 
 /**
  * 相机
@@ -201,8 +207,27 @@ public class CameraManager extends BaseManager {
             CommonCallbacks.CompletionCallbackWith<Integer> HybridZoomFocalLengthCallBack = new CommonCallbacks.CompletionCallbackWith<Integer>() {
                 @Override
                 public void onSuccess(Integer integer) {
-                    LocalSource.getInstance().setHybridZoom(getSmallZoomValue(integer));
 
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            };
+            FocusState.Callback focusStateCallback=new FocusState.Callback() {
+                @Override
+                public void onUpdate(@NonNull FocusState focusState) {
+                    int i = (focusState.getTargetFocalLength() * 4) / 951;
+                    com.orhanobut.logger.Logger.e("当前焦距："+i);
+                    LocalSource.getInstance().setHybridZoom(i);
+                    EventBus.getDefault().post(FLAG_ZOOM_FOCAL_LENGTH);
+                }
+            };
+            CommonCallbacks.CompletionCallbackWith<SettingsDefinitions.HybridZoomSpec> hybridZoomSpec=new CommonCallbacks.CompletionCallbackWith<SettingsDefinitions.HybridZoomSpec>() {
+                @Override
+                public void onSuccess(SettingsDefinitions.HybridZoomSpec hybridZoomSpec) {
+                    com.orhanobut.logger.Logger.e("最小焦距:"+hybridZoomSpec.getMinHybridFocalLength());
                 }
 
                 @Override
@@ -223,7 +248,10 @@ public class CameraManager extends BaseManager {
                 camera.getLens(0).getAELock(aelockCallBack);
                 camera.getLens(2).getThermalDigitalZoomFactor(thermalCallback);
                 camera.getLens(2).getDisplayMode(displayCallBack);
-                camera.getLens(0).getHybridZoomFocalLength(HybridZoomFocalLengthCallBack);
+                camera.getLens(0).getOpticalZoomFocalLength(HybridZoomFocalLengthCallBack);
+                camera.getLens(0).setFocusStateCallback(focusStateCallback);
+                camera.getLens(0).getHybridZoomSpec(hybridZoomSpec);
+
             }
             //单镜头
             else {
@@ -236,6 +264,8 @@ public class CameraManager extends BaseManager {
                 camera.getThermalDigitalZoomFactor(thermalCallback);
                 camera.getDisplayMode(displayCallBack);
                 camera.getHybridZoomFocalLength(HybridZoomFocalLengthCallBack);
+                camera.setFocusStateCallback(focusStateCallback);
+                camera.getHybridZoomSpec(hybridZoomSpec);
             }
         } else {
             Logger.getLogger("initCameraInformation camera is null");
@@ -1016,5 +1046,51 @@ public class CameraManager extends BaseManager {
         } else {
             sendErrorMsg2Server(mqttAndroidClient,message, "camera is null");
         }
+    }
+
+    //设置变焦
+    public void setCameraZoom(int zoomNum) {
+        com.orhanobut.logger.Logger.e("设置变焦："+zoomNum);
+            if (Helper.isCameraModuleAvailable()) {
+                Camera camera = ApronApp.getProductInstance().getCamera();
+                if (camera.isMultiLensCameraSupported()) {
+                    com.orhanobut.logger.Logger.e("变焦大致："+getbigZoomValue(zoomNum+""));
+                    camera.getLens(0).setHybridZoomFocalLength(getbigZoomValue(zoomNum+""), new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if (djiError == null) {
+                            } else {
+                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+                            }
+                        }
+                    });
+                } else if (camera.isHybridZoomSupported()) {
+                    camera.setHybridZoomFocalLength(zoomNum, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if (djiError == null) {
+
+                            } else {
+                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+                            }
+                        }
+                    });
+
+                } else if (camera.isTapZoomSupported()) {//光学变焦
+                    camera.setTapZoomMultiplier(zoomNum, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if (djiError == null) {
+
+                            } else {
+                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+                            }
+                        }
+                    });
+                }
+            } else {
+                ToastUtil.showToast("变焦失败:相机未连接");
+            }
+
     }
 }

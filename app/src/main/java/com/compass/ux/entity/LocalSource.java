@@ -31,6 +31,17 @@ public class LocalSource {
     private int cameraMode;
     //变焦焦距
     private int hybridZoom;
+    //变焦焦距(H20T)
+    private int opticalZoom;
+
+    public int getOpticalZoom() {
+        return opticalZoom;
+    }
+
+    public void setOpticalZoom(int opticalZoom) {
+        this.opticalZoom = opticalZoom;
+    }
+
     //获取当前是哪个镜头
     private String currentLens;
     //获取对焦模式

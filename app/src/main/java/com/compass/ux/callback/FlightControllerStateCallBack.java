@@ -65,6 +65,7 @@ public class FlightControllerStateCallBack extends BaseCallback implements Fligh
         builder.setAreMotorsOn(state.areMotorsOn());
         float flyingHeight = state.getAircraftLocation().getAltitude();
         builder.setAltitude(flyingHeight);
+
         if ((state.getAircraftLocation().getLatitude() + "").equals("NaN")) {
             builder.setLatitude(0.0);
         } else {

@@ -1,8 +1,6 @@
 package com.compass.ux.ui.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -14,24 +12,13 @@ import android.widget.Toast;
 import com.compass.ux.R;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
-import com.compass.ux.callback.DJISDKRegistrationCallback;
 import com.compass.ux.constant.Constant;
-
-import com.compass.ux.tools.ToastUtil;
-import com.orhanobut.logger.Logger;
-import com.yanzhenjie.permission.AndPermission;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
-import androidx.core.content.ContextCompat;
-
-import dji.keysdk.KeyManager;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.products.Aircraft;
-import dji.sdk.sdkmanager.DJISDKManager;
 
 public class ConnectionActivity extends BaseActivity implements View.OnClickListener {
 
@@ -75,8 +62,8 @@ public class ConnectionActivity extends BaseActivity implements View.OnClickList
                     } else {
                         mTextProduct.setText(R.string.product_information);
                     }
-                                    if (!MainActivity.isStarted()){
-                    startActivity(new Intent(this,MainActivity.class));
+                                    if (!FlightActivity.isStarted()){
+                    startActivity(new Intent(this, FlightActivity.class));
                 }
                 } else {
                     Log.v(TAG, "refreshSDK: False");
@@ -120,7 +107,7 @@ public class ConnectionActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_open: {
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, FlightActivity.class));
 
                 break;
             }

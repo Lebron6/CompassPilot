@@ -23,6 +23,7 @@ import dji.sdk.battery.Battery;
  * 电池B
  */
 public class BatteryBStateCallback extends BaseCallback implements BatteryState.Callback{
+
     Battery battery;
     MqttAndroidClient client;
 

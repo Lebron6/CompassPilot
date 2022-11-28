@@ -3,6 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="grey">#BEC0CE</color>
 
     <color name="colorBlack">#ff000000</color>
     <color name="black_overlay">#000000</color>
@@ -16,4 +17,17 @@
     <color name="black">#000000</color>
     <color name="blue">#538ED5</color>
     <color name="colorTheme">#59EDB7</color>
+
+
+    <color name="timetimepicker_default_text_color">#999999</color>
+    <color name="toolbar_bg">#FBFBFB</color>
+    <color name="toolbar_text_cancel">#323232</color>
+    <color name="toolbar_text_ok">#3531FF</color>
+    <color name="toolbar_line">#E7E7E7</color>
+
+    <color name="item_selector_line">#C2C2C2</color>
+    <color name="item_selector_rect">#FFFFFF</color>
+
+    <color name="timepicker_dialog_bg">#80000000</color>
+    <color name="timepicker_line">#e8e8e8</color>
 </resources>

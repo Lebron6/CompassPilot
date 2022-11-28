@@ -6,6 +6,7 @@ public class Constant {
     public static final String FLAG_CONNECT = "connect";
     public static final String FLAG_START_DETECT_ARUCO = "start_detect_aruco";
     public static final String FLAG_DOWN_LAND = "start_down_land";
+    public static final String FLAG_ZOOM_FOCAL_LENGTH = "ZoomFocalLength";
     public static final String FLAG_SN = "sn";
     public static final String FLAG_RTK_STATUS = "rtk_status";
     public static final String FLAG_STREAM_URL = "stream_url";
