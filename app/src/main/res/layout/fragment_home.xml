@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:ignore="MissingDefaultResource">
+    <RelativeLayout
+        android:id="@+id/layout_is_connect"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<RelativeLayout
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/x193"/>
+
+    <LinearLayout
+        android:id="@+id/layout_air"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y290"
+        android:layout_marginLeft="@dimen/x14"
+        android:layout_marginTop="@dimen/x135"
+        android:layout_marginRight="@dimen/x14"
+        android:background="@drawable/bg_data_select"
+        android:elevation="@dimen/x9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_loginout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y25"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/x18"
+            android:gravity="center_vertical"
+            android:text="无人机编号"
+            android:textColor="#ff0f1010"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/layout_center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x22"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:background="@drawable/bg_tv_equipment_sn"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="SN"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="dsg126424"
+                android:textColor="#ff0f1010"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/y300"
+            android:layout_height="@dimen/y160"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@color/black" />
+    </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_start_mission"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y54"
+            android:layout_below="@+id/layout_air"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/x57"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@drawable/bg_btn_login"
+            android:elevation="@dimen/x9"
+            android:gravity="center"
+            android:text="执行飞行任务"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_media"
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y54"
+            android:layout_below="@+id/tv_start_mission"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/x10"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@drawable/bg_btn_login"
+            android:elevation="@dimen/x9"
+            android:gravity="center"
+            android:text="媒体文件访问"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_disconnect"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_disconnect"
+            android:layout_marginTop="@dimen/x150"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/img_disconnect"
+            android:layout_width="@dimen/y301"
+            android:layout_height="@dimen/y303"/>
+        <TextView
+            android:layout_marginTop="@dimen/x20"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/iv_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无接入无人机"
+            android:textColor="#ff8a8c9b"
+            android:textSize="17sp"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>
