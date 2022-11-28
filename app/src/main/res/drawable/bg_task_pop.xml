@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 设置背景填充色 -->
+    <solid android:color="@color/white" />
+    <!-- 设置按钮圆角半径为25dp -->
+    <stroke
+        android:width="0.2dp"
+        android:color="#60BEC0CE" />
+    <corners android:topLeftRadius="25dp" android:topRightRadius="25dp"/>
+</shape>
