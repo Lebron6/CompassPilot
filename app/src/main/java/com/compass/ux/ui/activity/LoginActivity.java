@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.compass.ux.entity.LoginValues;
 import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
+import com.orhanobut.logger.Logger;
 import com.yanzhenjie.permission.AndPermission;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -74,6 +76,7 @@ public class LoginActivity extends BaseActivity {
         initView();
         checkAndRequestPermissions();
         registerDJISDK();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private void registerDJISDK() {
@@ -101,7 +104,7 @@ public class LoginActivity extends BaseActivity {
                                 @Override
                                 public void run() {
                                     etSn.setText(s);
-                                    ApronApp.SERIAL_NUMBER=s;
+                                    ApronApp.SERIAL_NUMBER = s;
                                 }
                             });
                         }
@@ -129,8 +132,8 @@ public class LoginActivity extends BaseActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.actionStart(LoginActivity.this);
-//                toLogin();
+//                MainActivity.actionStart(LoginActivity.this);
+                toLogin();
             }
         });
         if (!TextUtils.isEmpty(PreferenceUtils.getInstance().getUserName())) {
@@ -163,17 +166,43 @@ public class LoginActivity extends BaseActivity {
                 if (response.body() != null) {
                     switch (response.body().getCode()) {
                         case 0:
-                            PreferenceUtils.getInstance().setUserToken(response.body().getData().getAccess_token());
                             PreferenceUtils.getInstance().setUserName(loginValues.getUsername());
                             PreferenceUtils.getInstance().setUserPassword(loginValues.getPassword());
                             MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
                             MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
                             MqttConfig.USER_NAME = response.body().getData().getUsername();
                             ApronApp.SERIAL_NUMBER = etSn.getText().toString();
+                            toLogin2();
+                            break;
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "网络异常1:登陆失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResult> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "网络异常1:登陆失败", Toast.LENGTH_SHORT).show();
+                Log.e("网络异常1:登陆失败", t.toString());
+            }
+        });
+    }
+
+    private void toLogin2() {
+        LoginValues loginValues = new LoginValues();
+        loginValues.setUsername(etAccount.getText().toString());
+        loginValues.setPassword(etPassword.getText().toString());
+        HttpUtil httpUtil = new HttpUtil();
+        httpUtil.createRequest2().userLogin2(loginValues).enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                if (response.body() != null) {
+                    switch (response.body().getCode()) {
+                        case 200:
+                            PreferenceUtils.getInstance().setUserToken(response.headers().get("authorization"));
                             MainActivity.actionStart(LoginActivity.this);
                             finish();
                             break;
-
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "网络异常:登陆失败", Toast.LENGTH_SHORT).show();

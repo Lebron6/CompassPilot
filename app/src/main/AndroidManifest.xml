@@ -121,6 +121,11 @@
         <activity android:name=".ui.activity.TaskReportActivity"></activity>
         <activity android:name=".ui.activity.MessageActivity"></activity>
         <activity android:name=".ui.activity.GalleryActivity"></activity>
+        <activity android:name=".ui.activity.UpdataPasswordActivity"></activity>
+        <activity
+            android:name=".ui.activity.FlightHistoryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 
 
         <!-- 开机启动 -->

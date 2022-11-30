@@ -26,4 +26,9 @@ public class TaskTypeAdapter extends BaseAdapter<String, ItemTaskTypeBinding> {
         ItemTaskTypeBinding itemGalleryBinding = ItemTaskTypeBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         return itemGalleryBinding;
     }
+
+    @Override
+    public int getItemCount() {
+        return 8;
+    }
 }

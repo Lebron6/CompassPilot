@@ -11,9 +11,11 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import com.secneo.sdk.Helper;
 import dji.common.product.Model;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.Camera;
 import dji.sdk.mission.MissionControl;
 import dji.sdk.mission.waypoint.WaypointV2MissionOperator;
 import dji.sdk.products.Aircraft;
+import dji.sdk.products.HandHeld;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 
@@ -91,5 +93,21 @@ public class ApronApp extends Application{
     // 获取航点任务操作器
     public static WaypointV2MissionOperator getWaypointMissionOperator() {
         return MissionControl.getInstance().getWaypointMissionV2Operator();
+    }
+
+    public static synchronized Camera getCameraInstance() {
+
+        if (getProductInstance() == null) return null;
+
+        Camera camera = null;
+
+        if (getProductInstance() instanceof Aircraft){
+            camera = ((Aircraft) getProductInstance()).getCamera();
+
+        } else if (getProductInstance() instanceof HandHeld) {
+            camera = ((HandHeld) getProductInstance()).getCamera();
+        }
+
+        return camera;
     }
 }

@@ -3,6 +3,7 @@ package com.compass.ux.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.compass.ux.base.BaseActivity;
 import com.compass.ux.databinding.ActivityEquipmentDetailsBinding;
@@ -33,6 +34,12 @@ public class MessageActivity extends BaseActivity {
     }
 
     private void initView() {
+        mBinding.layoutFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         MessageAdapter adapter = new MessageAdapter(this);
         RecyclerViewHelper.initRecyclerViewV(this, mBinding.rvMessage, false, adapter);
     }

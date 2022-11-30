@@ -26,4 +26,9 @@ public class CallBackAdapter extends BaseAdapter<String, ItemCallbackBinding> {
         ItemCallbackBinding itemCallbackBinding = ItemCallbackBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         return itemCallbackBinding;
     }
+
+    @Override
+    public int getItemCount() {
+        return 8;
+    }
 }

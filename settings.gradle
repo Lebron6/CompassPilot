@@ -2,3 +2,4 @@ include ':app'
 rootProject.name = "Apron"
 include ':MonitorCrashLib'
 include ':OpenCV'
+include ':jcvideoplayer-lib'

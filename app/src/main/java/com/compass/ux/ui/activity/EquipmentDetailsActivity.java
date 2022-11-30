@@ -3,6 +3,7 @@ package com.compass.ux.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.compass.ux.base.BaseActivity;
 import com.compass.ux.databinding.ActivityEquipmentDetailsBinding;
@@ -25,5 +26,15 @@ public class EquipmentDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = ActivityEquipmentDetailsBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+        initView();
+    }
+
+    private void initView() {
+        mBinding.layoutFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

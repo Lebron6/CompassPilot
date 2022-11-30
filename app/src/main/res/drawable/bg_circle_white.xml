@@ -4,4 +4,8 @@
     <solid android:color="@color/timepicker_dialog_bg" />
 
     <size android:height="20.0dip" android:width="20.0dip" />
+    <corners android:radius="@dimen/x16" />
+    <stroke
+        android:color="@color/white"
+        android:width="0.5dp"/>
 </shape>

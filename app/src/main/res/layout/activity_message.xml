@@ -11,6 +11,7 @@
         android:layout_height="@dimen/x40">
 
         <RelativeLayout
+            android:id="@+id/layout_finish"
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x50"
             android:gravity="center">

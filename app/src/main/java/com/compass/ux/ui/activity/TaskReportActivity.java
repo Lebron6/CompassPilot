@@ -33,6 +33,12 @@ public class TaskReportActivity extends BaseActivity {
     }
 
     private void initView() {
+        mBinding.layoutFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mBinding.tvStartFly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

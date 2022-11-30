@@ -35,4 +35,9 @@ public class EquipmentTypeAdapter extends BaseAdapter<String, ItemEquipmentTypeB
         ItemEquipmentTypeBinding itemEquipmentTypeBinding = ItemEquipmentTypeBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         return itemEquipmentTypeBinding;
     }
+
+    @Override
+    public int getItemCount() {
+        return 8;
+    }
 }

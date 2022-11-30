@@ -14,6 +14,7 @@
         android:layout_height="@dimen/x40">
 
         <RelativeLayout
+            android:id="@+id/layout_finish"
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x50"
             android:gravity="center">
@@ -80,24 +81,64 @@
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp" />
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_bottom"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:gravity="right"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y60">
+
+        <LinearLayout
+            android:id="@+id/layout_download"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_upload_progress"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:textColor="#ff8a8c9b"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_file_download_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginTop="10dp"
+                android:textColor="#ff8a8c9b"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_upload_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x40"
+            android:layout_toLeftOf="@+id/upload"
+            android:textColor="#ff8a8c9b"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/upload"
             android:layout_width="@dimen/y120"
             android:layout_height="@dimen/y40"
-            android:layout_marginBottom="@dimen/y10"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/x30"
+            android:layout_marginBottom="@dimen/y10"
             android:background="@drawable/bg_btn_login"
             android:gravity="center"
             android:text="上传"
             android:textColor="@color/white"
             android:textSize="18sp" />
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

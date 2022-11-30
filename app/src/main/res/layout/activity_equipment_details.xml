@@ -10,6 +10,7 @@
         android:layout_height="@dimen/x50">
 
         <RelativeLayout
+            android:id="@+id/layout_finish"
             android:layout_width="@dimen/x50"
             android:layout_height="@dimen/x50"
             android:gravity="center">
@@ -50,7 +51,7 @@
                 android:layout_marginTop="@dimen/x30"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/x20">
+                android:layout_height="wrap_content">
                 <TextView
                     android:layout_marginLeft="@dimen/x10"
                     android:textStyle="bold"
@@ -74,8 +75,9 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/layout_center"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/x22"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

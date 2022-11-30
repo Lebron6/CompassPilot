@@ -33,4 +33,9 @@ public class MessageAdapter extends BaseAdapter<String, ItemMessageBinding> {
         ItemMessageBinding itemMessageBinding = ItemMessageBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
         return itemMessageBinding;
     }
+
+    @Override
+    public int getItemCount() {
+        return 8;
+    }
 }

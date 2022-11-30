@@ -30,9 +30,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_loginout"
+            android:id="@+id/tv_uav_num"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y25"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/x18"
             android:gravity="center_vertical"
@@ -44,7 +44,7 @@
         <LinearLayout
             android:id="@+id/layout_center"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x22"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -61,6 +61,7 @@
                 android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/tv_sn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

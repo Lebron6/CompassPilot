@@ -1,13 +1,42 @@
 package com.compass.ux.ui.fragment;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+import com.compass.ux.api.BaseUrl;
+import com.compass.ux.api.HttpUtil;
 import com.compass.ux.base.BaseFragment;
 import com.compass.ux.databinding.FragmentPersonalBinding;
+import com.compass.ux.entity.UserInfo;
+import com.compass.ux.tools.AppManager;
+import com.compass.ux.tools.GlideCircleTransform;
+import com.compass.ux.tools.PreferenceUtils;
+import com.compass.ux.tools.ToastUtil;
+import com.compass.ux.ui.activity.LoginActivity;
 import com.compass.ux.ui.activity.MessageActivity;
+import com.compass.ux.ui.activity.UpdataPasswordActivity;
+import com.orhanobut.logger.Logger;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -32,11 +61,55 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
+        getUserInfo();
         mBinding.layoutMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MessageActivity.actionStart(getActivity());
             }
         });
+        mBinding.layoutPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdataPasswordActivity.actionStart(getActivity());
+            }
+        });
+    }
+
+    private void getUserInfo() {
+
+        HttpUtil httpUtil = new HttpUtil();
+        httpUtil.createRequest2().getUserInfo(PreferenceUtils.getInstance().getUserToken()).enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                if (response.body() != null) {
+                    switch (response.body().getCode()) {
+                        case "200":
+                            RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                            Glide.with(PersonalFragment.this).applyDefaultRequestOptions(requestOptions).
+                                    load(BaseUrl.ipAddress2+"/oauth/image"+response.body().getResults().getUserImagePath())
+                                    .into(mBinding.ivUserPhoto);
+                            mBinding.tvUserName.setText(response.body().getResults().getUsername());
+                            mBinding.tvDep.setText(response.body().getResults().getDepartmentName());
+                            mBinding.tvUserRole.setText(response.body().getResults().getRoleName());
+                            mBinding.tvPhoneNum.setText(response.body().getResults().getPhone());
+                            mBinding.tvFlyTime.setText("累计飞行时长:"+response.body().getResults().getTotalFlightTime());
+                            break;
+                        default:
+                            ToastUtil.showToast("获取用户信息失败:" + response.body().getMsg());
+                            break;
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "网络异常:获取用户信息失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Toast.makeText(getActivity(), "网络异常:获取用户信息失败", Toast.LENGTH_SHORT).show();
+                Log.e("网络异常:获取用户信息失败", t.toString());
+            }
+        });
+
     }
 }

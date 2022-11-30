@@ -2,9 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/x156"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_marginTop="3dp"
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
@@ -23,19 +24,21 @@
                 android:layout_width="@dimen/x167"
                 android:layout_height="@dimen/x116">
 
-                <com.compass.ux.ui.view.RoundImageView
+                <ImageView
                     android:id="@+id/iv_gallery"
-                    android:layout_width="@dimen/x167"
-                    android:layout_height="@dimen/x116"
-                    android:background="@color/gray" />
-           <CheckBox
-               android:button="@null"
-               android:background="@drawable/check_style"
-               android:layout_marginTop="@dimen/x10"
-               android:layout_marginRight="@dimen/x10"
-               android:layout_alignParentRight="true"
-               android:layout_width="@dimen/y15"
-               android:layout_height="@dimen/y15"/>
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <CheckBox
+                    android:id="@+id/cb_photo"
+                    android:layout_width="@dimen/y20"
+                    android:layout_height="@dimen/y20"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/x10"
+                    android:layout_marginRight="@dimen/x10"
+                    android:background="@drawable/check_style"
+                    android:button="@null" />
 
             </RelativeLayout>
 
@@ -44,7 +47,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="3dp"
                 android:gravity="center"
                 android:text="无人机0021"
                 android:textColor="#ff0f1010"

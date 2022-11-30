@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/MonitorCrashLib" />
             <option value="$PROJECT_DIR$/OpenCV" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/jcvideoplayer-lib" />
           </set>
         </option>
       </GradleProjectSettings>
