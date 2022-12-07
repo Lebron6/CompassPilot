@@ -23,7 +23,7 @@ public class ApronApp extends Application{
     /**
      * SN码
      */
-    public static String SERIAL_NUMBER ;//测试
+    public static String SERIAL_NUMBER = "1ZNDH3L0010383";//测试
     private static BaseProduct mProduct;
     private static Context context;
     public static Context getApplication() {
@@ -34,7 +34,6 @@ public class ApronApp extends Application{
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
         Helper.install(ApronApp.this);
-        Logger.e("mapping");
     }
 
     @Override
@@ -89,25 +88,21 @@ public class ApronApp extends Application{
         Model model = DJISDKManager.getInstance().getProduct().getModel();
         return model == Model.MATRICE_300_RTK;
     }
-
-    // 获取航点任务操作器
-    public static WaypointV2MissionOperator getWaypointMissionOperator() {
-        return MissionControl.getInstance().getWaypointMissionV2Operator();
-    }
-
     public static synchronized Camera getCameraInstance() {
 
         if (getProductInstance() == null) return null;
 
         Camera camera = null;
 
-        if (getProductInstance() instanceof Aircraft){
+        if (getProductInstance() instanceof Aircraft) {
             camera = ((Aircraft) getProductInstance()).getCamera();
-
         } else if (getProductInstance() instanceof HandHeld) {
             camera = ((HandHeld) getProductInstance()).getCamera();
         }
-
         return camera;
+    }
+    // 获取航点任务操作器
+    public static WaypointV2MissionOperator getWaypointMissionOperator() {
+        return MissionControl.getInstance().getWaypointMissionV2Operator();
     }
 }
