@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.viewbinding.ViewBinding;
 
+import com.compass.ux.R;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseFragment;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.databinding.FragmentHomeBinding;
@@ -54,10 +56,11 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
-        if (Helper.isFlightControllerAvailable()) {
-            mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
-            mBinding.layoutDisconnect.setVisibility(View.GONE);
-        }
+//        if (Helper.isFlightControllerAvailable()) {
+//            mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
+//            mBinding.layoutDisconnect.setVisibility(View.GONE);
+//        }
+        mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_air2s));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -66,11 +69,48 @@ public class HomeFragment extends BaseFragment {
             case Constant.FLAG_CONNECT:
                 mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
                 mBinding.layoutDisconnect.setVisibility(View.GONE);
+                setIcon();
                 break;
             case Constant.FLAG_DISCONNECT:
                 mBinding.layoutIsConnect.setVisibility(View.GONE);
                 mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
                 break;
+        }
+    }
+
+    private void setIcon() {
+        if (ApronApp.getProductInstance() != null) {
+            mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
+            switch (ApronApp.getProductInstance().getModel()) {
+                case PHANTOM_4_PRO:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));
+                    break;
+                case PHANTOM_4:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));
+                    break;
+                case PHANTOM_4_RTK:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));
+                    break;
+                case MATRICE_300_RTK:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_m300rtk));
+                    break;
+                case MAVIC_2:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_mavic2));
+                    break;
+                case MAVIC_2_PRO:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_mavic2));
+                    break;
+                case MAVIC_AIR_2:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_mavic2));
+                    break;
+                case DJI_AIR_2S:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_air2s));
+                    break;
+                default:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_air2s));
+
+                    break;
+            }
         }
     }
 }

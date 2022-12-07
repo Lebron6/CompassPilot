@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_all"
     android:background="@drawable/bg_task_pop"
     android:orientation="vertical">
 
@@ -23,9 +24,49 @@
         android:layout_marginRight="10dp"
         android:background="#60BEC0CE" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_task_type"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_height="200dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_yj"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="应急"
+            android:textColor="@color/gray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_jt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:text="交通"
+            android:textColor="@color/gray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_tf"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="突发"
+            android:textColor="@color/gray"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_za"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="治安"
+            android:textColor="@color/gray"
+            android:textSize="16sp" />
+    </LinearLayout>
 </LinearLayout>

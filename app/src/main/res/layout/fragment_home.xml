@@ -13,10 +13,10 @@
         android:layout_height="match_parent">
 
 
-<RelativeLayout
-    android:background="@color/black"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/x193"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x193"
+            android:background="@mipmap/bg_home" />
 
     <LinearLayout
         android:id="@+id/layout_air"
@@ -71,11 +71,13 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="@dimen/y300"
-            android:layout_height="@dimen/y160"
+            android:id="@+id/iv_air"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/x150"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y20"
-            android:background="@color/black" />
+            android:layout_marginTop="@dimen/y10"
+            />
     </LinearLayout>
 
         <TextView

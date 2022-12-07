@@ -21,6 +21,7 @@ import com.compass.ux.databinding.ActivityGalleryBinding;
 import com.compass.ux.entity.DownLoadFileList;
 import com.compass.ux.entity.MyGallyData;
 import com.compass.ux.tools.RecyclerViewHelper;
+import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.adapter.GalleryAdapter;
 import com.compass.ux.ui.view.datescroller.DateScrollerDialog;
 import com.compass.ux.ui.view.datescroller.data.Type;
@@ -127,8 +128,12 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void initMediaManager() {
+        if (ApronApp.getProductInstance() == null || ApronApp.getProductInstance().getCameras() == null) {
+            ToastUtil.showToast("飞行器未连接");
+            finish();
+            return;
+        }
         List<Camera> cameras = ((Aircraft) ApronApp.getProductInstance()).getCameras();
-
         if (null != cameras && cameras.get(0).isMediaDownloadModeSupported()) {
             mMediaManager = cameras.get(0).getMediaManager();
             scheduler = mMediaManager.getScheduler();

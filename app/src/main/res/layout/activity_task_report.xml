@@ -42,6 +42,7 @@
         android:textSize="14sp" />
 
     <EditText
+        android:id="@+id/et_task_name"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x40"
         android:layout_marginTop="@dimen/x5"
@@ -72,12 +73,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <TextView
+            android:id="@+id/et_task_type"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40"
             android:layout_marginTop="@dimen/x5"
             android:background="@null"
             android:enabled="false"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
             android:hint="请选择"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

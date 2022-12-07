@@ -31,9 +31,9 @@ public class GalleryAdapter extends BaseAdapter<String, ItemGalleryBinding> {
         holder.getViewBinding().cbPhoto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked==true){
+                if (isChecked == true) {
                     myGallyDataList.get(position).setChecked(true);
-                }else{
+                } else {
                     myGallyDataList.get(position).setChecked(false);
                 }
             }
@@ -42,9 +42,9 @@ public class GalleryAdapter extends BaseAdapter<String, ItemGalleryBinding> {
         holder.getViewBinding().ivGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.getViewBinding().cbPhoto.isChecked()==true){
+                if (holder.getViewBinding().cbPhoto.isChecked() == true) {
                     holder.getViewBinding().cbPhoto.setChecked(false);
-                }else{
+                } else {
                     holder.getViewBinding().cbPhoto.setChecked(true);
                 }
             }
@@ -66,7 +66,7 @@ public class GalleryAdapter extends BaseAdapter<String, ItemGalleryBinding> {
     public int getItemCount() {
         if (myGallyDataList != null) {
             return myGallyDataList.size();
-        }else{
+        } else {
             return 0;
         }
     }

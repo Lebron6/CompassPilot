@@ -119,12 +119,13 @@
 
             <EditText
                 android:id="@+id/et_sn"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:enabled="false"
+                android:focusable="true"
+                android:text="1ZNBHCH00C004M"
+                android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:hint="接入飞行器获取SN码"
                 android:paddingLeft="@dimen/x30"
@@ -135,17 +136,6 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_forget_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_sn"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/x17"
-            android:layout_marginRight="@dimen/x30"
-            android:text="忘记密码？"
-            android:textColor="#ff3531ff"
-            android:textSize="13sp" />
     </RelativeLayout>
 
     <TextView

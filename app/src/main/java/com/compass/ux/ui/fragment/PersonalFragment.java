@@ -106,7 +106,7 @@ public class PersonalFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
-                Toast.makeText(getActivity(), "网络异常:获取用户信息失败", Toast.LENGTH_SHORT).show();
+                ToastUtil.showToast("网络异常:获取用户信息失败");
                 Log.e("网络异常:获取用户信息失败", t.toString());
             }
         });

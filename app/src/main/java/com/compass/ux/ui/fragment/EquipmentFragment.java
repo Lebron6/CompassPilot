@@ -24,9 +24,9 @@ import java.util.ArrayList;
 public class EquipmentFragment extends BaseFragment {
     FragmentEquipmentBinding mBinding;
 
-    private ArrayList<Fragment> mFragments=new ArrayList<>() ;
-    private String[] mTitles=new String[]{"全部", "在线设备", "离线设备"} ;
-    private ArrayList<CustomTabEntity> mTabEntities=new ArrayList<>() ;
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private String[] mTitles = new String[]{"全部", "在线设备", "离线设备"};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     public boolean useEventBus() {
@@ -42,13 +42,15 @@ public class EquipmentFragment extends BaseFragment {
 
     private void initView() {
 
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], R.drawable.bg_nav_equipment_pre, R.drawable.bg_nav_equipment_nor));
-            mFragments.add(new EquipmentType(i));
-        }
+        mTabEntities.add(new TabEntity("全部", R.drawable.bg_nav_equipment_pre, R.drawable.bg_nav_equipment_nor));
+        mTabEntities.add(new TabEntity("在线", R.drawable.bg_nav_equipment_pre, R.drawable.bg_nav_equipment_nor));
+        mTabEntities.add(new TabEntity("离线", R.drawable.bg_nav_equipment_pre, R.drawable.bg_nav_equipment_nor));
+        mFragments.add(new EquipmentTypeFragment("全部"));
+        mFragments.add(new EquipmentTypeFragment("在线"));
+        mFragments.add(new EquipmentTypeFragment("离线"));
+
         mBinding.tabEquipment.setTabData(mTabEntities);
-//        MyPagerAdapter myPagerAdapter =new MyPagerAdapter(getActivity().getSupportFragmentManager(),mFragments,mTitles);
-        MyPagerAdapter myPagerAdapter =new MyPagerAdapter(getChildFragmentManager(),mFragments,mTitles);
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), mFragments, mTitles);
         mBinding.vpEquipment.setAdapter(myPagerAdapter);
         mBinding.tabEquipment.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -73,7 +75,6 @@ public class EquipmentFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 mBinding.tabEquipment.setCurrentTab(position);
-
             }
 
             @Override

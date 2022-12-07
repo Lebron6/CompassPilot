@@ -37,6 +37,7 @@
 
     <RelativeLayout
         android:id="@+id/layout_time"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/layout_top"

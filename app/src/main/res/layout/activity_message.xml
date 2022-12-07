@@ -23,17 +23,23 @@
         </RelativeLayout>
 
         <TextView
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="设备详情"
+            android:text="消息"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </RelativeLayout>
-
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_message"
+<com.compass.ux.ui.view.SpringView
+    android:id="@+id/sv_message"
+    android:layout_marginTop="@dimen/x10"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</com.compass.ux.ui.view.SpringView>
+
 </LinearLayout>

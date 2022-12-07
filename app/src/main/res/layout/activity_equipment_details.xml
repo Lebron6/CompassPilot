@@ -41,11 +41,12 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_eq"
                 android:layout_marginTop="@dimen/x10"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="@dimen/x258"
                 android:layout_height="@dimen/y175"
-                android:background="@color/black" />
+               />
 
             <LinearLayout
                 android:layout_marginTop="@dimen/x30"
@@ -53,15 +54,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/tv_eq_name"
                     android:layout_marginLeft="@dimen/x10"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="无人机0021"
+                    android:text="      "
                     android:textColor="#ff0f1010"
                     android:textSize="16sp"
                     />
                 <TextView
+                    android:id="@+id/tv_status"
                     android:paddingRight="@dimen/x2"
                     android:paddingLeft="@dimen/x2"
                     android:layout_marginLeft="@dimen/x10"
@@ -94,10 +97,11 @@
                     android:textSize="11sp" />
 
                 <TextView
+                    android:id="@+id/tv_Sn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="dsg126424"
+                    android:text="      "
                     android:textColor="#ff0f1010"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -128,10 +132,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/xh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="13773647829"
+                    android:text=""
                     android:textColor="#ff8a8c9b"
                     android:textSize="15sp" />
             </RelativeLayout>
@@ -151,10 +156,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/pp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="13773647829"
+                    android:text=""
                     android:textColor="#ff8a8c9b"
                     android:textSize="15sp" />
             </RelativeLayout>
@@ -175,10 +181,12 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/bdjk"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="13773647829"
+                    android:text=""
                     android:textColor="#ff8a8c9b"
                     android:textSize="15sp" />
             </RelativeLayout>
@@ -199,10 +207,12 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_lxsj"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="13773647829"
+                    android:text=""
                     android:textColor="#ff8a8c9b"
                     android:textSize="15sp" />
             </RelativeLayout>
@@ -252,10 +262,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/bdbh"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=""
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -276,10 +288,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/bxlx"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=""
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -295,15 +309,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="保险购买日期"
+                        android:text="购买日期"
                         android:textColor="#ff0f1010"
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/gmrq"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=""
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -318,15 +334,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="保险开始时间"
+                        android:text="开始时间"
                         android:textColor="#ff0f1010"
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/kssj"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=""
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -341,15 +359,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="保险结束时间"
+                        android:text="结束时间"
                         android:textColor="#ff0f1010"
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/jssj"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=" "
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -370,10 +390,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/bxgs"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=" "
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -387,6 +409,7 @@
                     android:paddingRight="20dp">
 
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="保险公司电话"
@@ -394,10 +417,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/bxgsdh"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=" "
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -417,10 +442,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/zrr"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=" "
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>
@@ -440,10 +467,12 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/zrdh"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="13773647829"
+                        android:text=" "
                         android:textColor="#ff8a8c9b"
                         android:textSize="15sp" />
                 </RelativeLayout>

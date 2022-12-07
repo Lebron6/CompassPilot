@@ -7,6 +7,7 @@ import com.compass.ux.base.BaseAdapter;
 import com.compass.ux.base.BaseHolder;
 import com.compass.ux.databinding.ItemCallbackBinding;
 import com.compass.ux.databinding.ItemMessageBinding;
+import com.compass.ux.entity.CallBackResult;
 
 
 /**
@@ -15,10 +16,12 @@ import com.compass.ux.databinding.ItemMessageBinding;
 
 public class CallBackAdapter extends BaseAdapter<String, ItemCallbackBinding> {
 
-
+    CallBackResult callBackResult;
     @Override
     protected void onBindingData(BaseHolder<ItemCallbackBinding> holder, String s, int position) {
-//        holder.getViewBinding().tvTest.setText("111111");
+        holder.getViewBinding().tvCallbackName.setText(callBackResult.getResults().get(position).getName()+"：");
+        holder.getViewBinding().tvCallInfo.setText(callBackResult.getResults().get(position).getReplyinfo());
+
     }
 
     @Override
@@ -27,8 +30,16 @@ public class CallBackAdapter extends BaseAdapter<String, ItemCallbackBinding> {
         return itemCallbackBinding;
     }
 
+    public void setData(CallBackResult callBackResult) {
+this.callBackResult=callBackResult;
+    }
+
     @Override
     public int getItemCount() {
-        return 8;
+        if (callBackResult!=null&&callBackResult.getResults()!=null){
+            return callBackResult.getResults().size();
+        }else{
+            return 0;
+        }
     }
 }

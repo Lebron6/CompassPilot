@@ -23,6 +23,7 @@
     <color name="toolbar_bg">#FBFBFB</color>
     <color name="toolbar_text_cancel">#323232</color>
     <color name="toolbar_text_ok">#3531FF</color>
+    <color name="text_blue">#3B4AF8</color>
     <color name="toolbar_line">#E7E7E7</color>
 
     <color name="item_selector_line">#C2C2C2</color>
