@@ -3,17 +3,31 @@ package com.compass.ux.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.compass.ux.api.BaseUrl;
 import com.compass.ux.api.HttpUtil;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
+import com.compass.ux.constant.Constant;
+import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.databinding.ActivityEquipmentDetailsBinding;
 import com.compass.ux.entity.EquipmentDetailsData;
+import com.compass.ux.entity.LoginResult;
+import com.compass.ux.entity.LoginValues;
+import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import dji.common.error.DJIError;
+import dji.common.util.CommonCallbacks;
+import dji.log.third.Logger;
+import dji.sdk.flightcontroller.FlightController;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,9 +36,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
     private ActivityEquipmentDetailsBinding mBinding;
     private static String UAV_ID = "uav_id";
 
-    public static void actionStart(Context context, String id) {
+    public static void actionStart(Context context,String uav_id) {
         Intent intent = new Intent(context, EquipmentDetailsActivity.class);
-        intent.putExtra(UAV_ID, id);
+        intent.putExtra(UAV_ID,uav_id);
         context.startActivity(intent);
     }
 
@@ -80,7 +94,6 @@ public class EquipmentDetailsActivity extends BaseActivity {
                        mBinding.zrr.setText(response.body().getResults().getUavInsuranceVo().getCharge());
                        mBinding.zrdh.setText(response.body().getResults().getUavInsuranceVo().getChargePhone());
                    }
-
                 }
             }
 
@@ -90,4 +103,5 @@ public class EquipmentDetailsActivity extends BaseActivity {
             }
         });
     }
+
 }

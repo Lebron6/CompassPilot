@@ -98,7 +98,7 @@ public class FlightHistoryFragment extends BaseFragment {
     public void getHistoryList() {
         HttpUtil httpUtil = new HttpUtil();
         httpUtil.createRequest2().flightHistory(PreferenceUtils.getInstance().getUserToken(),
-                startTime, endTime, 10, page).enqueue(new Callback<FlightHistoryList>() {
+                startTime, endTime, 10, page,PreferenceUtils.getInstance().getUserId()).enqueue(new Callback<FlightHistoryList>() {
             @Override
             public void onResponse(Call<FlightHistoryList> call, Response<FlightHistoryList> response) {
                 if (response.body()!=null&&response.body().getCode().equals("200")) {
@@ -120,7 +120,7 @@ public class FlightHistoryFragment extends BaseFragment {
         page = ++page;
         HttpUtil httpUtil = new HttpUtil();
         httpUtil.createRequest2().flightHistory(PreferenceUtils.getInstance().getUserToken(),
-                startTime, endTime, 10, page).enqueue(new Callback<FlightHistoryList>() {
+                startTime, endTime, 10, page,PreferenceUtils.getInstance().getUserId()).enqueue(new Callback<FlightHistoryList>() {
             @Override
             public void onResponse(Call<FlightHistoryList> call, Response<FlightHistoryList> response) {
               if (response.body()!=null&&response.body().getCode().equals("200")){

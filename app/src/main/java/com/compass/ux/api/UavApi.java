@@ -1,6 +1,7 @@
 package com.compass.ux.api;
 
 
+import com.compass.ux.entity.AirName;
 import com.compass.ux.entity.CallBackResult;
 import com.compass.ux.entity.EquipmentDetailsData;
 import com.compass.ux.entity.EquipmentResult;
@@ -8,6 +9,7 @@ import com.compass.ux.entity.FlightHistoryList;
 import com.compass.ux.entity.FlightHistoryDetails;
 import com.compass.ux.entity.FlightPoints;
 import com.compass.ux.entity.LoginResult;
+import com.compass.ux.entity.LoginSimpleResult;
 import com.compass.ux.entity.LoginValues;
 import com.compass.ux.entity.MessageResult;
 import com.compass.ux.entity.ReplyValues;
@@ -42,7 +44,7 @@ public interface UavApi {
      */
     @Headers("Content-Type:application/json")
     @POST("/login")
-    Call<LoginResult> userLogin2(@Body LoginValues loginValues);
+    Call<LoginSimpleResult> userLogin2(@Body LoginValues loginValues);
 
     /**
      * 修改密码
@@ -58,6 +60,13 @@ public interface UavApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @GET("/system/user-info")
     Call<UserInfo> getUserInfo(@Header("authorization") String token);
+
+    /**
+     * 通过SN获取设备名称
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @GET("/uav-data/uavName")
+    Call<AirName> getName(@Header("authorization") String token, @Query("uavCode") String uavCode);
 
 
     /**
@@ -90,7 +99,9 @@ public interface UavApi {
                                           @Query("startTime") String startTime,
                                           @Query("endTime") String endTime,
                                           @Query("pageSize") int pageSize,
-                                          @Query("pageNum") int pageNum);
+                                          @Query("pageNum") int pageNum,
+                                          @Query("userId") String userId
+                                          );
 
 
     /**

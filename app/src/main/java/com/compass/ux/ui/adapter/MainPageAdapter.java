@@ -14,7 +14,7 @@ import com.compass.ux.ui.fragment.PersonalFragment;
 public class MainPageAdapter extends FragmentPagerAdapter {
 
     private HomeFragment homeFragment;
-    private EquipmentFragment equipmentFragment;
+//    private EquipmentFragment equipmentFragment;
     private FlightHistoryFragment flightHistoryFragment;
 //    private GalleryFragment galleryFragment;
     private PersonalFragment personalFragment;
@@ -32,21 +32,14 @@ public class MainPageAdapter extends FragmentPagerAdapter {
             }else{
                 return homeFragment;
             }
-        }else if (position==1){
-            if(equipmentFragment ==null){
-                equipmentFragment = new EquipmentFragment();
-                return equipmentFragment;
-            }else{
-                return equipmentFragment;
-            }
-        }else if(position==2){
+        }else if(position==1){
             if(flightHistoryFragment==null){
                 flightHistoryFragment = new FlightHistoryFragment();
                 return flightHistoryFragment;
             }else{
                 return flightHistoryFragment;
             }
-        }else if(position==3){
+        }else if(position==2){
             if(personalFragment==null){
                 personalFragment = new PersonalFragment();
                 return personalFragment;
@@ -60,7 +53,7 @@ public class MainPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
 

@@ -3,6 +3,7 @@ package com.compass.ux.entity;
 import java.util.List;
 
 public class EquipmentDetailsData {
+
     /**
      * success
      */
@@ -72,7 +73,7 @@ public class EquipmentDetailsData {
         /**
          * uavFlightInfoSumVo
          */
-        private String uavFlightInfoSumVo;
+        private UavFlightInfoSumVoDTO uavFlightInfoSumVo;
         /**
          * uavInsuranceVo
          */
@@ -90,11 +91,11 @@ public class EquipmentDetailsData {
             this.uavVo = uavVo;
         }
 
-        public String getUavFlightInfoSumVo() {
+        public UavFlightInfoSumVoDTO getUavFlightInfoSumVo() {
             return uavFlightInfoSumVo;
         }
 
-        public void setUavFlightInfoSumVo(String uavFlightInfoSumVo) {
+        public void setUavFlightInfoSumVo(UavFlightInfoSumVoDTO uavFlightInfoSumVo) {
             this.uavFlightInfoSumVo = uavFlightInfoSumVo;
         }
 
@@ -123,6 +124,10 @@ public class EquipmentDetailsData {
              * uavName
              */
             private String uavName;
+            /**
+             * picUrlName
+             */
+            private String picUrlName;
             /**
              * name
              */
@@ -174,7 +179,7 @@ public class EquipmentDetailsData {
             /**
              * charger
              */
-            private String charger;
+            private Integer charger;
             /**
              * picUrl
              */
@@ -190,7 +195,7 @@ public class EquipmentDetailsData {
             /**
              * flightTimeDuringMaintainPeriod
              */
-            private String flightTimeDuringMaintainPeriod;
+            private Double flightTimeDuringMaintainPeriod;
             /**
              * healthState
              */
@@ -214,6 +219,14 @@ public class EquipmentDetailsData {
 
             public void setUavName(String uavName) {
                 this.uavName = uavName;
+            }
+
+            public String getPicUrlName() {
+                return picUrlName;
+            }
+
+            public void setPicUrlName(String picUrlName) {
+                this.picUrlName = picUrlName;
             }
 
             public String getName() {
@@ -312,11 +325,11 @@ public class EquipmentDetailsData {
                 this.createTime = createTime;
             }
 
-            public String getCharger() {
+            public Integer getCharger() {
                 return charger;
             }
 
-            public void setCharger(String charger) {
+            public void setCharger(Integer charger) {
                 this.charger = charger;
             }
 
@@ -344,11 +357,11 @@ public class EquipmentDetailsData {
                 this.isUavNeedMaintain = isUavNeedMaintain;
             }
 
-            public String getFlightTimeDuringMaintainPeriod() {
+            public Double getFlightTimeDuringMaintainPeriod() {
                 return flightTimeDuringMaintainPeriod;
             }
 
-            public void setFlightTimeDuringMaintainPeriod(String flightTimeDuringMaintainPeriod) {
+            public void setFlightTimeDuringMaintainPeriod(Double flightTimeDuringMaintainPeriod) {
                 this.flightTimeDuringMaintainPeriod = flightTimeDuringMaintainPeriod;
             }
 
@@ -366,6 +379,45 @@ public class EquipmentDetailsData {
 
             public void setBindId(Integer bindId) {
                 this.bindId = bindId;
+            }
+        }
+
+        public static class UavFlightInfoSumVoDTO {
+            /**
+             * totalDistance
+             */
+            private Double totalDistance;
+            /**
+             * totalFlyTime
+             */
+            private Integer totalFlyTime;
+            /**
+             * flyCount
+             */
+            private Integer flyCount;
+
+            public Double getTotalDistance() {
+                return totalDistance;
+            }
+
+            public void setTotalDistance(Double totalDistance) {
+                this.totalDistance = totalDistance;
+            }
+
+            public Integer getTotalFlyTime() {
+                return totalFlyTime;
+            }
+
+            public void setTotalFlyTime(Integer totalFlyTime) {
+                this.totalFlyTime = totalFlyTime;
+            }
+
+            public Integer getFlyCount() {
+                return flyCount;
+            }
+
+            public void setFlyCount(Integer flyCount) {
+                this.flyCount = flyCount;
             }
         }
 

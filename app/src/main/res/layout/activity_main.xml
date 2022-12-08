@@ -25,11 +25,11 @@
             android:drawableTop="@drawable/tab_home_selector"
             android:text="首页" />
 
-        <RadioButton
-            android:id="@+id/rb_equipment"
-            style="@style/BottomTabStyle"
-            android:drawableTop="@drawable/tab_equipment_selector"
-            android:text="设备管理" />
+<!--        <RadioButton-->
+<!--            android:id="@+id/rb_equipment"-->
+<!--            style="@style/BottomTabStyle"-->
+<!--            android:drawableTop="@drawable/tab_equipment_selector"-->
+<!--            android:text="设备管理" />-->
 
         <RadioButton
             android:id="@+id/rb_flight_history"

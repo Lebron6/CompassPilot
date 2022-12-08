@@ -95,12 +95,12 @@ public class PreferenceUtils extends BasePreference {
         return getBoolean(LOGIN_STATUS);
     }
 
-    public void setUserID(int id) {
-        setInt(USER_ID, id);
+    public void setUserID(String id) {
+        setString(USER_ID, id);
     }
 
-    public int getUserId() {
-        return getInt(USER_ID);
+    public String getUserId() {
+        return getString(USER_ID);
     }
 
     public void setUserRole(String role) {

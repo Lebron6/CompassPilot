@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         pageAdapter = new MainPageAdapter(getSupportFragmentManager());
         mBinding.vpContent.setAdapter(pageAdapter);
-        mBinding.vpContent.setOffscreenPageLimit(3);
+        mBinding.vpContent.setOffscreenPageLimit(2);
         mBinding.vpContent.setOnPageChangeListener(onPagerChangerListener);
         mBinding.rgMain.setOnCheckedChangeListener(onCheckedChangeListener);
         mBinding.rbHome.setChecked(true);
@@ -54,13 +54,13 @@ public class MainActivity extends BaseActivity {
                 case 0:
                     mBinding.rbHome.setChecked(true);
                     break;
+//                case 1:
+//                    mBinding.rbEquipment.setChecked(true);
+//                    break;
                 case 1:
-                    mBinding.rbEquipment.setChecked(true);
-                    break;
-                case 2:
                     mBinding.rbFlightHistory.setChecked(true);
                     break;
-                case 3:
+                case 2:
                     mBinding.rbPersonal.setChecked(true);
                     break;
             }
@@ -85,14 +85,14 @@ public class MainActivity extends BaseActivity {
             case R.id.rb_home:
                 mBinding.vpContent.setCurrentItem(0, false);
                 break;
-            case R.id.rb_equipment:
+//            case R.id.rb_equipment:
+//                mBinding.vpContent.setCurrentItem(1, false);
+//                break;
+            case R.id.rb_flight_history:
                 mBinding.vpContent.setCurrentItem(1, false);
                 break;
-            case R.id.rb_flight_history:
-                mBinding.vpContent.setCurrentItem(2, false);
-                break;
             case R.id.rb_personal:
-                mBinding.vpContent.setCurrentItem(3, false);
+                mBinding.vpContent.setCurrentItem(2, false);
                 break;
 
         }

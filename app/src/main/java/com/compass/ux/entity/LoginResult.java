@@ -47,6 +47,20 @@ public class LoginResult {
          * user_id
          */
         private String user_id;
+
+        /**
+         * user_id
+         */
+        private String userId;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
         /**
          * workspace_id
          */

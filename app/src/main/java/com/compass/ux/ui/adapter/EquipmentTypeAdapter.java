@@ -36,7 +36,7 @@ public class EquipmentTypeAdapter extends BaseAdapter<String, ItemEquipmentTypeB
         holder.getViewBinding().layoutTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EquipmentDetailsActivity.actionStart(context,datas.get(position).getUavVo().getName()+"");
+//                EquipmentDetailsActivity.actionStart(context,datas.get(position).getUavVo().getName()+"");
             }
         });
         Glide.with(context).

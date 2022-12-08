@@ -8,7 +8,7 @@
     tools:ignore="MissingDefaultResource">
     <RelativeLayout
         android:id="@+id/layout_is_connect"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -94,6 +94,7 @@
             android:text="执行飞行任务"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
         <TextView
             android:id="@+id/tv_media"
 
@@ -109,29 +110,46 @@
             android:text="媒体文件访问"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_air_info"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y54"
+            android:layout_below="@+id/tv_media"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/x10"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@drawable/bg_btn_login"
+            android:elevation="@dimen/x9"
+            android:gravity="center"
+            android:text="查看设备信息"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/layout_disconnect"
-        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/iv_disconnect"
-            android:layout_marginTop="@dimen/x150"
-            android:layout_centerHorizontal="true"
-            android:background="@mipmap/img_disconnect"
             android:layout_width="@dimen/y301"
-            android:layout_height="@dimen/y303"/>
-        <TextView
-            android:layout_marginTop="@dimen/x20"
+            android:layout_height="@dimen/y303"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/iv_disconnect"
+            android:layout_marginTop="@dimen/x150"
+            android:background="@mipmap/img_disconnect" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="暂无接入无人机"
+            android:layout_below="@+id/iv_disconnect"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/x20"
+            android:text="未接入无人机"
             android:textColor="#ff8a8c9b"
-            android:textSize="17sp"
-            />
+            android:textSize="17sp" />
 
     </RelativeLayout>
 </RelativeLayout>

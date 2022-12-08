@@ -21,7 +21,7 @@ import com.compass.ux.base.BaseActivity;
 import com.compass.ux.callback.DJISDKRegistrationCallback;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.constant.MqttConfig;
-import com.compass.ux.entity.LoginResult;
+import com.compass.ux.entity.LoginSimpleResult;
 import com.compass.ux.entity.LoginValues;
 import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.PreferenceUtils;
@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     private EditText etAccount;
     private EditText etPassword;
-//    private EditText etSn;
+    //    private EditText etSn;
     private TextView tvLogin;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
@@ -131,12 +131,13 @@ public class LoginActivity extends BaseActivity {
         loginValues.setUsername(etAccount.getText().toString());
         loginValues.setPassword(etPassword.getText().toString());
         HttpUtil httpUtil = new HttpUtil();
-        httpUtil.createRequest2().userLogin2(loginValues).enqueue(new Callback<LoginResult>() {
+        httpUtil.createRequest2().userLogin2(loginValues).enqueue(new Callback<LoginSimpleResult>() {
             @Override
-            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+            public void onResponse(Call<LoginSimpleResult> call, Response<LoginSimpleResult> response) {
                 if (response.body() != null) {
                     switch (response.body().getCode()) {
-                        case 200:
+                        case "200":
+                            PreferenceUtils.getInstance().setUserID(response.body().getResults().getUserId() + "");
                             PreferenceUtils.getInstance().setUserName(loginValues.getUsername());
                             PreferenceUtils.getInstance().setUserPassword(loginValues.getPassword());
                             PreferenceUtils.getInstance().setUserToken(response.headers().get("authorization"));
@@ -150,7 +151,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResult> call, Throwable t) {
+            public void onFailure(Call<LoginSimpleResult> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "网络异常:登陆失败", Toast.LENGTH_SHORT).show();
                 Log.e("网络异常:登陆失败", t.toString());
             }
