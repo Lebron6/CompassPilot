@@ -7,7 +7,8 @@ public class MqttConfig {
      * 服务器IP地址
      */
     //测试环境
-    public static String SOCKET_HOST = "tcp://124.70.162.197:1883";//测试环境
+//    public static String SOCKET_HOST = "tcp://124.70.162.197:1883";//测试环境
+    public static String SOCKET_HOST = "";
 
     //测试环境照片上传
     public static String PHOTO_UPLOAD_ADDR = "http://36.154.125.61:17071";
@@ -20,12 +21,14 @@ public class MqttConfig {
     /**
      * 账号
      */
-    public static String USER_NAME = "pilot";
+//    public static String USER_NAME = "pilot";
+    public static String USER_NAME = "";
 
     /**
      * 密码
      */
-    public static String USER_PASSWORD = "pilot123";
+//    public static String USER_PASSWORD = "pilot123";
+    public static String USER_PASSWORD = "";
 
 
 

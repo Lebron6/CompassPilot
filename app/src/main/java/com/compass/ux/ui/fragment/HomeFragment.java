@@ -56,10 +56,10 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
-//        if (Helper.isFlightControllerAvailable()) {
-//            mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
-//            mBinding.layoutDisconnect.setVisibility(View.GONE);
-//        }
+        if (Helper.isFlightControllerAvailable()) {
+            mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
+            mBinding.layoutDisconnect.setVisibility(View.GONE);
+        }
         mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_air2s));
     }
 

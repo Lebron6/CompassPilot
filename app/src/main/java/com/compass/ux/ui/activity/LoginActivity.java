@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     private EditText etAccount;
     private EditText etPassword;
-    private EditText etSn;
+//    private EditText etSn;
     private TextView tvLogin;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE,
@@ -94,32 +94,7 @@ public class LoginActivity extends BaseActivity {
     public void onEvent(String message) {
         switch (message) {
             case Constant.FLAG_CONNECT:
-                if (Helper.isFlightControllerAvailable()) {
 
-                    FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
-                    flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
-                        @Override
-                        public void onSuccess(String s) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    etSn.setText(s);
-                                    ApronApp.SERIAL_NUMBER = s;
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(DJIError djiError) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    etSn.setText("获取sn失败");
-                                }
-                            });
-                        }
-                    });//获取SN码
-                }
                 break;
         }
     }
@@ -127,13 +102,13 @@ public class LoginActivity extends BaseActivity {
     private void initView() {
         etAccount = findViewById(R.id.et_account);
         etPassword = findViewById(R.id.et_password);
-        etSn = findViewById(R.id.et_sn);
+//        etSn = findViewById(R.id.et_sn);
         tvLogin = findViewById(R.id.tv_login);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                MainActivity.actionStart(LoginActivity.this);
-                toLogin();
+                toLogin2();
             }
         });
         if (!TextUtils.isEmpty(PreferenceUtils.getInstance().getUserName())) {
@@ -142,7 +117,8 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void toLogin() {
+
+    private void toLogin2() {
         if (TextUtils.isEmpty(etAccount.getText().toString())) {
             ToastUtil.showToast("请输入账号");
             return;
@@ -151,44 +127,6 @@ public class LoginActivity extends BaseActivity {
             ToastUtil.showToast("请输入密码");
             return;
         }
-        if (TextUtils.isEmpty(etSn.getText().toString())) {
-            ToastUtil.showToast("请接入飞行器获取SN码");
-            return;
-        }
-        LoginValues loginValues = new LoginValues();
-        loginValues.setUsername(etAccount.getText().toString());
-        loginValues.setPassword(etPassword.getText().toString());
-        loginValues.setUavSn(etSn.getText().toString());
-        HttpUtil httpUtil = new HttpUtil();
-        httpUtil.createRequest().userLogin(loginValues).enqueue(new Callback<LoginResult>() {
-            @Override
-            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                if (response.body() != null) {
-                    switch (response.body().getCode()) {
-                        case 0:
-                            PreferenceUtils.getInstance().setUserName(loginValues.getUsername());
-                            PreferenceUtils.getInstance().setUserPassword(loginValues.getPassword());
-                            MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
-                            MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
-                            MqttConfig.USER_NAME = response.body().getData().getUsername();
-                            ApronApp.SERIAL_NUMBER = etSn.getText().toString();
-                            toLogin2();
-                            break;
-                    }
-                } else {
-                    Toast.makeText(LoginActivity.this, "网络异常1:登陆失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResult> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "网络异常1:登陆失败", Toast.LENGTH_SHORT).show();
-                Log.e("网络异常1:登陆失败", t.toString());
-            }
-        });
-    }
-
-    private void toLogin2() {
         LoginValues loginValues = new LoginValues();
         loginValues.setUsername(etAccount.getText().toString());
         loginValues.setPassword(etPassword.getText().toString());
@@ -199,6 +137,8 @@ public class LoginActivity extends BaseActivity {
                 if (response.body() != null) {
                     switch (response.body().getCode()) {
                         case 200:
+                            PreferenceUtils.getInstance().setUserName(loginValues.getUsername());
+                            PreferenceUtils.getInstance().setUserPassword(loginValues.getPassword());
                             PreferenceUtils.getInstance().setUserToken(response.headers().get("authorization"));
                             MainActivity.actionStart(LoginActivity.this);
                             finish();

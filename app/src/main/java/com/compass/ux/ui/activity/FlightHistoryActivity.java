@@ -112,7 +112,7 @@ public class FlightHistoryActivity extends BaseActivity {
                                     16)));
                     SmoothMoveMarker smoothMarker = new SmoothMoveMarker(aMap);
                     // 设置滑动的图标
-                    smoothMarker.setDescriptor(BitmapDescriptorFactory.fromResource(R.drawable.bg_circle_white));
+                    smoothMarker.setDescriptor(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_air));
                     LatLng drivePoint = points.get(0);
                     Pair<Integer, LatLng> pair = SpatialRelationUtil.calShortestDistancePoint(points, drivePoint);
                     points.set(pair.first, drivePoint);
@@ -132,6 +132,7 @@ public class FlightHistoryActivity extends BaseActivity {
             }
         });
     }
+
      Timer timer;
     private void setDataToTextView(List<FlightPoints.ResultsDTO.FlightPointInfoVosDTO> flightPointInfoVos) {
         timer = new Timer();

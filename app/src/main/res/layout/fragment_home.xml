@@ -8,7 +8,7 @@
     tools:ignore="MissingDefaultResource">
     <RelativeLayout
         android:id="@+id/layout_is_connect"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -112,7 +112,7 @@
 </RelativeLayout>
     <RelativeLayout
         android:id="@+id/layout_disconnect"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
