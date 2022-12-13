@@ -4,6 +4,7 @@ option java_package = "com.apron.mobilesdk.state";
 option java_outer_classname = "ProtoRTKState";
 message RTKState {
 
+
   //当 isRTKBeingUsed 为 true 时，飞控将使用 RTK 数据。
   //(平台可使用此参数确认当前RTK是否正在使用)
   bool isRTKBeingUsed = 1;
@@ -34,8 +35,8 @@ message RTKState {
   bool isHeadingValid = 7;
 
 
-  //航向解决方案描述了用于确定航向的方法。解决方案的准确性各不相同，从NONE（无航向）到FIXED_POINT. 它由 Matrice 200 系列 V2 和 Phantom 4 RTK 支持。
-  enum HeadingSolution {
+  //这个枚举定义了当前使用的定位解决方案。
+  enum PositioningSolution {
     NONE = 0;
     SINGLE_POINT = 16;
     FLOAT = 34;
@@ -43,7 +44,7 @@ message RTKState {
     UNKNOWN = 51;
   }
 
-  HeadingSolution headingSolution = 15;
+  PositioningSolution positioningSolution = 15;
 
 
 }

@@ -27,7 +27,7 @@ public class RTKStateCallback extends BaseCallback implements RTKState.Callback 
                 .setDistanceToHomePoint(rtkState.getDistanceToHomePoint())
                 .setEllipsoidHeight(rtkState.getEllipsoidHeight())
                 .setHeading(rtkState.getHeading())
-                .setHeadingSolution(ProtoRTKState.RTKState.HeadingSolution.values()[rtkState.getHeadingSolution().ordinal()])
+                .setPositioningSolution(ProtoRTKState.RTKState.PositioningSolution.values()[rtkState.getHeadingSolution().ordinal()])
                 .setIsHeadingValid(rtkState.isHeadingValid())
                 .setIsRTKBeingUsed(rtkState.isRTKBeingUsed())
                 .setTakeOffAltitude(rtkState.getTakeOffAltitude())
