@@ -143,13 +143,17 @@ public class FlightHistoryActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mBinding.tvBattery.setText(flightPointInfoVos.get(time).getPersentOne()+"   "
-                                +flightPointInfoVos.get(time).getVoltageOne());
+                        if (TextUtils.isEmpty(flightPointInfoVos.get(time).getPersentOne())){
+                            mBinding.tvBattery.setText("");
+                        }else{
+                            mBinding.tvBattery.setText(flightPointInfoVos.get(time).getPersentOne() + "%   "
+                                    + flightPointInfoVos.get(time).getVoltageOne()+"v");
+                        }
                         mBinding.tvGpsLevel.setText(flightPointInfoVos.get(time).getSatelliteCount()+"级");
-                        mBinding.tvDistance.setText(flightPointInfoVos.get(time).getOriginDistance());
-                        mBinding.tvWind.setText(flightPointInfoVos.get(time).getWindSpeed());
-                        mBinding.tvVSpeed.setText(flightPointInfoVos.get(time).getVerticalSpeed());
-                        mBinding.tvHSpeed.setText(flightPointInfoVos.get(time).getHorizontalSpeed());
+                        mBinding.tvDistance.setText(flightPointInfoVos.get(time).getOriginDistance()+"米");
+                        mBinding.tvWind.setText(flightPointInfoVos.get(time).getWindSpeed()+"dm/s");
+                        mBinding.tvVSpeed.setText(flightPointInfoVos.get(time).getVerticalSpeed()+"m/s");
+                        mBinding.tvHSpeed.setText(flightPointInfoVos.get(time).getHorizontalSpeed()+"m/s");
                         if (time == flightPointInfoVos.size()-1) {
                             timer.cancel();//  调用cancel关闭倒计时
                         }
