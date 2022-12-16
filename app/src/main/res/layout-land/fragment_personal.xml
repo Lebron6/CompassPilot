@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"  android:background="@color/white"
+    tools:ignore="MissingDefaultResource">
+<RelativeLayout
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <ImageView
+        android:id="@+id/iv_user_photo"
+        android:layout_width="@dimen/x90"
+        android:layout_height="@dimen/x90"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x86" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x197"
+        android:text="张富贵"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tv_fly_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/x230"
+        android:text="飞行时长"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y290"
+            android:layout_marginLeft="@dimen/x14"
+            android:layout_marginTop="@dimen/x19"
+            android:layout_marginRight="@dimen/x14"
+            android:background="@drawable/bg_data_select"
+            android:elevation="@dimen/x9"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:background="@mipmap/icon_role" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:text="角色"
+                    android:textColor="#ff0f1010"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_user_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:text="管理员"
+                    android:textColor="#ff8a8c9b"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:background="@mipmap/icon_mobile" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:text="手机号"
+                    android:textColor="#ff0f1010"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:text="13773647829"
+                    android:textColor="#ff8a8c9b"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:background="@mipmap/icon_department" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:text="部门"
+                    android:textColor="#ff0f1010"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_dep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:text="无人机事业部"
+                    android:textColor="#ff8a8c9b"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:background="@mipmap/icon_password" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:text="密码"
+                    android:textColor="#ff0f1010"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:text="**********"
+                    android:textColor="#ff8a8c9b"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_message"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <ImageView
+                    android:layout_width="@dimen/y16"
+                    android:layout_height="@dimen/y19"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:background="@mipmap/ic_message" />
+
+                <TextView
+                    android:layout_centerVertical="true"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x50"
+                    android:text="消息"
+                    android:textColor="#ff0f1010"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+
+                    android:layout_width="@dimen/y8"
+                    android:layout_height="@dimen/y13"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:background="@mipmap/ic_right_me"
+                    android:textColor="#ff8a8c9b"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_loginout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x34"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginBottom="@dimen/x20"
+            android:background="@drawable/bg_btn_loginout"
+            android:gravity="center"
+            android:text="退出登录"
+            android:textColor="#ff0f1010"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

@@ -33,13 +33,16 @@ public class DJISDKRegistrationCallback implements DJISDKManager.SDKManagerCallb
     @Override
     public void onRegister(DJIError djiError) {
         if (djiError == DJISDKError.REGISTRATION_SUCCESS) {
-            Logger.e("Register sdk success");
+            Logger.e(TAG+"Register sdk success");
             DJISDKManager.getInstance().startConnectionToProduct();
         } else {
+            Logger.e(TAG+"Register sdk fails, check network is available");
+
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+
                     Toast.makeText(context, "Register sdk fails, check network is available", Toast.LENGTH_LONG).show();
                 }
             });
@@ -67,7 +70,7 @@ public class DJISDKRegistrationCallback implements DJISDKManager.SDKManagerCallb
     @Override
     public void onComponentChange(BaseProduct.ComponentKey componentKey, BaseComponent oldComponent,
                                   BaseComponent newComponent) {
-        Logger.e("onComponentChange:" + String.format("组件变化 键:%s,旧组件:%s,"
+        Logger.e(TAG+"onComponentChange:" + String.format("组件变化 键:%s,旧组件:%s,"
                 + "新组件:%s", componentKey, oldComponent, newComponent
         ));
         if (newComponent != null) {

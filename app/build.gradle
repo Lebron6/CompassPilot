@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.compass.ux"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 32
         versionCode 4
         versionName "1.0"

@@ -141,19 +141,24 @@ public class GalleryActivity extends BaseActivity {
                 if (isMavicAir2() || isM300()) {
                     ApronApp.getCameraInstance().enterPlayback(djiError -> {
                         if (djiError == null) {
-                            DJILog.e(TAG, "Set cameraMode success");
+                            Logger.e("Set cameraMode success");
                             getFileList();
                         } else {
+                            Logger.e("Set cameraMode failed");
+
                             setResultToToast("Set cameraMode failed");
                         }
                     });
                 } else {
                     ApronApp.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, error -> {
                         if (error == null) {
-                            DJILog.e(TAG, "Set cameraMode success");
+                            Logger.e("Set cameraMode success1");
+
+//                            DJILog.e(TAG, "Set cameraMode success");
                             getFileList();
                         } else {
-                            setResultToToast("Set cameraMode failed");
+                            Logger.e("Set cameraMode failed1");
+//                            setResultToToast("Set cameraMode failed");
                         }
                     });
                 }
@@ -485,7 +490,18 @@ public class GalleryActivity extends BaseActivity {
                     DJILog.e(TAG, "exitPlayback success");
 //                    getFileList();
                 } else {
+                    Logger.e("退出媒体模式失败"+djiError.getDescription());
                     setResultToToast("exitPlayback failed");
+                }
+            });
+            ApronApp.getCameraInstance().setMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO, new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError djiError) {
+                    if (djiError!=null){
+                        Logger.e("Set cameraMode fail"+djiError.getDescription());
+                    }else{
+                        Logger.e("Set cameraMode success");
+                    }
                 }
             });
         }

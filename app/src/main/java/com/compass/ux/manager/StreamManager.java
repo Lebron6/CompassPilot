@@ -11,6 +11,7 @@ import com.compass.ux.base.BaseManager;
 import com.compass.ux.callback.LiveShowStatusCallback;
 import com.compass.ux.entity.DataCache;
 import com.compass.ux.entity.Communication;
+import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
 
@@ -72,7 +73,13 @@ public class StreamManager extends BaseManager {
                         int result = liveStreamManager.startStream();
                         liveStreamManager.setStartTime();
                         Logger.e("startLive:" + result + "-" + DataCache.getInstance().getRtmp_address());
+                        if (result==0){
+                            ToastUtil.showToast("推流成功,正在直播");
 
+                        }else{
+                            ToastUtil.showToast("推流失败:"+result);
+
+                        }
                         if (mqttAndroidClient != null) {
                             sendCorrectMsg2Server(mqttAndroidClient, message, "重启推流:" + String.valueOf(result));
                         }

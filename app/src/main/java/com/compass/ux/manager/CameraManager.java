@@ -246,8 +246,8 @@ public class CameraManager extends BaseManager {
                 camera.getLens(0).getFocusMode(focusCallback);
                 camera.getLens(0).getExposureMode(exposureModeCallBack);
                 camera.getLens(0).getAELock(aelockCallBack);
-                camera.getLens(2).getThermalDigitalZoomFactor(thermalCallback);
-                camera.getLens(2).getDisplayMode(displayCallBack);
+//                camera.getLens(2).getThermalDigitalZoomFactor(thermalCallback);
+//                camera.getLens(2).getDisplayMode(displayCallBack);
                 camera.getLens(0).getOpticalZoomFocalLength(HybridZoomFocalLengthCallBack);
                 camera.getLens(0).setFocusStateCallback(focusStateCallback);
                 camera.getLens(0).getHybridZoomSpec(hybridZoomSpec);

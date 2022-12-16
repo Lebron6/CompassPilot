@@ -84,7 +84,8 @@
         <activity
             android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent">
+            android:theme="@android:style/Theme.Translucent"
+            >
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
             </intent-filter>
@@ -95,7 +96,7 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:exported="true">
+            android:exported="true" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -110,23 +111,22 @@
             android:name=".ui.activity.FlightActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
         <activity
             android:name=".ui.activity.MissionActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity android:name=".ui.activity.MainActivity"></activity>
-        <activity android:name=".ui.activity.EquipmentDetailsActivity"></activity>
-        <activity android:name=".ui.activity.TaskReportActivity"></activity>
-        <activity android:name=".ui.activity.MessageActivity"></activity>
-        <activity android:name=".ui.activity.GalleryActivity"></activity>
-        <activity android:name=".ui.activity.UpdataPasswordActivity"></activity>
-        <activity android:name=".ui.activity.MessageDetatisActivity"></activity>
+        <activity android:name=".ui.activity.MainActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.EquipmentDetailsActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.TaskReportActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.MessageActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.GalleryActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.UpdataPasswordActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.MessageDetatisActivity" android:screenOrientation="landscape"></activity>
         <activity
             android:name=".ui.activity.FlightHistoryActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:screenOrientation="landscape"            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 
 
         <!-- 开机启动 -->

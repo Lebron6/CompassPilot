@@ -33,7 +33,7 @@ public class MqttActionCallBack implements IMqttActionListener {
 
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
-        ToastUtil.showToast("MQtt连接成功");
+        ToastUtil.showToast("MQtt连接成功,飞手已上线");
         Logger.e("MQtt连接成功:" + asyncActionToken.toString());
         XcFileLog.getInstace().i(TAG, "MQtt连接成功：-------");
 //        if (Helper.isFlightControllerAvailable()) {

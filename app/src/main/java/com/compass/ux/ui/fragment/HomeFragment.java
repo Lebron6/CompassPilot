@@ -60,20 +60,28 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvStartMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskReportActivity.actionStart(getActivity());
+                if (TextUtils.isEmpty(airName)){
+                    ToastUtil.showToast("请接入无人机");
+                }else{
+                    TaskReportActivity.actionStart(getActivity());
+                }
             }
         });
         mBinding.tvMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GalleryActivity.actionStart(getActivity());
+                if (TextUtils.isEmpty(airName)){
+                    ToastUtil.showToast("请接入无人机");
+                }else{
+                    GalleryActivity.actionStart(getActivity());
+                }
             }
         });
         mBinding.tvAirInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(airName)){
-                    ToastUtil.showToast("请接入无人机获取SN");
+                    ToastUtil.showToast("请接入无人机");
                 }else{
                     EquipmentDetailsActivity.actionStart(getActivity(), airName);
                 }
@@ -150,6 +158,7 @@ public class HomeFragment extends BaseFragment {
     private void setIcon() {
         if (ApronApp.getProductInstance() != null) {
             mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
+            mBinding.tvSn.setText(ApronApp.SERIAL_NUMBER+"");
             switch (ApronApp.getProductInstance().getModel()) {
                 case PHANTOM_4_PRO:
                     mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));

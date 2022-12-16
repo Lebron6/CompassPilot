@@ -170,8 +170,8 @@ public class LoginActivity extends BaseActivity {
                 })
                 .onDenied(permissions -> {
                     // Storage permission are not allowed.
-                    ToastUtil.showToast("Missing permissions!!!");
-                    finish();
+//                    ToastUtil.showToast("Missing permissions!!!");
+//                    finish();
                 })
                 .start();
 
