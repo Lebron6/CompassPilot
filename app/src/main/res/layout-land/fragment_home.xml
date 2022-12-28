@@ -137,7 +137,7 @@
             android:layout_width="@dimen/y301"
             android:layout_height="@dimen/y303"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/x150"
+            android:layout_marginTop="@dimen/x50"
             android:background="@mipmap/img_disconnect" />
 
         <TextView
