@@ -5,18 +5,28 @@ import static dji.sdk.codec.DJICodecManager.VideoSource.FPV;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.compass.ux.BuildConfig;
 import com.compass.ux.R;
@@ -36,10 +46,13 @@ import com.compass.ux.manager.GimbalManager;
 import com.compass.ux.manager.MissionManager;
 import com.compass.ux.manager.RTKManager;
 import com.compass.ux.manager.StreamManager;
+import com.compass.ux.tools.DisplayUtil;
 import com.compass.ux.tools.DroneHelper;
 import com.compass.ux.tools.OpenCVHelper;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
+import com.dji.mapkit.core.maps.DJIMap;
+import com.dji.mapkit.core.models.DJILatLng;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +78,7 @@ import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
+import dji.ux.widget.MapWidget;
 
 public class FlightActivity extends BaseActivity implements TextureView.SurfaceTextureListener {
 
@@ -94,6 +108,14 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     private Button btn_login;
     private Button btn_startlive;
 
+    private DJIMap aMap;
+    private MapWidget mapWidget;
+    private boolean isMapMini = true;
+    private int deviceWidth;
+    private int deviceHeight;
+    RelativeLayout layout_previewer_container;
+    ViewGroup parentView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +129,106 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         initDJIManager();
         intiVirtualStick();
         refreshSDKRelativeUI();
+        initMap(savedInstanceState);
+    }
+
+    private void initMap(Bundle savedInstanceState) {
+        mapWidget = findViewById(R.id.map_widget);
+        mapWidget.initAMap(new MapWidget.OnMapReadyListener() {
+            @Override
+            public void onMapReady(@NonNull DJIMap map) {
+                aMap = map;
+                map.setOnMapClickListener(new DJIMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(DJILatLng latLng) {
+                        onViewClick(mapWidget);
+                    }
+                });
+                map.getUiSettings().setZoomControlsEnabled(false);
+            }
+        });
+        mapWidget.onCreate(savedInstanceState);
+        mapWidget.setFlightPathVisible(true);
+        mapWidget.setFlightPathColor(getResources().getColor(R.color.colorTheme));
+        mapWidget.setDirectionToHomeVisible(false);
+
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        final Display display = windowManager.getDefaultDisplay();
+        Point outPoint = new Point();
+        display.getRealSize(outPoint);
+        deviceHeight = outPoint.y;
+        deviceWidth = outPoint.x;
+    }
+
+    private void onViewClick(View view) {
+        if (view == mTextureView && !isMapMini) {
+            resizeFPVWidget(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 0, 0);
+            ResizeAnimation mapViewAnimation = new ResizeAnimation(mapWidget, deviceWidth, deviceHeight, DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), 0);
+            mapWidget.startAnimation(mapViewAnimation);
+            isMapMini = true;
+        } else if (view == mapWidget && isMapMini) {
+            Logger.e("放大地图"+"-----");
+            resizeFPVWidget(DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), 0, 2);
+            ResizeAnimation mapViewAnimation = new ResizeAnimation(mapWidget, DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), deviceWidth, deviceHeight, 0);
+            mapWidget.startAnimation(mapViewAnimation);
+            isMapMini = false;
+
+        }
+    }
+
+    private void resizeFPVWidget(int width, int height, int margin, int fpvInsertPosition) {
+        RelativeLayout.LayoutParams fpvParams = (RelativeLayout.LayoutParams) layout_previewer_container.getLayoutParams();
+        fpvParams.height = height;
+        fpvParams.width = width;
+        fpvParams.leftMargin = margin;
+        fpvParams.bottomMargin = margin;
+        if (isMapMini) {
+            fpvParams.addRule(RelativeLayout.CENTER_IN_PARENT, 10);
+            fpvParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            fpvParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        } else {
+            fpvParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 10);
+            fpvParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 10);
+            fpvParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        }
+        layout_previewer_container.setLayoutParams(fpvParams);
+
+        parentView.removeView(layout_previewer_container);
+        parentView.addView(layout_previewer_container, fpvInsertPosition);
+    }
+
+    private class ResizeAnimation extends Animation {
+
+        private View mView;
+        private int mToHeight;
+        private int mFromHeight;
+
+        private int mToWidth;
+        private int mFromWidth;
+        private int mMargin;
+
+        private ResizeAnimation(View v, int fromWidth, int fromHeight, int toWidth, int toHeight, int margin) {
+            mToHeight = toHeight;
+            mToWidth = toWidth;
+            mFromHeight = fromHeight;
+            mFromWidth = fromWidth;
+            mView = v;
+            mMargin = margin;
+            setDuration(300);
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            float height = (mToHeight - mFromHeight) * interpolatedTime + mFromHeight;
+            float width = (mToWidth - mFromWidth) * interpolatedTime + mFromWidth;
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mView.getLayoutParams();
+            p.height = (int) height;
+            p.width = (int) width;
+            p.rightMargin = mMargin;
+            p.bottomMargin = mMargin;
+            mView.requestLayout();
+        }
+
     }
 
 
@@ -133,9 +255,17 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         tvZoomPlus.setOnClickListener(onClickListener);
         tvZoomReduce.setOnClickListener(onClickListener);
         tvZoomNum = findViewById(R.id.tv_zoom_num);
+        layout_previewer_container = findViewById(R.id.layout_previewer_container);
+        parentView = (ViewGroup) findViewById(R.id.root_view);
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
         }
+        mTextureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onViewClick(mTextureView);
+            }
+        });
     }
 
     int zoomNum;
@@ -151,10 +281,10 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                     StreamManager.getInstance().startLiveShow(null, null);
                     break;
                 case R.id.tv_zoom_plus:
-                    CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom()+2);
+                    CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom() + 2);
                     break;
                 case R.id.tv_zoom_reduce:
-                    CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom()-1);
+                    CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom() - 1);
                     break;
             }
         }
@@ -231,9 +361,9 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                 tvStreamUrl.setText("rtmpAddr: " + DataCache.getInstance().getRtmp_address());
                 break;
             case Constant.FLAG_ZOOM_FOCAL_LENGTH:
-                if (LocalSource.getInstance().getHybridZoom()<2){
-                    tvZoomNum.setText(2+ "x");
-                }else{
+                if (LocalSource.getInstance().getHybridZoom() < 2) {
+                    tvZoomNum.setText(2 + "x");
+                } else {
                     tvZoomNum.setText(LocalSource.getInstance().getHybridZoom() + "x");
                 }
                 break;
