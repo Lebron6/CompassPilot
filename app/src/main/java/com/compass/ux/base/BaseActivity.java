@@ -6,17 +6,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.compass.ux.callback.MqttActionCallBack;
 import com.compass.ux.callback.MqttCallBack;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.tools.AppManager;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.greenrobot.eventbus.EventBus;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 
