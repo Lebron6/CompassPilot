@@ -58,7 +58,10 @@ public class StreamManager extends BaseManager {
             @Override
             public void run() {
                 if (TextUtils.isEmpty(DataCache.getInstance().getRtmp_address())) {
-                    sendErrorMsg2Server(mqttAndroidClient, message, "未获取到推流地址");
+                    ToastUtil.showToast("未获取到推流地址");
+                    if (mqttAndroidClient != null) {
+                        sendErrorMsg2Server(mqttAndroidClient, message, "未获取到推流地址");
+                    }
                 } else {
                     if (isLiveStreamManagerOn()) {
                         LiveStreamManager liveStreamManager = DJISDKManager.getInstance().getLiveStreamManager();

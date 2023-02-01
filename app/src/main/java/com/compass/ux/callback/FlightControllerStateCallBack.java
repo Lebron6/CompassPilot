@@ -36,6 +36,7 @@ import dji.sdk.flightcontroller.Compass;
  * 飞控
  */
 public class FlightControllerStateCallBack extends BaseCallback implements FlightControllerState.Callback {
+
     private MqttAndroidClient mqttAndroidClient;
     DiagnosticsKey diagnosticsKey = DiagnosticsKey.create(DiagnosticsKey.SYSTEM_STATUS);
 

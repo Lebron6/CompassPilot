@@ -17,6 +17,10 @@
             android:id="@+id/video_previewer_surface"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <dji.ux.workflow.CameraSensorCleaningWorkFlow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
     <dji.ux.widget.MapWidget
         android:id="@+id/map_widget"
@@ -27,16 +31,12 @@
         android:visibility="visible" />
         <RelativeLayout
             android:id="@+id/activity_main"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             tools:context=".MainActivity">
 
-
-            <dji.ux.workflow.CameraSensorCleaningWorkFlow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/btn_start_live"
