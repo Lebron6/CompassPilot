@@ -39,8 +39,8 @@ public class RTKManager extends BaseManager {
         return RTKManager.RTKHolder.INSTANCE;
     }
 
-    public void initRTKInfo(MqttAndroidClient client){
-      FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+    public void initRTKInfo(MqttAndroidClient client) {
+        FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
         if (Helper.isRtkAvailable()) {
             RTK rtk = flightController.getRTK();
             if (rtk != null) {
@@ -48,7 +48,7 @@ public class RTKManager extends BaseManager {
                 rtk.getRtkEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
-                        LocalSource.getInstance().setRtkSwitch(aBoolean?1:0);
+                        LocalSource.getInstance().setRtkSwitch(aBoolean ? 1 : 0);
                     }
 
                     @Override
@@ -59,7 +59,7 @@ public class RTKManager extends BaseManager {
                 rtk.getRTKMaintainPositioningAccuracyModeEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
                     @Override
                     public void onSuccess(Boolean aBoolean) {
-                        LocalSource.getInstance().setRtkMaintainPositioningAccuracy(aBoolean?1:0);
+                        LocalSource.getInstance().setRtkMaintainPositioningAccuracy(aBoolean ? 1 : 0);
                     }
 
                     @Override
@@ -71,10 +71,11 @@ public class RTKManager extends BaseManager {
                 rtk.setRtkBaseStationListCallback(new RTKListInfoCallback(client));
                 rtk.setRtkConnectionStateWithBaseStationCallback(new RTKConnectionCallBack(client));
             }
-        }else{
-            XcFileLog.getInstace().i(this.getClass().getSimpleName(),"initRTKInfo:product not supported");
+        } else {
+            XcFileLog.getInstace().i(this.getClass().getSimpleName(), "initRTKInfo:product not supported");
         }
     }
+
     //设置rtk
     public void setRtkEnabled(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         String type = message.getPara().get(Constant.TYPE);
@@ -84,16 +85,16 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        LocalSource.getInstance().setRtkSwitch(type.equals("1")?1:0);
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "RTK状态已更新");
+                        LocalSource.getInstance().setRtkSwitch(type.equals("1") ? 1 : 0);
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "RTK状态已更新");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
 
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -105,15 +106,15 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "开始搜索基站");
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "开始搜索基站");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
 
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -124,21 +125,16 @@ public class RTKManager extends BaseManager {
             rtk.stopSearchBaseStation(new CommonCallbacks.CompletionCallback() {
                 @Override
                 public void onResult(DJIError djiError) {
-                    rtk.stopSearchBaseStation(new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(DJIError djiError) {
-                            if (djiError == null) {
-                                sendCorrectMsg2Server(mqttAndroidClient,message, "停止搜索基站");
-                            } else {
-                                sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
-                            }
-                        }
-                    });
+                    if (djiError == null) {
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "停止搜索基站");
+                    } else {
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
+                    }
                 }
             });
 
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -151,14 +147,14 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "设置基站类型成功");
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "设置基站类型成功");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -172,14 +168,14 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "开始连接基站");
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "开始连接基站");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -203,14 +199,14 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "网络RTK已连接");
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "网络RTK已连接");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 
@@ -223,16 +219,16 @@ public class RTKManager extends BaseManager {
                 @Override
                 public void onResult(DJIError djiError) {
                     if (djiError == null) {
-                        LocalSource.getInstance().setRtkMaintainPositioningAccuracy(type.equals("1")?1:0);
-                        sendCorrectMsg2Server(mqttAndroidClient,message, "RTK状态保持已更新");
+                        LocalSource.getInstance().setRtkMaintainPositioningAccuracy(type.equals("1") ? 1 : 0);
+                        sendCorrectMsg2Server(mqttAndroidClient, message, "RTK状态保持已更新");
                     } else {
-                        sendErrorMsg2Server(mqttAndroidClient,message, djiError.getDescription());
+                        sendErrorMsg2Server(mqttAndroidClient, message, djiError.getDescription());
                     }
                 }
             });
 
         } else {
-            sendErrorMsg2Server(mqttAndroidClient,message, "product not supported");
+            sendErrorMsg2Server(mqttAndroidClient, message, "product not supported");
         }
     }
 }
