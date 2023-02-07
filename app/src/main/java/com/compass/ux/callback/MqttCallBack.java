@@ -300,7 +300,7 @@ public class MqttCallBack implements MqttCallbackExtended {
                 break;
             //重启推流
             case Constant.RESTART_LIVE:
-                StreamManager.getInstance().restartLiveShow(mqttAndroidClient, message);
+//                StreamManager.getInstance().restartLiveShow(mqttAndroidClient, message);
                 break;
             //重启app
             case Constant.RESTART_APP:

@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
+
 import com.compass.ux.callback.MqttActionCallBack;
 import com.compass.ux.callback.MqttCallBack;
 import com.compass.ux.constant.MqttConfig;
@@ -37,6 +39,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             EventBus.getDefault().register(this);
         }
         appManager.addActivity(this);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
     }
 
     public void needConnect() {

@@ -26,6 +26,7 @@ import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.ButtomSelectWindow;
 import com.compass.ux.ui.view.TaskTypePop;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -118,7 +119,9 @@ public class TaskReportActivity extends BaseActivity {
                             LoginValues loginValues = new LoginValues();
                             loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
                             loginValues.setPassword(PreferenceUtils.getInstance().getUserPassword());
+                            loginValues.setUavType(ApronApp.getProductInstance().getModel().getDisplayName());
                             loginValues.setUavSn(s);
+                            com.orhanobut.logger.Logger.e("登录参数:"+new Gson().toJson(loginValues));
                             HttpUtil httpUtil = new HttpUtil();
                             httpUtil.createRequest().userLogin(loginValues).enqueue(new Callback<LoginResult>() {
                                 @Override
@@ -128,7 +131,7 @@ public class TaskReportActivity extends BaseActivity {
                                             case 0:
                                                 MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
                                                 MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
-                                                MqttConfig.USER_NAME = response.body().getData().getUsername();
+                                                MqttConfig.USER_NAME = response.body().getData().getMqtt_username();
                                                 break;
                                         }
                                     } else {

@@ -33,6 +33,7 @@ import com.compass.ux.R;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
 import com.compass.ux.constant.Constant;
+import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.DataCache;
 import com.compass.ux.entity.LocalSource;
 import com.compass.ux.manager.AccountManager;
@@ -124,6 +125,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         isAppStarted = true;
         initViews();
         needConnect();
+
         openCVHelper = new OpenCVHelper(this);
         droneHelper = new DroneHelper();
         initDJIManager();
@@ -167,7 +169,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
             mapWidget.startAnimation(mapViewAnimation);
             isMapMini = true;
         } else if (view == mapWidget && isMapMini) {
-            Logger.e("放大地图"+"-----");
+            Logger.e("放大地图" + "-----");
             resizeFPVWidget(DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), 0, 2);
             ResizeAnimation mapViewAnimation = new ResizeAnimation(mapWidget, DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), deviceWidth, deviceHeight, 0);
             mapWidget.startAnimation(mapViewAnimation);

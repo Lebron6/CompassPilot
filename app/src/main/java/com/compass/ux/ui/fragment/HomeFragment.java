@@ -24,13 +24,13 @@ import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.activity.EquipmentDetailsActivity;
 import com.compass.ux.ui.activity.GalleryActivity;
 import com.compass.ux.ui.activity.TaskReportActivity;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import dji.common.error.DJIError;
 import dji.common.util.CommonCallbacks;
-import dji.log.third.Logger;
 import dji.sdk.flightcontroller.FlightController;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,9 +60,9 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvStartMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(airName)){
+                if (TextUtils.isEmpty(sn)) {
                     ToastUtil.showToast("请接入无人机");
-                }else{
+                } else {
                     TaskReportActivity.actionStart(getActivity());
                 }
             }
@@ -70,9 +70,9 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(airName)){
+                if (TextUtils.isEmpty(sn)) {
                     ToastUtil.showToast("请接入无人机");
-                }else{
+                } else {
                     GalleryActivity.actionStart(getActivity());
                 }
             }
@@ -80,9 +80,9 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvAirInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(airName)){
-                    ToastUtil.showToast("请接入无人机");
-                }else{
+                if (TextUtils.isEmpty(airName)) {
+                    ToastUtil.showToast("请检查设备是否已录入");
+                } else {
                     EquipmentDetailsActivity.actionStart(getActivity(), airName);
                 }
             }
@@ -96,7 +96,7 @@ public class HomeFragment extends BaseFragment {
             mBinding.layoutDisconnect.setVisibility(View.GONE);
             setIcon();
             getNameBySN();
-        }else{
+        } else {
             mBinding.layoutIsConnect.setVisibility(View.GONE);
             mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
         }
@@ -120,7 +120,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     String airName;
-
+    String sn;
     private void getNameBySN() {
         if (Helper.isFlightControllerAvailable()) {
 
@@ -128,6 +128,8 @@ public class HomeFragment extends BaseFragment {
             flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
                 @Override
                 public void onSuccess(String s) {
+                    sn=s;
+                    Logger.e("SN" + s);
                     HttpUtil httpUtil = new HttpUtil();
                     httpUtil.createRequest2().getName(PreferenceUtils.getInstance().getUserToken(), s).enqueue(new Callback<AirName>() {
                         @Override
@@ -141,7 +143,7 @@ public class HomeFragment extends BaseFragment {
 
                         @Override
                         public void onFailure(Call<AirName> call, Throwable t) {
-
+                            Logger.e("通过SN获取设备名称失败:" + t.toString());
                         }
                     });
                 }
@@ -158,7 +160,7 @@ public class HomeFragment extends BaseFragment {
     private void setIcon() {
         if (ApronApp.getProductInstance() != null) {
             mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
-            mBinding.tvSn.setText(ApronApp.SERIAL_NUMBER+"");
+            mBinding.tvSn.setText(ApronApp.SERIAL_NUMBER + "");
             switch (ApronApp.getProductInstance().getModel()) {
                 case PHANTOM_4_PRO:
                     mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));

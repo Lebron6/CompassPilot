@@ -1060,7 +1060,7 @@ public class CameraManager extends BaseManager {
                         public void onResult(DJIError djiError) {
                             if (djiError == null) {
                             } else {
-                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+//                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
                             }
                         }
                     });
@@ -1071,7 +1071,7 @@ public class CameraManager extends BaseManager {
                             if (djiError == null) {
 
                             } else {
-                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+//                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
                             }
                         }
                     });
@@ -1083,7 +1083,7 @@ public class CameraManager extends BaseManager {
                             if (djiError == null) {
 
                             } else {
-                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
+//                                ToastUtil.showToast("变焦失败:"+djiError.getDescription());
                             }
                         }
                     });

@@ -12,4 +12,6 @@ public class Utils {
         int bigZoom = (47549 - 317) / 199 * (zoomLength - 2) + 317;
         return bigZoom;
     }
+
+
 }

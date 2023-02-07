@@ -30,7 +30,7 @@ public class GimbalAStateCallBack extends BaseCallback implements GimbalState.Ca
                 .setRoll(gimbalState.getAttitudeInDegrees().getRoll())
                 .setYaw(gimbalState.getAttitudeInDegrees().getYaw());
 
-        if (isFlyClickTime()){
+        if (isFlyClickTime()) {
             MqttMessage gimbalMessage = new MqttMessage(builder.build().toByteArray());
             gimbalMessage.setQos(1);
             publish(client, MqttConfig.MQTT_GIMBAL_A_TOPIC, gimbalMessage);
