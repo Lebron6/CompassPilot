@@ -121,7 +121,7 @@ public class RTKManager extends BaseManager {
     public void stopSearchBaseStation(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         if (Helper.isRtkAvailable()) {
             RTK rtk = ApronApp.getAircraftInstance().getFlightController().getRTK();
-            rtk.startSearchBaseStation(new CommonCallbacks.CompletionCallback() {
+            rtk.stopSearchBaseStation(new CommonCallbacks.CompletionCallback() {
                 @Override
                 public void onResult(DJIError djiError) {
                     rtk.stopSearchBaseStation(new CommonCallbacks.CompletionCallback() {
