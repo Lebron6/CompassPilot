@@ -85,11 +85,13 @@ public class TaskReportActivity extends BaseActivity {
         mBinding.tvStartFly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)){
-                    ToastUtil.showToast("SN获取失败,请接入飞机");
-                    return;
-                }
-                commit();
+//                if (TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)){
+//                    ToastUtil.showToast("SN获取失败,请接入飞机");
+//                    return;
+//                }
+//                commit();
+                startActivity(new Intent(TaskReportActivity.this, FlightActivity.class));
+
             }
         });
 

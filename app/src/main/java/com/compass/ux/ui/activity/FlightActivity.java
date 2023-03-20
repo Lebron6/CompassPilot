@@ -117,6 +117,8 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     RelativeLayout layout_previewer_container;
     ViewGroup parentView;
 
+    TextView tvTest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +126,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         setContentView(R.layout.activity_flight);
         isAppStarted = true;
         initViews();
-        needConnect();
+//        needConnect();
 
         openCVHelper = new OpenCVHelper(this);
         droneHelper = new DroneHelper();
@@ -259,6 +261,8 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         tvZoomNum = findViewById(R.id.tv_zoom_num);
         layout_previewer_container = findViewById(R.id.layout_previewer_container);
         parentView = (ViewGroup) findViewById(R.id.root_view);
+        tvTest = (TextView) findViewById(R.id.tv_test);
+        tvTest.setOnClickListener(onClickListener);
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
         }
@@ -287,6 +291,9 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                     break;
                 case R.id.tv_zoom_reduce:
                     CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom() - 1);
+                    break;
+                case R.id.tv_test:
+
                     break;
             }
         }
