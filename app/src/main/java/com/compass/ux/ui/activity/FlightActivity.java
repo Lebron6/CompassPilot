@@ -52,9 +52,11 @@ import com.compass.ux.tools.DroneHelper;
 import com.compass.ux.tools.OpenCVHelper;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
+import com.compass.ux.ui.view.UavSettingView;
 import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.DJILatLng;
 import com.orhanobut.logger.Logger;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -118,7 +120,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     ViewGroup parentView;
 
     TextView tvTest;
-
+    private UavSettingView uavSettingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,6 +264,8 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         layout_previewer_container = findViewById(R.id.layout_previewer_container);
         parentView = (ViewGroup) findViewById(R.id.root_view);
         tvTest = (TextView) findViewById(R.id.tv_test);
+        uavSettingView = (UavSettingView) findViewById(R.id.uav_setting);
+        uavSettingView.setContex(this);
         tvTest.setOnClickListener(onClickListener);
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
@@ -272,6 +276,14 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                 onViewClick(mTextureView);
             }
         });
+
+        int height= QMUIDisplayHelper.getScreenHeight(this);
+        int width=QMUIDisplayHelper.getScreenWidth(this);
+        ViewGroup.LayoutParams params= uavSettingView.getLayoutParams();
+        params.width=(int)(width*0.6);
+        params.height=(int)(height);
+        uavSettingView.setLayoutParams(params);
+        uavSettingView.Toggle();
     }
 
     int zoomNum;
@@ -293,7 +305,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                     CameraManager.getInstance().setCameraZoom(LocalSource.getInstance().getHybridZoom() - 1);
                     break;
                 case R.id.tv_test:
-
+                    uavSettingView.Toggle();
                     break;
             }
         }

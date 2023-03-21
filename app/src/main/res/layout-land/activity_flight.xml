@@ -491,5 +491,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-
+<com.compass.ux.ui.view.UavSettingView
+    android:id="@+id/uav_setting"
+    android:visibility="gone"
+    android:layout_alignParentRight="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 </RelativeLayout>
