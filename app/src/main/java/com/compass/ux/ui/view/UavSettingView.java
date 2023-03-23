@@ -13,15 +13,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.compass.ux.R;
+import com.compass.ux.ui.fragment.setting.AvoidingObstaclesFragment;
+import com.compass.ux.ui.fragment.setting.BatteryFragment;
 import com.compass.ux.ui.fragment.setting.FlightControllerFragment;
+import com.compass.ux.ui.fragment.setting.GimbalSettingFragment;
+import com.compass.ux.ui.fragment.setting.GraphicFragment;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
 
 public class UavSettingView extends LinearLayout {
     int visible = View.GONE;//默认显示
     private Context _context;
-    private TextView tv_dismiss,tv_title;
+    private TextView tv_dismiss, tv_title;
     private RadioGroup radioGroup;
     private RadioButton rbfk;
     private RadioButton rbgz;
@@ -59,10 +64,10 @@ public class UavSettingView extends LinearLayout {
 
     }
 
-    public void setContex(AppCompatActivity activity){
+    AppCompatActivity activity;
 
-        fragmentManager=activity.getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+    public void setContex(AppCompatActivity activity) {
+        this.activity = activity;
         radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
         rbfk.setChecked(true);
 
@@ -73,18 +78,21 @@ public class UavSettingView extends LinearLayout {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.rb_dc:
-                    tv_title.setText("智能电池");
+                    tv_title.setText("智能电池信息");
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new BatteryFragment()).commit();
 
                     break;
                 case R.id.rb_fk:
-                    fragmentTransaction.replace(R.id.frame, new FlightControllerFragment()).commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FlightControllerFragment()).commit();
                     tv_title.setText("飞控参数设置");
                     break;
                 case R.id.rb_gq:
-
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new GraphicFragment()).commit();
+                    tv_title.setText("图传设置");
                     break;
                 case R.id.rb_bz:
-
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new AvoidingObstaclesFragment()).commit();
+                    tv_title.setText("感知避障设置");
                     break;
                 case R.id.rb_sz:
 
@@ -93,7 +101,8 @@ public class UavSettingView extends LinearLayout {
 
                     break;
                 case R.id.rb_yt:
-
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new GimbalSettingFragment()).commit();
+                    tv_title.setText("云台设置");
                     break;
 
             }

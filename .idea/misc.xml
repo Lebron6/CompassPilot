@@ -12,6 +12,7 @@
         <entry key="..\:/workspace/Apron/app/src/main/res/layout-land/activity_connection.xml" value="0.10537918871252204" />
         <entry key="..\:/workspace/Apron/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
         <entry key="..\:/workspace/Apron/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_battery_status.xml" value="0.1185" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_btn_en.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_btn_login.xml" value="0.115" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_btn_loginout.xml" value="0.1" />
@@ -25,12 +26,15 @@
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_nav_equipment_nor.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_online_status.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_position.xml" value="0.1" />
+        <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_radio_checked.xml" value="0.1055" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_spinner.xml" value="0.1875" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_task_pop.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/bg_zoom.xml" value="0.1695" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/check_style.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/progress_small.xml" value="0.1" />
+        <entry key="..\:/workspace/apron/app/src/main/res/drawable/radio_bg_selector.xml" value="0.1065" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/radio_text_selector.xml" value="0.1" />
+        <entry key="..\:/workspace/apron/app/src/main/res/drawable/radio_text_selector_graphic.xml" value="0.1055" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/rb_dc.xml" value="0.149" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/rb_gq.xml" value="0.149" />
         <entry key="..\:/workspace/apron/app/src/main/res/drawable/rb_gz.xml" value="0.1335" />
@@ -46,7 +50,11 @@
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/activity_flight_test.xml" value="0.22" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/activity_login.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/activity_main.xml" value="0.3333333333333333" />
+        <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_avoiding_obstacles.xml" value="0.22" />
+        <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_battery_info.xml" value="0.14666666666666667" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_flight_controller.xml" value="0.22" />
+        <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_gimbal_setting.xml" value="0.1" />
+        <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_graphic.xml" value="0.22" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_home.xml" value="0.1" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/fragment_personal.xml" value="0.16666666666666666" />
         <entry key="..\:/workspace/apron/app/src/main/res/layout-land/item_question.xml" value="0.11596119929453262" />

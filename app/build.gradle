@@ -172,4 +172,7 @@ dependencies {
 //饺子播放器
     implementation 'cn.jzvd:jiaozivideoplayer:7.7.0'
     implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
+    implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
 }
