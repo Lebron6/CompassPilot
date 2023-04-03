@@ -62,11 +62,10 @@
             >
 
             <TextView
-
+                android:id="@+id/tv_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
                 android:text="返航"
                 android:textColor="@color/blue"
                 android:textSize="13sp" />

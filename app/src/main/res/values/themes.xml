@@ -13,7 +13,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textSize">12sp</item>
         <item name="android:button">@null</item>
-        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:textColor">@drawable/radio_text</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
     </style>

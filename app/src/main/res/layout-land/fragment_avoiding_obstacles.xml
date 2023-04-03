@@ -77,6 +77,7 @@
                     android:textSize="13sp" />
 
                 <com.suke.widget.SwitchButton
+                    android:id="@+id/sb_ao_enable"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
@@ -262,12 +263,13 @@
                     android:textSize="13sp" />
 
                 <com.suke.widget.SwitchButton
-                    app:sb_show_indicator="false"
+                    android:id="@+id/sb_lp_enable"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    app:sb_checked="false" />
+                    app:sb_checked="false"
+                    app:sb_show_indicator="false" />
 
             </RelativeLayout>
 
@@ -317,12 +319,13 @@
                     android:textSize="13sp" />
 
                 <com.suke.widget.SwitchButton
-                    app:sb_show_indicator="false"
+                    android:id="@+id/sb_rth_enable"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    app:sb_checked="false" />
+                    app:sb_checked="false"
+                    app:sb_show_indicator="false" />
 
             </RelativeLayout>
 

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.apron.mobilesdk.state.ProtoGimbal;
 import com.compass.ux.base.BaseCallback;
 import com.compass.ux.constant.MqttConfig;
+import com.compass.ux.entity.LocalSource;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -23,6 +24,7 @@ public class GimbalBStateCallBack extends BaseCallback implements GimbalState.Ca
 
     @Override
     public void onUpdate(@NonNull GimbalState gimbalState) {
+        LocalSource.getInstance().setGimbalMode(gimbalState.getMode().value());
         ProtoGimbal.Gimbal.Builder builder = ProtoGimbal.Gimbal.newBuilder()
                 .setGimBalMode(ProtoGimbal.Gimbal.GimbalMode.values()[gimbalState.getMode().ordinal()])
                 .setPitch(gimbalState.getAttitudeInDegrees().getPitch())

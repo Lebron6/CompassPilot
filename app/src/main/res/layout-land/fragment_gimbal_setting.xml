@@ -45,11 +45,10 @@
                     >
 
                     <TextView
-
+                        android:id="@+id/tv_gimbal_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
                         android:text="跟随模式"
                         android:textColor="@color/blue"
                         android:textSize="13sp" />
@@ -83,9 +82,9 @@
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
-                   
-                
+
                 <com.suke.widget.SwitchButton
+                   android:id="@+id/sb_gimbal_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
@@ -101,6 +100,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:paddingLeft="20dp"
@@ -142,11 +142,13 @@
                     app:isb_track_progress_color="@color/blue" />
             </RelativeLayout>
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:paddingLeft="20dp"
@@ -187,11 +189,14 @@
                     android:layout_height="@dimen/x25" />
             </RelativeLayout>
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/gimbal_center"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -202,15 +207,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="云台回中/朝下"
+                    android:text="云台回中"
                     android:textColor="@color/blue"
                     android:textSize="13sp" />
             </RelativeLayout>
             <View
+                android:visibility="gone"
+
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:visibility="visible"
+
+                android:id="@+id/gimbal_reset"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -226,10 +236,13 @@
                     android:textSize="13sp" />
             </RelativeLayout>
             <View
+                android:visibility="visible"
+
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:id="@+id/gimbal_calibration"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -245,10 +258,12 @@
                     android:textSize="13sp" />
             </RelativeLayout>
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/timepicker_line" />
             <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"

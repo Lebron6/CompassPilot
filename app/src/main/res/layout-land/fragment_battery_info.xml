@@ -41,11 +41,11 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/tv_battery_quantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="71%"
                         android:textColor="@color/green"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -61,16 +61,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="飞行时间"
+                        android:text="放电次数"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/tv_flight_discharges"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="100000min"
                         android:textColor="@color/white"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -103,6 +103,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/tv_battery_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -139,11 +140,11 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tv_low_battery_quantity_one"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="10dp"
-                            android:text="71%"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -165,11 +166,11 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tv_battery_temperature"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="10dp"
-                            android:text="30℃"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -191,11 +192,11 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tv_battery_voltage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="10dp"
-                            android:text="16.04V"
                             android:textColor="@color/green"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -212,16 +213,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="循环次数"
+                            android:text="剩余寿命"
                             android:textColor="@color/gray_light"
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/tv_battery_cycles"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="10dp"
-                            android:text="26"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -279,6 +280,7 @@
 
 
                 <com.suke.widget.SwitchButton
+                    android:id="@+id/sb_smart_go_home"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
@@ -293,6 +295,7 @@
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/timepicker_line" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -334,11 +337,13 @@
                     app:isb_tick_marks_color="@color/yellow"
                     app:isb_track_progress_color="@color/yellow" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/timepicker_line" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -362,23 +367,24 @@
                     android:text="35%"
                     android:textColor="@color/gray"
                     android:textSize="13sp" />
+
                 <com.warkiz.widget.IndicatorSeekBar
                     android:id="@+id/sb_low"
-                    android:layout_marginRight="20dp"
-                    android:layout_centerVertical="true"
-                    app:isb_indicator_text_color="@color/white"
-                    app:isb_thumb_color="@color/white"
-                    app:isb_indicator_color="@color/yellow"
-                    app:isb_tick_marks_color="@color/yellow"
-                    app:isb_track_progress_color="@color/yellow"
                     android:layout_width="150dp"
+                    android:layout_height="@dimen/x25"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
                     android:layout_toLeftOf="@+id/tv_low_battery"
+                    app:isb_indicator_color="@color/yellow"
+                    app:isb_indicator_text_color="@color/white"
                     app:isb_max="50"
                     app:isb_min="1"
                     app:isb_progress="5"
-                    android:layout_height="@dimen/x25" />
+                    app:isb_thumb_color="@color/white"
+                    app:isb_tick_marks_color="@color/yellow"
+                    app:isb_track_progress_color="@color/yellow" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -387,15 +393,14 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
+                android:layout_height="150dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="15dp"
                     android:text="开始自放电时间"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
@@ -405,12 +410,11 @@
                     android:layout_width="@dimen/x100"
                     android:layout_height="@dimen/x20"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/bg_spinner"
-                    >
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_spinner">
 
                     <TextView
-
+                        android:id="@+id/tv_action"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -418,13 +422,14 @@
                         android:text="5天"
                         android:textColor="@color/blue"
                         android:textSize="13sp" />
+
                     <ImageView
-                        android:layout_marginRight="5dp"
-                        android:background="@mipmap/icon_down_w"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/icon_down_w" />
                 </RelativeLayout>
 
             </RelativeLayout>

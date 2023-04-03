@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -64,9 +65,9 @@ public class UavSettingView extends LinearLayout {
 
     }
 
-    AppCompatActivity activity;
+    FragmentActivity activity;
 
-    public void setContex(AppCompatActivity activity) {
+    public void setContex(FragmentActivity activity) {
         this.activity = activity;
         radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
         rbfk.setChecked(true);

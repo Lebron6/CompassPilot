@@ -95,6 +95,7 @@ public class LocalSource {
     private String gimbal_pitch_speed;
     //云台偏航速度1——100
     private String gimbal_yaw_speed;
+
     //带宽
     private String channelBandwidth;
     //工作频段 2.4g 5.8g 双频
