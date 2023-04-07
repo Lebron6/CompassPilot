@@ -21,6 +21,7 @@ import com.compass.ux.ui.fragment.setting.BatteryFragment;
 import com.compass.ux.ui.fragment.setting.FlightControllerFragment;
 import com.compass.ux.ui.fragment.setting.GimbalSettingFragment;
 import com.compass.ux.ui.fragment.setting.GraphicFragment;
+import com.compass.ux.ui.fragment.setting.RemoteControlFragment;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
 
@@ -99,7 +100,8 @@ public class UavSettingView extends LinearLayout {
 
                     break;
                 case R.id.rb_ykq:
-
+                    tv_title.setText("摇杆模式");
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new RemoteControlFragment()).commit();
                     break;
                 case R.id.rb_yt:
                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new GimbalSettingFragment()).commit();
