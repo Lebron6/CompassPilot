@@ -52,6 +52,7 @@ import com.compass.ux.tools.DroneHelper;
 import com.compass.ux.tools.OpenCVHelper;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
+import com.compass.ux.ui.view.UavPalette;
 import com.compass.ux.ui.view.UavSettingView;
 import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.DJILatLng;
@@ -121,6 +122,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
 
     TextView tvTest;
     private UavSettingView uavSettingView;
+    private UavPalette uavPaletteView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +130,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         setContentView(R.layout.activity_flight);
         isAppStarted = true;
         initViews();
-        needConnect();
+//        needConnect();
 
         openCVHelper = new OpenCVHelper(this);
         droneHelper = new DroneHelper();
@@ -173,7 +175,6 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
             mapWidget.startAnimation(mapViewAnimation);
             isMapMini = true;
         } else if (view == mapWidget && isMapMini) {
-            Logger.e("放大地图" + "-----");
             resizeFPVWidget(DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), 0, 2);
             ResizeAnimation mapViewAnimation = new ResizeAnimation(mapWidget, DisplayUtil.dp2px(this, 125), DisplayUtil.dp2px(this, 76), deviceWidth, deviceHeight, 0);
             mapWidget.startAnimation(mapViewAnimation);
@@ -265,6 +266,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         parentView = (ViewGroup) findViewById(R.id.root_view);
         tvTest = (TextView) findViewById(R.id.tv_test);
         uavSettingView = (UavSettingView) findViewById(R.id.uav_setting);
+        uavPaletteView = (UavPalette) findViewById(R.id.uav_palette);
         uavSettingView.setContex(this);
         tvTest.setOnClickListener(onClickListener);
         if (mTextureView != null) {
@@ -283,7 +285,12 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         params.width=(int)(width*0.6);
         params.height=(int)(height);
         uavSettingView.setLayoutParams(params);
-        uavSettingView.Toggle();
+
+//        ViewGroup.LayoutParams params1= uavPaletteView.getLayoutParams();
+//        params1.width=(int)(width);
+//        params1.height=(int)(height);
+//        uavPaletteView.setLayoutParams(params);
+        uavPaletteView.Toggle();
     }
 
     int zoomNum;

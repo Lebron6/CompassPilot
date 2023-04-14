@@ -18,10 +18,11 @@
 
 
         <RadioGroup
-            android:id="@+id/rg_chanel"
+            android:id="@+id/rg_handle_type"
             android:layout_width="250dp"
             android:layout_height="30dp"
-android:layout_centerInParent="true"            android:background="@drawable/bg_spinner"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_spinner"
             android:orientation="horizontal"
             android:padding="1dp">
 
@@ -35,8 +36,7 @@ android:layout_centerInParent="true"            android:background="@drawable/bg
                 android:gravity="center"
                 android:text="日本手"
                 android:textColor="@drawable/radio_text_selector"
-                android:textSize="12sp"
-                />
+                android:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/rb_a"

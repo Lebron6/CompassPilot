@@ -60,11 +60,11 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvStartMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(sn)) {
-                    ToastUtil.showToast("请接入无人机");
-                } else {
+//                if (TextUtils.isEmpty(sn)) {
+//                    ToastUtil.showToast("请接入无人机");
+//                } else {
                     TaskReportActivity.actionStart(getActivity());
-                }
+//                }
             }
         });
         mBinding.tvMedia.setOnClickListener(new View.OnClickListener() {
@@ -91,15 +91,15 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
-        if (Helper.isFlightControllerAvailable()) {
+//        if (Helper.isFlightControllerAvailable()) {
             mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
             mBinding.layoutDisconnect.setVisibility(View.GONE);
-            setIcon();
-            getNameBySN();
-        } else {
-            mBinding.layoutIsConnect.setVisibility(View.GONE);
-            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
-        }
+//            setIcon();
+//            getNameBySN();
+//        } else {
+//            mBinding.layoutIsConnect.setVisibility(View.GONE);
+//            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
+//        }
 
     }
 

@@ -54,6 +54,7 @@ public class AvoidingObstaclesFragment extends BaseFragment {
         mBinding.sbRthEnable.setOnCheckedChangeListener(onCheckedChangeListener);
         mBinding.sbAoEnable.setOnCheckedChangeListener(onCheckedChangeListener);
         mBinding.sbLpEnable.setOnCheckedChangeListener(onCheckedChangeListener);
+        mBinding.sbRadar.setOnCheckedChangeListener(onCheckedChangeListener);
         if (Helper.isFlightControllerAvailable()) {
             FlightAssistant assistant = ApronApp.getAircraftInstance().getFlightController().getFlightAssistant();
             if (assistant != null) {
@@ -130,6 +131,16 @@ public class AvoidingObstaclesFragment extends BaseFragment {
                 FlightAssistant assistant = ApronApp.getAircraftInstance().getFlightController().getFlightAssistant();
                 if (assistant != null) {
                     switch (view.getId()) {
+                        case R.id.sb_radar:
+                            if (getActivity().findViewById(R.id.rw).getVisibility()==View.VISIBLE){
+                                if (getActivity()!=null){
+                                    getActivity().findViewById(R.id.rw).setVisibility(View.GONE);
+                                }
+                            }else{
+                                if (getActivity()!=null){
+                                    getActivity().findViewById(R.id.rw).setVisibility(View.VISIBLE);
+                                }                            }
+                            break;
                         case R.id.sb_ao_enable:
 
                             assistant.setHorizontalVisionObstacleAvoidanceEnabled(isChecked, new CommonCallbacks.CompletionCallback() {
@@ -174,9 +185,7 @@ public class AvoidingObstaclesFragment extends BaseFragment {
                             break;
                         case R.id.sb_rth_enable:
                             //下避障
-                            mBinding.sbRthEnable.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+
                                     assistant.setRTHRemoteObstacleAvoidanceEnabled(isChecked, new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {                        if (getActivity()!=null){
@@ -194,8 +203,7 @@ public class AvoidingObstaclesFragment extends BaseFragment {
 
                                         }
                                     });
-                                }
-                            });
+
                             break;
                     }
                 } else {

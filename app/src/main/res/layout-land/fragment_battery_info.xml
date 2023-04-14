@@ -30,7 +30,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 
@@ -182,7 +182,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layout_battery_o"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
@@ -194,7 +194,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp">
 

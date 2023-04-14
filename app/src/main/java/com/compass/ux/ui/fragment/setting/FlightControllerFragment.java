@@ -27,6 +27,9 @@ import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.activity.MessageActivity;
 import com.compass.ux.ui.activity.UpdataPasswordActivity;
 import com.compass.ux.ui.window.DisconnectActionWindow;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,36 +75,58 @@ public class FlightControllerFragment extends BaseFragment {
         mBinding.layoutShowWindow.setOnClickListener(onClickListener);
         if (Helper.isFlightControllerAvailable()) {
             FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+            flightController.getGoHomeHeightInMeters(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+                @Override
+                public void onSuccess(Integer integer) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinding.sbGoHomeAltitude.setProgress(integer);
+                                mBinding.tvGohomeHeigth.setText(integer+"m");
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
             flightController.getConnectionFailSafeBehavior(new CommonCallbacks.CompletionCallbackWith<ConnectionFailSafeBehavior>() {
                 @Override
                 public void onSuccess(ConnectionFailSafeBehavior connectionFailSafeBehavior) {
-                    switch (connectionFailSafeBehavior.value()){
-                        case 0:                        if (getActivity()!=null){
-
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mBinding.tvAction.setText("悬停");
-                                }
-                            });}
+                    switch (connectionFailSafeBehavior.value()) {
+                        case 0:
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBinding.tvAction.setText("悬停");
+                                    }
+                                });
+                            }
                             break;
-                        case 1:                        if (getActivity()!=null){
-
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mBinding.tvAction.setText("降落");
-                                }
-                            });}
+                        case 1:
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBinding.tvAction.setText("降落");
+                                    }
+                                });
+                            }
                             break;
-                        case 2:                        if (getActivity()!=null){
-
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mBinding.tvAction.setText("返航");
-                                }
-                            });}
+                        case 2:
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBinding.tvAction.setText("返航");
+                                    }
+                                });
+                            }
                             break;
                     }
                 }
@@ -114,7 +139,53 @@ public class FlightControllerFragment extends BaseFragment {
         } else {
             ToastUtil.showToast("飞行器未连接");
         }
+        mBinding.sbGoHomeAltitude.setOnSeekChangeListener(onSeekChangeListener);
     }
+    OnSeekChangeListener onSeekChangeListener=new OnSeekChangeListener() {
+        @Override
+        public void onSeeking(SeekParams seekParams) {
+            switch (seekParams.seekBar.getId()) {
+                case R.id.sb_go_home_altitude:
+                    mBinding.tvGohomeHeigth.setText(seekParams.progress + "m");
+                    break;
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            if (Helper.isFlightControllerAvailable()) {
+                FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+                flightController.setGoHomeHeightInMeters(seekBar.getProgress(), new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(DJIError djiError) {
+                        if (getActivity()!=null){
+                            if (djiError!=null){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.showToast("设置返航高度失败："+djiError.getDescription());
+
+                                    }
+                                });
+                            }else{
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtil.showToast("返航高度已更新");
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    };
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -135,18 +206,20 @@ public class FlightControllerFragment extends BaseFragment {
                 FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
                 flightController.setConnectionFailSafeBehavior(ConnectionFailSafeBehavior.find(postion), new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(DJIError djiError) {                        if (getActivity()!=null){
+                    public void onResult(DJIError djiError) {
+                        if (getActivity() != null) {
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (djiError == null) {
-                                    ToastUtil.showToast("失控行为已修改");
-                                } else {
-                                    ToastUtil.showToast("失控行修改失败:" + djiError.getDescription());
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (djiError == null) {
+                                        ToastUtil.showToast("失控行为已修改");
+                                    } else {
+                                        ToastUtil.showToast("失控行修改失败:" + djiError.getDescription());
+                                    }
                                 }
-                            }
-                        });}
+                            });
+                        }
 
                     }
                 });

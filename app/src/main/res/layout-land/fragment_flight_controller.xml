@@ -83,5 +83,49 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
         android:background="@color/timepicker_line" />
+
+    <RelativeLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="返航高度"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_gohome_heigth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="100"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/sb_go_home_altitude"
+            android:layout_width="150dp"
+            android:layout_centerVertical="true"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/tv_gohome_heigth"
+            app:isb_indicator_color="@color/yellow"
+            app:isb_indicator_text_color="@color/white"
+            app:isb_max="300"
+            app:isb_min="1"
+            app:isb_progress="5"
+            app:isb_thumb_color="@color/white"
+            app:isb_tick_marks_color="@color/yellow"
+            app:isb_track_progress_color="@color/yellow" />
+    </RelativeLayout>
 </LinearLayout>
