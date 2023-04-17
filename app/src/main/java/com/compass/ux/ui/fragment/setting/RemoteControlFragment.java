@@ -43,99 +43,105 @@ public class RemoteControlFragment extends BaseFragment {
     @Override
     protected void initDatas() {
         mBinding.rgHandleType.setOnCheckedChangeListener(onCheckedChangeListener);
-        RemoteController remoteController = ApronApp.getAircraftInstance().getRemoteController();
-        if (remoteController != null) {
-            remoteController.getAircraftMappingStyle(new CommonCallbacks.CompletionCallbackWith<AircraftMappingStyle>() {
-                @Override
-                public void onSuccess(AircraftMappingStyle aircraftMappingStyle) {
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                switch (aircraftMappingStyle) {
-                                    case STYLE_1:
-                                        mBinding.rbJ.setChecked(true);
-                                        break;
-                                    case STYLE_2:
-                                        mBinding.rbA.setChecked(true);
-                                        break;
-                                    case STYLE_3:
-                                        mBinding.rbC.setChecked(true);
-                                        break;
+        if (ApronApp.getAircraftInstance() != null) {
+            RemoteController remoteController = ApronApp.getAircraftInstance().getRemoteController();
+            if (remoteController != null) {
+                remoteController.getAircraftMappingStyle(new CommonCallbacks.CompletionCallbackWith<AircraftMappingStyle>() {
+                    @Override
+                    public void onSuccess(AircraftMappingStyle aircraftMappingStyle) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    switch (aircraftMappingStyle) {
+                                        case STYLE_1:
+                                            mBinding.rbJ.setChecked(true);
+                                            break;
+                                        case STYLE_2:
+                                            mBinding.rbA.setChecked(true);
+                                            break;
+                                        case STYLE_3:
+                                            mBinding.rbC.setChecked(true);
+                                            break;
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(DJIError djiError) {
+                    @Override
+                    public void onFailure(DJIError djiError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
+
     }
 
     RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            RemoteController remoteController = ApronApp.getAircraftInstance().getRemoteController();
-            if (remoteController != null) {
-                switch (checkedId) {
-                    case R.id.rb_j:
-                        remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_1, new CommonCallbacks.CompletionCallback() {
-                            @Override
-                            public void onResult(DJIError djiError) {
-                                if (djiError != null) {
-                                    if (getActivity() != null) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ToastUtil.showToast("设置日本手失败：" + djiError.getDescription());
-                                            }
-                                        });
+            if (ApronApp.getAircraftInstance() != null) {
+                RemoteController remoteController = ApronApp.getAircraftInstance().getRemoteController();
+                if (remoteController != null) {
+                    switch (checkedId) {
+                        case R.id.rb_j:
+                            remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_1, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast("设置日本手失败：" + djiError.getDescription());
+                                                }
+                                            });
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        break;
-                    case R.id.rb_a:
-                        remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_2, new CommonCallbacks.CompletionCallback() {
-                            @Override
-                            public void onResult(DJIError djiError) {
-                                if (djiError != null) {
-                                    if (getActivity() != null) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ToastUtil.showToast("设置美国手失败：" + djiError.getDescription());
-                                            }
-                                        });
+                            });
+                            break;
+                        case R.id.rb_a:
+                            remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_2, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast("设置美国手失败：" + djiError.getDescription());
+                                                }
+                                            });
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        break;
-                    case R.id.rb_c:
-                        remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_3, new CommonCallbacks.CompletionCallback() {
-                            @Override
-                            public void onResult(DJIError djiError) {
-                                if (djiError != null) {
-                                    if (getActivity() != null) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ToastUtil.showToast("设置中国手失败：" + djiError.getDescription());
-                                            }
-                                        });
+                            });
+                            break;
+                        case R.id.rb_c:
+                            remoteController.setAircraftMappingStyle(AircraftMappingStyle.STYLE_3, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast("设置中国手失败：" + djiError.getDescription());
+                                                }
+                                            });
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        break;
+                            });
+                            break;
+                    }
                 }
-            }
 
+            }
         }
+
     };
 }

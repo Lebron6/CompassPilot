@@ -112,13 +112,16 @@ public class UavSettingView extends LinearLayout {
         }
     };
 
-    public void Toggle() {
+    public boolean Toggle() {
         if (visible == View.GONE) {
             visible = View.VISIBLE;
             QMUIViewHelper.slideIn(this, 300, null, true, QMUIDirection.RIGHT_TO_LEFT);
+            return true;
         } else {
             visible = View.GONE;
             QMUIViewHelper.slideOut(this, 300, null, true, QMUIDirection.LEFT_TO_RIGHT);
+            return false;
+
         }
     }
 
