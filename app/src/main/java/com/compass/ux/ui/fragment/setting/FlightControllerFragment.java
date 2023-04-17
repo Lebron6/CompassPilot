@@ -183,6 +183,8 @@ public class FlightControllerFragment extends BaseFragment {
                         }
                     }
                 });
+            }else{
+                ToastUtil.showToast("未连接设备");
             }
         }
     };

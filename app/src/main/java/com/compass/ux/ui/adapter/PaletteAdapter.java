@@ -6,15 +6,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
+
 import com.compass.ux.R;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseAdapter;
 import com.compass.ux.base.BaseHolder;
 import com.compass.ux.databinding.ItemGalleryBinding;
 import com.compass.ux.databinding.ItemPaletteBinding;
 import com.compass.ux.entity.MyGallyData;
 import com.compass.ux.entity.PaletteSource;
+import com.compass.ux.tools.Helper;
+import com.compass.ux.tools.ToastUtil;
 
 import java.util.List;
+
+import dji.common.camera.SettingsDefinitions;
+import dji.common.camera.SystemState;
+import dji.common.error.DJIError;
+import dji.common.util.CommonCallbacks;
+import dji.sdk.camera.Camera;
+import dji.sdk.camera.Lens;
 
 
 /**
@@ -24,6 +36,7 @@ import java.util.List;
 public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
 
     List<PaletteSource> myGallyDataList;
+
 
     @Override
     protected void onBindingData(BaseHolder<ItemPaletteBinding> holder, String s, int position) {
@@ -53,6 +66,31 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                     holder.getViewBinding().cbPale.setChecked(false);
                 } else {
                     holder.getViewBinding().cbPale.setChecked(true);
+                    if (Helper.isCameraModuleAvailable()) {
+                        Camera camera = ApronApp.getCameraInstance();
+                        if (camera.isMultiLensCameraSupported()) {
+
+                            camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(position), new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                    }
+                                }
+                            });
+                        } else {
+                            camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(position), new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                    }
+                                }
+                            });
+                        }
+                    }else{
+                        ToastUtil.showToast("未检测到固件");
+                    }
 
                 }
             }

@@ -121,6 +121,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     ViewGroup parentView;
 
     TextView tvTest;
+    TextView tvPalette;
     private UavSettingView uavSettingView;
     private UavPalette uavPaletteView;
 
@@ -267,8 +268,11 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         tvTest = (TextView) findViewById(R.id.tv_test);
         uavSettingView = (UavSettingView) findViewById(R.id.uav_setting);
         uavPaletteView = (UavPalette) findViewById(R.id.uav_palette);
+        tvPalette = (TextView) findViewById(R.id.tv_palette);
         uavSettingView.setContex(this);
         tvTest.setOnClickListener(onClickListener);
+        tvPalette.setOnClickListener(onClickListener);
+        mTextureView.setOnClickListener(onClickListener);
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
         }
@@ -286,11 +290,6 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         params.height=(int)(height);
         uavSettingView.setLayoutParams(params);
 
-//        ViewGroup.LayoutParams params1= uavPaletteView.getLayoutParams();
-//        params1.width=(int)(width);
-//        params1.height=(int)(height);
-//        uavPaletteView.setLayoutParams(params);
-        uavPaletteView.Toggle();
     }
 
     int zoomNum;
@@ -313,6 +312,17 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                     break;
                 case R.id.tv_test:
                     uavSettingView.Toggle();
+                    break;
+                case R.id.tv_palette:
+                    uavPaletteView.Toggle();
+                    break;
+                case R.id.video_previewer_surface:
+                    if (uavSettingView.Toggle()==true){
+                        uavSettingView.Toggle();
+                    }
+                    if (uavPaletteView.Toggle()==true){
+                        uavPaletteView.Toggle();
+                    }
                     break;
             }
         }
