@@ -72,100 +72,49 @@ public class UavPalette extends LinearLayout {
     private void initData() {
         sourceList = new ArrayList<>();
         PaletteSource WHITE_HOT = new PaletteSource();
-        WHITE_HOT.setName("WHITE_HOT");
-        WHITE_HOT.setImgRes(R.mipmap.bg_compass);
+        WHITE_HOT.setName("白热");
+        WHITE_HOT.setImgRes(R.mipmap.white_hot);
         sourceList.add(WHITE_HOT);
 
         PaletteSource BLACK_HOT = new PaletteSource();
-        BLACK_HOT.setName("BLACK_HOT");
-        BLACK_HOT.setImgRes(R.mipmap.bg_compass);
+        BLACK_HOT.setName("黑热");
+        BLACK_HOT.setImgRes(R.mipmap.black_hot);
         sourceList.add(BLACK_HOT);
 
-        PaletteSource RED_HOT = new PaletteSource();
-        RED_HOT.setName("RED_HOT");
-        RED_HOT.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(RED_HOT);
 
-        PaletteSource GREEN_HOT = new PaletteSource();
-        GREEN_HOT.setName("GREEN_HOT");
-        GREEN_HOT.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(GREEN_HOT);
 
         PaletteSource FUSION = new PaletteSource();
-        FUSION.setName("FUSION");
-        FUSION.setImgRes(R.mipmap.bg_compass);
+        FUSION.setName("熔岩");
+        FUSION.setImgRes(R.mipmap.rongyan);
         sourceList.add(FUSION);
 
         PaletteSource RAINBOW = new PaletteSource();
-        RAINBOW.setName("RAINBOW");
-        RAINBOW.setImgRes(R.mipmap.bg_compass);
+        RAINBOW.setName("彩虹1");
+        RAINBOW.setImgRes(R.mipmap.caihong);
         sourceList.add(RAINBOW);
 
         PaletteSource IRONBOW_1 = new PaletteSource();
-        IRONBOW_1.setName("IRONBOW_1");
-        IRONBOW_1.setImgRes(R.mipmap.bg_compass);
+        IRONBOW_1.setName("铁红");
+        IRONBOW_1.setImgRes(R.mipmap.tiehong);
         sourceList.add(IRONBOW_1);
 
-        PaletteSource IRONBOW_2 = new PaletteSource();
-        IRONBOW_2.setName("IRONBOW_2");
-        IRONBOW_2.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(IRONBOW_2);
-
         PaletteSource ICE_FIRE = new PaletteSource();
-        ICE_FIRE.setName("ICE_FIRE");
-        ICE_FIRE.setImgRes(R.mipmap.bg_compass);
+        ICE_FIRE.setName("北极");
+        ICE_FIRE.setImgRes(R.mipmap.beiji);
         sourceList.add(ICE_FIRE);
 
-        PaletteSource SEPIA = new PaletteSource();
-        SEPIA.setName("SEPIA");
-        SEPIA.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(SEPIA);
-
-        PaletteSource GLOWBOW = new PaletteSource();
-        GLOWBOW.setName("GLOWBOW");
-        GLOWBOW.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(GLOWBOW);
-
-        PaletteSource COLOR_1 = new PaletteSource();
-        COLOR_1.setName("COLOR_1");
-        COLOR_1.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(COLOR_1);
 
         PaletteSource COLOR_2 = new PaletteSource();
-        COLOR_2.setName("COLOR_2");
-        COLOR_2.setImgRes(R.mipmap.bg_compass);
+        COLOR_2.setName("热铁");
+        COLOR_2.setImgRes(R.mipmap.retie);
         sourceList.add(COLOR_2);
 
-        PaletteSource RAIN = new PaletteSource();
-        RAIN.setName("RAIN");
-        RAIN.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(RAIN);
 
-        PaletteSource HOT_SPOT = new PaletteSource();
-        HOT_SPOT.setName("HOT_SPOT");
-        HOT_SPOT.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(HOT_SPOT);
 
         PaletteSource RAINBOW2 = new PaletteSource();
-        RAINBOW2.setName("RAINBOW2");
-        RAINBOW2.setImgRes(R.mipmap.bg_compass);
+        RAINBOW2.setName("彩虹2");
+        RAINBOW2.setImgRes(R.mipmap.caihongtwo);
         sourceList.add(RAINBOW2);
-
-        PaletteSource GRAY = new PaletteSource();
-        GRAY.setName("GRAY");
-        GRAY.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(GRAY);
-
-        PaletteSource HOT_METAL = new PaletteSource();
-        HOT_METAL.setName("HOT_METAL");
-        HOT_METAL.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(HOT_METAL);
-
-        PaletteSource COLD_SPOT = new PaletteSource();
-        COLD_SPOT.setName("COLD_SPOT");
-        COLD_SPOT.setImgRes(R.mipmap.bg_compass);
-        sourceList.add(COLD_SPOT);
-
 
         adapter = new PaletteAdapter();
         adapter.setData(sourceList);

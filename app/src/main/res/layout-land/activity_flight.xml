@@ -433,9 +433,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="right"
-            android:layout_marginRight="20dp"
-            android:gravity="right"
-            android:text="test"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="···"
+            android:textStyle="bold"
             android:textColor="@color/white"
             android:visibility="visible" />
     </RelativeLayout>
@@ -482,17 +483,16 @@
         tools:ignore="RtlHardcoded" />
     <TextView
         android:id="@+id/tv_palette"
-        android:text="palette"
         android:textSize="10sp"
         android:gravity="center"
         android:layout_marginTop="@dimen/x10"
-        android:background="@drawable/bg_zoom"
+        android:background="@mipmap/plt_nor"
         android:layout_below="@+id/camera"
         android:textColor="@color/white"
         android:layout_marginRight="130dp"
         android:layout_toLeftOf="@+id/camera2"
-        android:layout_width="50dp"
-        android:layout_height="30dp"/>
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
     <LinearLayout
         android:layout_width="50dp"
         android:layout_height="100dp"

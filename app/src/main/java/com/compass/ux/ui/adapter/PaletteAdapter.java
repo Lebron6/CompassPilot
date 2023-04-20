@@ -69,26 +69,177 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                     if (Helper.isCameraModuleAvailable()) {
                         Camera camera = ApronApp.getCameraInstance();
                         if (camera.isMultiLensCameraSupported()) {
+                            switch (position) {
+                                case 0:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(0), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 1:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(1), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(2), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(3), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(4), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(5), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 6:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(10), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 7:
+                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(17), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
 
-                            camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(position), new CommonCallbacks.CompletionCallback() {
-                                @Override
-                                public void onResult(DJIError djiError) {
-                                    if (djiError != null) {
-                                        ToastUtil.showToast("设置失败：" + djiError.getDescription());
-                                    }
-                                }
-                            });
+                            }
+
                         } else {
-                            camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(position), new CommonCallbacks.CompletionCallback() {
-                                @Override
-                                public void onResult(DJIError djiError) {
-                                    if (djiError != null) {
-                                        ToastUtil.showToast("设置失败：" + djiError.getDescription());
-                                    }
-                                }
-                            });
+                            switch (position) {
+                                case 0:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(0), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 1:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(1), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(2), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(3), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(4), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(5), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 6:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(10), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 7:
+                                    camera.setThermalPalette(SettingsDefinitions.ThermalPalette.find(17), new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (djiError != null) {
+                                                ToastUtil.showToast("设置失败：" + djiError.getDescription());
+                                            }
+                                        }
+                                    });
+                                    break;
+
+                            }
+
                         }
-                    }else{
+                    } else {
                         ToastUtil.showToast("未检测到固件");
                     }
 
