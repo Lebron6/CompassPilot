@@ -17,7 +17,10 @@ import com.compass.ux.tools.ToastUtil;
 import dji.common.error.DJIError;
 import dji.common.remotecontroller.AircraftMappingStyle;
 import dji.common.util.CommonCallbacks;
+import dji.sdk.base.BaseProduct;
+import dji.sdk.products.Aircraft;
 import dji.sdk.remotecontroller.RemoteController;
+import dji.sdk.sdkmanager.DJISDKManager;
 
 
 /**
@@ -76,9 +79,50 @@ public class RemoteControlFragment extends BaseFragment {
                 });
             }
         }
-
+        mBinding.frequencyAlignment.setOnClickListener(onClickListener);
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.frequency_alignment:
+                    Aircraft aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
+                    if (aircraft != null) {
+                        RemoteController remoteController = aircraft.getRemoteController();
+                        if (remoteController != null) {
+                            remoteController.startPairing(new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError djiError) {
+                                    if (djiError != null) {
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast("开始对频失败：" + djiError.getDescription());
+                                                }
+                                            });
+                                        }
+                                    }else{
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    ToastUtil.showToast("开始对频成功");
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        ToastUtil.showToast("未检测到固件");
+                    }
+                    break;
+            }
+        }
+    };
     RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {

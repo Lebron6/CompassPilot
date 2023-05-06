@@ -11,7 +11,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class BaseCallback {
     public void publish(MqttAndroidClient client, String topic, MqttMessage message) {
 
-        if (client!=null&&client.isConnected()) {
+        if (client!=null) {
             if (client.isConnected()){
                 try {
                     client.publish(topic, message);

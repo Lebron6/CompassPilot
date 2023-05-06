@@ -68,10 +68,10 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                     holder.getViewBinding().cbPale.setChecked(true);
                     if (Helper.isCameraModuleAvailable()) {
                         Camera camera = ApronApp.getCameraInstance();
-                        if (camera.isMultiLensCameraSupported()) {
+                        if (camera.isMultiLensCameraSupported()&&Helper.isM300Product()) {
                             switch (position) {
                                 case 0:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(0), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(0), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -81,7 +81,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 1:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(1), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(1), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -91,7 +91,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 2:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(2), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(2), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -101,7 +101,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 3:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(3), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(3), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -111,7 +111,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 4:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(4), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(4), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -121,7 +121,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 5:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(5), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(5), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -131,7 +131,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 6:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(10), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(10), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {
@@ -141,7 +141,7 @@ public class PaletteAdapter extends BaseAdapter<String, ItemPaletteBinding> {
                                     });
                                     break;
                                 case 7:
-                                    camera.getLens(2).setThermalPalette(SettingsDefinitions.ThermalPalette.find(17), new CommonCallbacks.CompletionCallback() {
+                                    camera.getLens(1).setThermalPalette(SettingsDefinitions.ThermalPalette.find(17), new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError != null) {

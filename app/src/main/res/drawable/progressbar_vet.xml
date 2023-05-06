@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:id="@android:id/background">//id对应控件属性，不可删除和修改，此属性对应背景颜色
+        <shape  android:shape="rectangle">
+            //渐变设置
+            <gradient android:type="linear" android:angle="270" android:centerY="0.75" android:startColor="@color/green" android:endColor="@color/black"/>
+            //还可以设置角度
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>-->
+
+    <item android:id="@android:id/progress">//进度条
+        <clip android:gravity="bottom"
+            android:clipOrientation="vertical">//此属性限定为竖向
+            <shape  android:shape="rectangle">
+                <gradient android:type="linear" android:angle="90" android:centerY="0.75" android:startColor="@color/green" android:centerColor="@color/green" android:endColor="@color/gray_sl"/>
+                <corners android:radius="2dp"/>
+            </shape>
+        </clip>
+        //第二进度条，可选性添加
+        <!--        <scale android:scaleHeight="100%"-->
+        <!--            android:scaleGravity="bottom">-->
+        <!--            <shape  android:shape="rectangle">-->
+        <!--                <gradient android:type="linear" android:angle="136" android:centerY="0.75" android:startColor="#05F3CE" android:centerColor="#03DC9E" android:endColor="#04CBB7"/>-->
+        <!--                <corners android:radius="20dp"/>-->
+        <!--            </shape>-->
+        <!--        </scale>-->
+    </item>
+</layer-list>

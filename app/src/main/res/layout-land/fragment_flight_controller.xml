@@ -7,8 +7,69 @@
     android:background="@color/black"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
-
     <RelativeLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="返航点设置"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+
+        <RadioGroup
+            android:id="@+id/rg_position"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_spinner"
+            android:orientation="horizontal"
+            android:padding="1dp">
+
+            <RadioButton
+                android:id="@+id/rb_air"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/radio_bg_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="飞机位置"
+                android:textColor="@drawable/radio_text_selector"
+                android:textSize="12sp"
+                />
+
+
+            <RadioButton
+                android:id="@+id/rb_remote"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/radio_bg_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="遥控器位置"
+                android:textColor="@drawable/radio_text_selector"
+                android:textSize="12sp" />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <View
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/timepicker_line" />
+    <RelativeLayout
+        android:id="@+id/layout_sensor_status"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
@@ -54,12 +115,11 @@
 
         <RelativeLayout
             android:id="@+id/layout_show_window"
-            android:layout_width="@dimen/x100"
+            android:layout_width="@dimen/x70"
             android:layout_height="@dimen/x20"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bg_spinner"
-            >
+            android:background="@drawable/bg_spinner">
 
             <TextView
                 android:id="@+id/tv_action"
@@ -69,13 +129,14 @@
                 android:text="返航"
                 android:textColor="@color/blue"
                 android:textSize="13sp" />
-<ImageView
-    android:layout_marginRight="5dp"
-    android:background="@mipmap/icon_down_w"
-    android:layout_centerVertical="true"
-    android:layout_alignParentRight="true"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:background="@mipmap/icon_down_w" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -87,9 +148,9 @@
         android:background="@color/timepicker_line" />
 
     <RelativeLayout
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
@@ -114,10 +175,10 @@
         <com.warkiz.widget.IndicatorSeekBar
             android:id="@+id/sb_go_home_altitude"
             android:layout_width="150dp"
-            android:layout_centerVertical="true"
             android:layout_height="@dimen/x25"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
             android:layout_toLeftOf="@+id/tv_gohome_heigth"
             app:isb_indicator_color="@color/yellow"
             app:isb_indicator_text_color="@color/white"
@@ -128,4 +189,155 @@
             app:isb_tick_marks_color="@color/yellow"
             app:isb_track_progress_color="@color/yellow" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/timepicker_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="限高"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_height_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="100"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/sb_height_limit"
+            android:layout_width="150dp"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/tv_height_limit"
+            app:isb_indicator_color="@color/yellow"
+            app:isb_indicator_text_color="@color/white"
+            app:isb_max="500"
+            app:isb_min="20"
+            app:isb_progress="5"
+            app:isb_thumb_color="@color/white"
+            app:isb_tick_marks_color="@color/yellow"
+            app:isb_track_progress_color="@color/yellow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+
+            android:layout_centerVertical="true"
+            android:layout_marginRight="200dp"
+            android:text="20~500m"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/timepicker_line" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="距离限制"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/sb_distance_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:sb_checked="true"
+            app:sb_show_indicator="false" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="限远"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_distance_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="100"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/ib_distance_limit"
+            android:layout_width="150dp"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_toLeftOf="@+id/tv_distance_limit"
+            app:isb_indicator_color="@color/yellow"
+            app:isb_indicator_text_color="@color/white"
+            app:isb_max="8000"
+            app:isb_min="15"
+            app:isb_progress="5"
+            app:isb_thumb_color="@color/white"
+            app:isb_tick_marks_color="@color/yellow"
+            app:isb_track_progress_color="@color/yellow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="200dp"
+            android:text="15~8000m"
+            android:textColor="@color/gray"
+            android:textSize="13sp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/timepicker_line" />
 </LinearLayout>

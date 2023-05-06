@@ -20,6 +20,8 @@ import com.compass.ux.databinding.FragmentGraphicBinding;
 import com.compass.ux.entity.LocalSource;
 import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.ToastUtil;
+import com.compass.ux.ui.fragment.setting.Battery.BatteryDetailsFragment;
+import com.compass.ux.ui.fragment.setting.sensor.SensorStatusFragment;
 import com.compass.ux.ui.window.DisconnectActionWindow;
 import com.compass.ux.xclog.XcFileLog;
 import com.suke.widget.SwitchButton;
@@ -268,6 +270,8 @@ public class BatteryFragment extends BaseFragment {
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item_question, R.id.tv_popqusetion, times);
 
         mBinding.layoutShowWindow.setOnClickListener(onClickListener);
+        mBinding.layoutBatteryO.setOnClickListener(onClickListener);
+        mBinding.layoutBatteryT.setOnClickListener(onClickListener);
     }
 
     OnSeekChangeListener onSeekChangeListener = new OnSeekChangeListener() {
@@ -396,6 +400,28 @@ public class BatteryFragment extends BaseFragment {
                 case R.id.layout_show_window:
                     DisconnectActionWindow timeSelectWindow = new DisconnectActionWindow(getActivity());
                     timeSelectWindow.showView(mBinding.layoutShowWindow, arrayAdapter, listener);
+                    break;
+                case R.id.layout_battery_o:
+                    Aircraft aircraft = ApronApp.getAircraftInstance();
+                    if (aircraft != null && aircraft.isConnected()) {
+                        List<Battery> batteries = aircraft.getBatteries();
+                        if (batteries != null && batteries.size() > 0) {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new BatteryDetailsFragment(0)).commit();
+                        }
+                    }else{
+                        ToastUtil.showToast("未检测到设备");
+                    }
+                    break;
+                case R.id.layout_battery_t:
+                    Aircraft aircraft1 = ApronApp.getAircraftInstance();
+                    if (aircraft1 != null && aircraft1.isConnected()) {
+                        List<Battery> batteries = aircraft1.getBatteries();
+                        if (batteries != null && batteries.size() > 1) {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new BatteryDetailsFragment(1)).commit();
+                        }
+                    }else{
+                        ToastUtil.showToast("未检测到设备");
+                    }
                     break;
             }
         }

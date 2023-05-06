@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.viewbinding.ViewBinding;
@@ -26,7 +29,9 @@ import com.compass.ux.tools.PreferenceUtils;
 import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.activity.MessageActivity;
 import com.compass.ux.ui.activity.UpdataPasswordActivity;
+import com.compass.ux.ui.fragment.setting.sensor.SensorStatusFragment;
 import com.compass.ux.ui.window.DisconnectActionWindow;
+import com.suke.widget.SwitchButton;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -36,8 +41,11 @@ import java.util.List;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.ConnectionFailSafeBehavior;
+import dji.common.model.LocationCoordinate2D;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.flightcontroller.FlightController;
+import dji.sdk.remotecontroller.RemoteController;
+import dji.sdk.sdkmanager.DJISDKManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,9 +80,9 @@ public class FlightControllerFragment extends BaseFragment {
         times.add("返航");
         arrayAdapter = new ArrayAdapter(getActivity(), R.layout.item_question, R.id.tv_popqusetion, times);
 
-        mBinding.layoutShowWindow.setOnClickListener(onClickListener);
         if (Helper.isFlightControllerAvailable()) {
             FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+
             flightController.getGoHomeHeightInMeters(new CommonCallbacks.CompletionCallbackWith<Integer>() {
                 @Override
                 public void onSuccess(Integer integer) {
@@ -83,7 +91,7 @@ public class FlightControllerFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 mBinding.sbGoHomeAltitude.setProgress(integer);
-                                mBinding.tvGohomeHeigth.setText(integer+"m");
+                                mBinding.tvGohomeHeigth.setText(integer + "m");
                             }
                         });
                     }
@@ -136,17 +144,164 @@ public class FlightControllerFragment extends BaseFragment {
 
                 }
             });
+            flightController.getMaxFlightHeight(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+                @Override
+                public void onSuccess(Integer integer) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinding.sbHeightLimit.setProgress(integer);
+                                mBinding.tvHeightLimit.setText(integer + "m");
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
+
+            flightController.getMaxFlightRadius(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+                @Override
+                public void onSuccess(Integer integer) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinding.ibDistanceLimit.setProgress(integer);
+                                mBinding.tvDistanceLimit.setText(integer + "m");
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
+            flightController.getMaxFlightRadiusLimitationEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+                @Override
+                public void onSuccess(Boolean aBoolean) {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBinding.sbDistanceLimit.setChecked(aBoolean);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(DJIError djiError) {
+
+                }
+            });
         } else {
             ToastUtil.showToast("飞行器未连接");
         }
+        mBinding.layoutShowWindow.setOnClickListener(onClickListener);
         mBinding.sbGoHomeAltitude.setOnSeekChangeListener(onSeekChangeListener);
+        mBinding.ibDistanceLimit.setOnSeekChangeListener(onSeekChangeListener);
+        mBinding.sbHeightLimit.setOnSeekChangeListener(onSeekChangeListener);
+        mBinding.sbDistanceLimit.setOnCheckedChangeListener(onCheckedChangeListener);
+        mBinding.rgPosition.setOnCheckedChangeListener(ronCheckedChangeListener);
+        mBinding.layoutSensorStatus.setOnClickListener(onClickListener);
     }
-    OnSeekChangeListener onSeekChangeListener=new OnSeekChangeListener() {
+
+    RadioGroup.OnCheckedChangeListener ronCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (Helper.isFlightControllerAvailable()) {
+                FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+                switch (checkedId) {
+                    case R.id.rb_remote:
+
+                        break;
+                    case R.id.rb_air:
+                        flightController.setHomeLocationUsingAircraftCurrentLocation(new CommonCallbacks.CompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                if (getActivity() != null) {
+                                    if (djiError != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("设置飞机位置为返航点失败：" + djiError.getDescription());
+                                            }
+                                        });
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("设置飞机位置为返航点成功");
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+
+                        break;
+                }
+            } else {
+                ToastUtil.showToast("未检测到设备连接");
+            }
+
+        }
+    };
+
+    SwitchButton.OnCheckedChangeListener onCheckedChangeListener = new SwitchButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+            if (isChecked) {
+                if (Helper.isFlightControllerAvailable()) {
+                    FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+                    flightController.setMaxFlightRadiusLimitationEnabled(isChecked, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError djiError) {
+                            if (getActivity() != null) {
+                                if (djiError != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ToastUtil.showToast("设置限远失败：" + djiError.getDescription());
+                                        }
+                                    });
+                                } else {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ToastUtil.showToast("设置限远成功");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    ToastUtil.showToast("设备未连接");
+                }
+            }
+        }
+    };
+
+    OnSeekChangeListener onSeekChangeListener = new OnSeekChangeListener() {
         @Override
         public void onSeeking(SeekParams seekParams) {
             switch (seekParams.seekBar.getId()) {
                 case R.id.sb_go_home_altitude:
                     mBinding.tvGohomeHeigth.setText(seekParams.progress + "m");
+                    break;
+                case R.id.ib_distance_limit:
+                    mBinding.tvDistanceLimit.setText(seekParams.progress + "m");
+                    break;
+                case R.id.sb_height_limit:
+                    mBinding.tvHeightLimit.setText(seekParams.progress + "m");
                     break;
             }
         }
@@ -160,30 +315,87 @@ public class FlightControllerFragment extends BaseFragment {
         public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
             if (Helper.isFlightControllerAvailable()) {
                 FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
-                flightController.setGoHomeHeightInMeters(seekBar.getProgress(), new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(DJIError djiError) {
-                        if (getActivity()!=null){
-                            if (djiError!=null){
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtil.showToast("设置返航高度失败："+djiError.getDescription());
+                switch (seekBar.getId()) {
+                    case R.id.sb_go_home_altitude:
+                        flightController.setGoHomeHeightInMeters(seekBar.getProgress(), new CommonCallbacks.CompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                if (getActivity() != null) {
+                                    if (djiError != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("设置返航高度失败：" + djiError.getDescription());
 
+                                            }
+                                        });
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("返航高度已更新");
+                                            }
+                                        });
                                     }
-                                });
-                            }else{
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtil.showToast("返航高度已更新");
-                                    }
-                                });
+                                }
                             }
-                        }
-                    }
-                });
-            }else{
+                        });
+
+                        break;
+                    case R.id.sb_height_limit:
+                        flightController.setMaxFlightHeight(seekBar.getProgress(), new CommonCallbacks.CompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                if (getActivity() != null) {
+                                    if (djiError != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("设置限高失败：" + djiError.getDescription());
+
+                                            }
+                                        });
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("限高已更新");
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+
+                        break;
+                    case R.id.ib_distance_limit:
+                        flightController.setMaxFlightRadius(seekBar.getProgress(), new CommonCallbacks.CompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                if (getActivity() != null) {
+                                    if (djiError != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("设置限远失败：" + djiError.getDescription());
+
+                                            }
+                                        });
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.showToast("限远已设置");
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+
+                        break;
+                }
+            } else {
                 ToastUtil.showToast("未连接设备");
             }
         }
@@ -196,6 +408,9 @@ public class FlightControllerFragment extends BaseFragment {
                 case R.id.layout_show_window:
                     DisconnectActionWindow timeSelectWindow = new DisconnectActionWindow(getActivity());
                     timeSelectWindow.showView(mBinding.layoutShowWindow, arrayAdapter, listener);
+                    break;
+                case R.id.layout_sensor_status:
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new SensorStatusFragment()).commit();
                     break;
             }
         }

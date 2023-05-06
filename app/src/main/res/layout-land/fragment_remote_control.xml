@@ -70,5 +70,25 @@
         android:layout_height="0.5dp"
         android:background="@color/timepicker_line" />
 
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/frequency_alignment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="遥控器对频"
+            android:textColor="@color/blue"
+            android:textSize="13sp" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/timepicker_line" />
 </LinearLayout>

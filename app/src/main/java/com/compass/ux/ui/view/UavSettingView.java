@@ -82,7 +82,6 @@ public class UavSettingView extends LinearLayout {
                 case R.id.rb_dc:
                     tv_title.setText("智能电池信息");
                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new BatteryFragment()).commit();
-
                     break;
                 case R.id.rb_fk:
                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FlightControllerFragment()).commit();

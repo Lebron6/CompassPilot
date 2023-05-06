@@ -20,6 +20,8 @@
 
 
             <LinearLayout
+                android:id="@+id/layout_battery_o"
+
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginLeft="20dp"
@@ -183,7 +185,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/layout_battery_o"
+                android:id="@+id/layout_battery_t"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginLeft="20dp"
