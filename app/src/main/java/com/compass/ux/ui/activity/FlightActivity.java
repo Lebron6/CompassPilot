@@ -532,6 +532,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     protected void onDestroy() {
         super.onDestroy();
         isAppStarted = false;
+
     }
 
     public void showToast(final String msg) {
