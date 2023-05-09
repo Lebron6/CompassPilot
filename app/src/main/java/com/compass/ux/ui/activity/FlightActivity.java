@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.apron.mobilesdk.state.ProtoMessage;
 import com.compass.ux.BuildConfig;
 import com.compass.ux.R;
 import com.compass.ux.app.ApronApp;
@@ -54,11 +55,14 @@ import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
 import com.compass.ux.ui.view.UavPalette;
 import com.compass.ux.ui.view.UavSettingView;
+import com.compass.ux.xclog.XcFileLog;
 import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.DJILatLng;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.opencv.android.BaseLoaderCallback;
@@ -74,6 +78,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import dji.common.error.DJIError;
 import dji.common.util.CommonCallbacks;
@@ -532,7 +538,26 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     protected void onDestroy() {
         super.onDestroy();
         isAppStarted = false;
+        try {
+            publish(MqttConfig.MQTT_REGISTER_TOPIC);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void publish(String topic) throws MqttException {
+        if (isAlreadyConnected()) {
+            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
+            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
+            registerMessage.setQos(1);
+            mqttAndroidClient.publish(topic, registerMessage);
+        } else {
+            Logger.e("终止失败","种植失败");
+            XcFileLog.getInstace().e(TAG, "推送失败：MQtt未连接");
+        }
     }
 
     public void showToast(final String msg) {
@@ -543,7 +568,26 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         });
     }
 
-
+    public boolean isAlreadyConnected() {
+        if(mqttAndroidClient != null){
+            try{
+                boolean result = mqttAndroidClient.isConnected();
+                if(result){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
     private void initPreviewer() {
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);

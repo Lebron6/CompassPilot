@@ -11,23 +11,36 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class BaseCallback {
     public void publish(MqttAndroidClient client, String topic, MqttMessage message) {
 
-        if (client!=null) {
-            if (client.isConnected()){
-                try {
-                    client.publish(topic, message);
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                    XcFileLog.getInstace().i(this.getClass().getSimpleName(), "推送失败:" + topic + e.toString());
-                    Logger.e("推送失败："+topic);
-                }
-            }else{
-                XcFileLog.getInstace().i(this.getClass().getSimpleName(), "推送失败:MQtt未连接");
+        if (isAlreadyConnected(client)) {
 
+            try {
+                client.publish(topic, message);
+            } catch (MqttException e) {
+                e.printStackTrace();
             }
+        }
 
-        } else {
+        {
             XcFileLog.getInstace().i(this.getClass().getSimpleName(), "推送失败:MQtt为空");
         }
 
+    }
+
+    public boolean isAlreadyConnected(MqttAndroidClient client) {
+        if (client != null) {
+            try {
+                boolean result = client.isConnected();
+                if (result) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

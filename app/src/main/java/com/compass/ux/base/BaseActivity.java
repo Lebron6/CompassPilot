@@ -53,7 +53,7 @@ public abstract class BaseActivity extends FragmentActivity {
         initMqttClientParams();
     }
 
-    private void initMqttClientParams() {
+    public void initMqttClientParams() {
         mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, MqttConfig.EQUIPMENT_ID);
         mqttAndroidClient.setCallback(new MqttCallBack(mqttAndroidClient)); //设置监听订阅消息的回调
         mMqttConnectOptions = new MqttConnectOptions();
@@ -69,7 +69,7 @@ public abstract class BaseActivity extends FragmentActivity {
     /**
      * 连接MQTT服务器
      */
-    private void doClientConnection() {
+    public void doClientConnection() {
         if (!mqttAndroidClient.isConnected() && isConnectIsNomarl()) {
             try {
                 mqttAndroidClient.connect(mMqttConnectOptions, null, new MqttActionCallBack(mqttAndroidClient));
@@ -82,7 +82,7 @@ public abstract class BaseActivity extends FragmentActivity {
     /**
      * 判断网络是否连接
      */
-    private boolean isConnectIsNomarl() {
+    public boolean isConnectIsNomarl() {
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         @SuppressLint("MissingPermission") NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isAvailable()) {
