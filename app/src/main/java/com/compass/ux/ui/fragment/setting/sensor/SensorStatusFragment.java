@@ -17,6 +17,7 @@ import com.compass.ux.databinding.FragmentBatteryInfoBinding;
 import com.compass.ux.databinding.FragmentSensorStatusBinding;
 import com.compass.ux.tools.Helper;
 import com.compass.ux.tools.ToastUtil;
+import com.compass.ux.ui.activity.IMUSensorCalibrateActivity;
 
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.CompassState;
@@ -55,7 +56,6 @@ public class SensorStatusFragment extends BaseFragment {
             flightController.setIMUStateCallback(new IMUState.Callback() {
                 @Override
                 public void onUpdate(@NonNull IMUState imuState) {
-
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -161,6 +161,10 @@ public class SensorStatusFragment extends BaseFragment {
                     } else {
                         ToastUtil.showToast("未检测到设备");
                     }
+//                    if (getActivity()!=null){
+//                        IMUSensorCalibrateActivity.actionStart(getActivity());
+//
+//                    }
                     break;
             }
         }
