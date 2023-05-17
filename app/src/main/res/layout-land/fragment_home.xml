@@ -110,6 +110,7 @@
         android:textSize="15sp" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_air_info"
         android:layout_width="0dp"
         android:layout_weight="1"

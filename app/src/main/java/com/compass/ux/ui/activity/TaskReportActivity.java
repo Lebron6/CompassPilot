@@ -118,6 +118,8 @@ public class TaskReportActivity extends BaseActivity {
                         @Override
                         public void run() {
                             ApronApp.SERIAL_NUMBER = s;
+//                            ApronApp.SERIAL_NUMBER = "4GCCJ9DR0A0Q6T";
+                            com.orhanobut.logger.Logger.e("SNNNNN:"+s);
                             LoginValues loginValues = new LoginValues();
                             loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
                             loginValues.setPassword(PreferenceUtils.getInstance().getUserPassword());
@@ -134,6 +136,7 @@ public class TaskReportActivity extends BaseActivity {
                                                 MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
                                                 MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
                                                 MqttConfig.USER_NAME = response.body().getData().getMqtt_username();
+
                                                 break;
                                         }
                                     } else {

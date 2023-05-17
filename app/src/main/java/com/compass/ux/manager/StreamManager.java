@@ -102,10 +102,16 @@ public class StreamManager extends BaseManager {
 
     public void stopLiveShow(MqttAndroidClient mqttAndroidClient, ProtoMessage.Message message) {
         if (!isLiveStreamManagerOn()) {
-            sendErrorMsg2Server(mqttAndroidClient, message, "推流暂未开始");
+            if (mqttAndroidClient!=null&&message!=null){
+                sendErrorMsg2Server(mqttAndroidClient, message, "推流暂未开始");
+
+            }
         } else {
             DJISDKManager.getInstance().getLiveStreamManager().stopStream();
-            sendErrorMsg2Server(mqttAndroidClient, message, "推流已结束");
+            if (mqttAndroidClient!=null&&message!=null){
+                sendErrorMsg2Server(mqttAndroidClient, message, "推流已结束");
+            }
+
         }
     }
 

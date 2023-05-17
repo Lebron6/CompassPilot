@@ -52,10 +52,11 @@
 
             <dji.ux.widget.dashboard.AltitudeWidget
                 android:layout_width="0dp"
-                android:layout_marginLeft="20dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -69,8 +70,8 @@
 
             <dji.ux.widget.dashboard.VerticalVelocityWidget
                 android:layout_width="0dp"
-                android:layout_marginLeft="20dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -94,7 +95,8 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:text="直播"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
@@ -181,6 +183,7 @@
     <!--剩余飞行时间栏-->
 
     <TextView
+
         android:id="@+id/tv_stream_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -190,7 +193,7 @@
         android:maxLength="30"
         android:singleLine="true"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_Fps"
@@ -201,7 +204,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_bitRate"
@@ -212,7 +215,7 @@
         android:layout_marginRight="30dp"
         android:layout_toRightOf="@+id/tv_Fps"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_firmware_version"
@@ -223,7 +226,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_sl"
@@ -436,8 +439,8 @@
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="···"
-            android:textStyle="bold"
             android:textColor="@color/white"
+            android:textStyle="bold"
             android:visibility="visible" />
     </RelativeLayout>
 
@@ -481,18 +484,20 @@
         android:layout_toLeftOf="@+id/camera2"
         android:visibility="visible"
         tools:ignore="RtlHardcoded" />
+
     <TextView
         android:id="@+id/tv_palette"
-        android:textSize="10sp"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/x10"
-        android:background="@mipmap/plt_nor"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_below="@+id/camera"
-        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/x10"
         android:layout_marginRight="130dp"
         android:layout_toLeftOf="@+id/camera2"
-        android:layout_width="25dp"
-        android:layout_height="25dp"/>
+        android:background="@mipmap/plt_nor"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="10sp" />
+
     <LinearLayout
         android:layout_width="50dp"
         android:layout_height="100dp"
@@ -557,12 +562,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:visibility="gone" />
+
     <com.compass.ux.ui.view.UavPalette
         android:id="@+id/uav_palette"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
+
     <dji.ux.panel.PreFlightCheckListPanel
         android:layout_width="match_parent"
         android:layout_height="match_parent"
