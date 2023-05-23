@@ -61,6 +61,7 @@ public class HomeFragment extends BaseFragment {
         initView();
         return mBinding;
     }
+
     private void commit() {
 //        if (TextUtils.isEmpty(mBinding.etTaskType.getText())) {
 //            ToastUtil.showToast("请选择任务类型");
@@ -86,7 +87,7 @@ public class HomeFragment extends BaseFragment {
                             break;
                     }
                 } else {
-                    Toast.makeText(getActivity(), "网络异常1:报备失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "网络异常:报备失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -134,15 +135,15 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
-        if (Helper.isFlightControllerAvailable()) {
-            mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
-            mBinding.layoutDisconnect.setVisibility(View.GONE);
-            setIcon();
-            getSNCode();
-        } else {
-            mBinding.layoutIsConnect.setVisibility(View.GONE);
-            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
-        }
+//        if (Helper.isFlightControllerAvailable()) {
+        mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
+        mBinding.layoutDisconnect.setVisibility(View.GONE);
+//            setIcon();
+//            getSNCode();
+//        } else {
+//            mBinding.layoutIsConnect.setVisibility(View.GONE);
+//            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
+//        }
 
     }
 
@@ -164,7 +165,8 @@ public class HomeFragment extends BaseFragment {
 
     String airName;
     String sn;
-//    private void getNameBySN() {
+
+    //    private void getNameBySN() {
 //        if (Helper.isFlightControllerAvailable()) {
 //
 //            FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
@@ -198,67 +200,67 @@ public class HomeFragment extends BaseFragment {
 //            });
 //        }
 //    }
-private void getSNCode() {
-    if (Helper.isFlightControllerAvailable()) {
+    private void getSNCode() {
+        if (Helper.isFlightControllerAvailable()) {
 
-        FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
-        flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
-            @Override
-            public void onSuccess(String s) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ApronApp.SERIAL_NUMBER = s;
+            FlightController flightController = ApronApp.getAircraftInstance().getFlightController();
+            flightController.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ApronApp.SERIAL_NUMBER = s;
 //                            ApronApp.SERIAL_NUMBER = "4GCCJ9DR0A0Q6T";
-                        com.orhanobut.logger.Logger.e("SNNNNN:"+s);
-                        LoginValues loginValues = new LoginValues();
-                        loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
-                        loginValues.setPassword(PreferenceUtils.getInstance().getUserPassword());
-                        loginValues.setUavType(ApronApp.getProductInstance().getModel().getDisplayName());
-                        loginValues.setUavSn(s);
-                        com.orhanobut.logger.Logger.e("登录参数:"+new Gson().toJson(loginValues));
-                        HttpUtil httpUtil = new HttpUtil();
-                        httpUtil.createRequest().userLogin(loginValues).enqueue(new Callback<LoginResult>() {
-                            @Override
-                            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                                if (response.body() != null) {
-                                    switch (response.body().getCode()) {
-                                        case 0:
-                                            MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
-                                            MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
-                                            MqttConfig.USER_NAME = response.body().getData().getMqtt_username();
+                            com.orhanobut.logger.Logger.e("SNNNNN:" + s);
+                            LoginValues loginValues = new LoginValues();
+                            loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
+                            loginValues.setPassword(PreferenceUtils.getInstance().getUserPassword());
+                            loginValues.setUavType(ApronApp.getProductInstance().getModel().getDisplayName());
+                            loginValues.setUavSn(s);
+                            com.orhanobut.logger.Logger.e("登录参数:" + new Gson().toJson(loginValues));
+                            HttpUtil httpUtil = new HttpUtil();
+                            httpUtil.createRequest().userLogin(loginValues).enqueue(new Callback<LoginResult>() {
+                                @Override
+                                public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                                    if (response.body() != null) {
+                                        switch (response.body().getCode()) {
+                                            case 0:
+                                                MqttConfig.SOCKET_HOST = response.body().getData().getMqtt_addr();
+                                                MqttConfig.USER_PASSWORD = response.body().getData().getMqtt_password();
+                                                MqttConfig.USER_NAME = response.body().getData().getMqtt_username();
 
-                                            break;
+                                                break;
+                                        }
+                                    } else {
+                                        dji.log.third.Logger.e("网络异常:登陆失败");
                                     }
-                                } else {
-                                    dji.log.third.Logger.e("网络异常:登陆失败");
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<LoginResult> call, Throwable t) {
-                                dji.log.third.Logger.e("网络异常:登陆失败" + t.toString());
-                            }
-                        });
-                    }
-                });
-            }
+                                @Override
+                                public void onFailure(Call<LoginResult> call, Throwable t) {
+                                    dji.log.third.Logger.e("网络异常:登陆失败" + t.toString());
+                                }
+                            });
+                        }
+                    });
+                }
 
-            @Override
-            public void onFailure(DJIError djiError) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast("获取SN失败");
+                @Override
+                public void onFailure(DJIError djiError) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showToast("获取SN失败");
 
-                    }
-                });
-            }
-        });//获取SN码
-    } else {
-        ToastUtil.showToast("请连接飞机");
+                        }
+                    });
+                }
+            });//获取SN码
+        } else {
+            ToastUtil.showToast("请连接飞机");
+        }
     }
-}
 
 
     private void setIcon() {
