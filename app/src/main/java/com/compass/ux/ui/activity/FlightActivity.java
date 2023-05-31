@@ -5,10 +5,8 @@ import static dji.sdk.codec.DJICodecManager.VideoSource.FPV;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.apron.mobilesdk.state.ProtoMessage;
-import com.compass.ux.BuildConfig;
 import com.compass.ux.R;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
@@ -50,8 +47,6 @@ import com.compass.ux.manager.RTKManager;
 import com.compass.ux.manager.StreamManager;
 import com.compass.ux.tools.DisplayUtil;
 import com.compass.ux.tools.DroneHelper;
-import com.compass.ux.tools.OpenCVHelper;
-import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
 import com.compass.ux.ui.view.UavPalette;
 import com.compass.ux.ui.view.UavSettingView;
@@ -65,24 +60,11 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.aruco.Aruco;
-import org.opencv.aruco.Dictionary;
-import org.opencv.core.Mat;
-import org.opencv.objdetect.CascadeClassifier;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import dji.common.error.DJIError;
-import dji.common.util.CommonCallbacks;
 import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
@@ -111,10 +93,8 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
 
     private Canvas canvas;
     private Bitmap edgeBitmap;
-    private Dictionary dictionary;
-    private CascadeClassifier faceDetector;
+
     private DroneHelper droneHelper;
-    private OpenCVHelper openCVHelper;
     private Button btn_login;
     private Button btn_startlive;
 
@@ -139,7 +119,6 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         initViews();
 //        needConnect();
 
-        openCVHelper = new OpenCVHelper(this);
         droneHelper = new DroneHelper();
         initDJIManager();
         intiVirtualStick();
@@ -371,35 +350,10 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                 changeFPVOrGimbalView();
                 break;
             case Constant.FLAG_START_DETECT_ARUCO:
-                droneHelper.cancelLand(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(DJIError djiError) {
-                        if (djiError != null) {
-                            ToastUtil.showToast("取消返航失败");
-                        } else {
-                            Toast.makeText(FlightActivity.this, "触发降落", Toast.LENGTH_SHORT).show();
-                            Logger.e("触发降落" + "触发降落");
-                            openCVHelper.startDetectAruco(droneHelper);
-                            needDetectAruco = true;
-                        }
-                    }
-                });
+
                 break;
             case Constant.FLAG_DOWN_LAND:
-                Toast.makeText(FlightActivity.this, "直接降落", Toast.LENGTH_SHORT).show();
-//                droneHelper.exitVirtualStickMode();
-                droneHelper.land(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(DJIError djiError) {
-                        if (djiError != null) {
-                            Toast.makeText(FlightActivity.this, "直接降落失败", Toast.LENGTH_SHORT).show();
-                            Log.e("DroneHelper", "land failed: " + djiError.getDescription());
-                        } else {
-                            Toast.makeText(FlightActivity.this, "直接降落成功", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                needDetectAruco = false;
+
                 break;
             case Constant.FLAG_STREAM_URL:
                 tvStreamUrl.setText("rtmpAddr: " + DataCache.getInstance().getRtmp_address());
@@ -629,51 +583,9 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     @Override
     protected void onResume() {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
-        dictionary = Aruco.getPredefinedDictionary(Aruco.DICT_6X6_250);
+
     }
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            if (status == LoaderCallbackInterface.SUCCESS) {
-                Log.i(TAG, "OpenCV loaded successfully");
-                try {
-                    // load cascade file from application resources
-                    InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-                    File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-                    File cascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
-                    FileOutputStream os = new FileOutputStream(cascadeFile);
-
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
-                    }
-                    is.close();
-                    os.close();
-
-                    faceDetector = new CascadeClassifier(cascadeFile.getAbsolutePath());
-                    if (faceDetector.empty()) {
-                        showToast("Failed to load cascade classifier fo face detection");
-                        faceDetector = null;
-                    } else {
-                        Log.i(TAG, "Loaded cascade classifier from " + cascadeFile.getAbsolutePath());
-                    }
-                    cascadeDir.delete();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
-                }
-            } else {
-                super.onManagerConnected(status);
-            }
-        }
-    };
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -701,59 +613,11 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        if (needDetectAruco == true) {
-            codecManager.getBitmap(new DJICodecManager.OnGetBitmapListener() {
-                @Override
-                public void onGetBitmap(Bitmap bitmap) {
-                    drawProcessedVideo(bitmap);
-                }
-            });
-        }
+
     }
 
-    public void drawProcessedVideo(Bitmap bitmap) {
-        if (bitmap != null) {
-            Mat source = new Mat();
-            Utils.bitmapToMat(bitmap, source);
-//            Mat processed = processImage(source);
-            Mat processed = openCVHelper.detectArucoTags(source, dictionary, droneHelper);
-            edgeBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
-            Utils.matToBitmap(processed, edgeBitmap);
-            canvas = modifiedVideoStreamPreview.lockCanvas();
-            if (canvas != null) {
-                canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-                if (BuildConfig.DEBUG) {
-                    canvas.drawBitmap(edgeBitmap,
-                            new Rect(0, 0, edgeBitmap.getWidth(), edgeBitmap.getHeight()),
-                            new Rect((canvas.getWidth() - edgeBitmap.getWidth()) / 2,
-                                    (canvas.getHeight() - edgeBitmap.getHeight()) / 2,
-                                    (canvas.getWidth() - edgeBitmap.getWidth()) / 2 + edgeBitmap.getWidth(),
-                                    (canvas.getHeight() - edgeBitmap.getHeight()) / 2
-                                            + edgeBitmap.getHeight()),
-                            null);
-                }
 
-                modifiedVideoStreamPreview.unlockCanvasAndPost(canvas);
-                canvas.setBitmap(null);
-                canvas = null;
-                edgeBitmap.recycle();
-                edgeBitmap = null;
-            }
-        }
-    }
-
-    boolean needDetectAruco = false;
-
-    public Mat processImage(Mat input) {
-        Mat output;
-        if (needDetectAruco) {
-            output = openCVHelper.detectArucoTags(input, dictionary, droneHelper);
-        } else {
-            output = openCVHelper.defaultImageProcessing(input);
-        }
-        return output;
-    }
 
 
     private void intiVirtualStick() {
