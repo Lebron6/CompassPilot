@@ -117,7 +117,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         setContentView(R.layout.activity_flight);
         isAppStarted = true;
         initViews();
-//        needConnect();
+        needConnect();
 
         droneHelper = new DroneHelper();
         initDJIManager();

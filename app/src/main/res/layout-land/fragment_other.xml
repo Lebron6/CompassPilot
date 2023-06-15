@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="-10000dbm"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="10MHz"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="0.9Mbps"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>

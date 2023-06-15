@@ -38,11 +38,11 @@
             android:text="飞行历史" />
 
 
-<!--        <RadioButton-->
-<!--            android:id="@+id/rb_gallery"-->
-<!--            style="@style/BottomTabStyle"-->
-<!--            android:drawableTop="@drawable/tab_gally_selector"-->
-<!--            android:text="相机库" />-->
+        <RadioButton
+            android:id="@+id/rb_gallery"
+            style="@style/BottomTabStyle"
+            android:drawableTop="@drawable/tab_gally_selector"
+            android:text="相机库" />
 
         <RadioButton
             android:id="@+id/rb_personal"

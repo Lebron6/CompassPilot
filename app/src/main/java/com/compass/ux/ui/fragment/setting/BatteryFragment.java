@@ -167,17 +167,17 @@ public class BatteryFragment extends BaseFragment {
                                     mBinding.tvBatteryTemperature.setText(batteryState.getTemperature() + "℃");
                                     mBinding.tvBatteryVoltage.setText(batteryState.getVoltage() + "mV");
                                     mBinding.tvBatteryCycles.setText(batteryState.getNumberOfDischarges() + "");
-                                    switch (batteryState.getConnectionState()) {
-                                        case NORMAL:
+//                                    switch (batteryState.getConnectionState()) {
+//                                        case NORMAL:
                                             mBinding.tvBatteryStatus.setText("正常");
-                                            break;
-                                        case INVALID:
-                                            mBinding.tvBatteryStatus.setText("无效");
-                                            break;
-                                        case EXCEPTION:
-                                            mBinding.tvBatteryStatus.setText("异常");
-                                            break;
-                                    }
+//                                            break;
+//                                        case INVALID:
+//                                            mBinding.tvBatteryStatus.setText("无效");
+//                                            break;
+//                                        case EXCEPTION:
+//                                            mBinding.tvBatteryStatus.setText("异常");
+//                                            break;
+//                                    }
                                 }
                             });
                         }

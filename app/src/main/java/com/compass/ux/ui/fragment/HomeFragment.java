@@ -3,6 +3,7 @@ package com.compass.ux.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +115,7 @@ public class HomeFragment extends BaseFragment {
         mBinding.tvMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(sn)) {
+                if (TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)) {
                     ToastUtil.showToast("请接入无人机");
                 } else {
                     GalleryActivity.actionStart(getActivity());
@@ -135,15 +136,15 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initDatas() {
-//        if (Helper.isFlightControllerAvailable()) {
+        if (Helper.isFlightControllerAvailable()) {
         mBinding.layoutIsConnect.setVisibility(View.VISIBLE);
         mBinding.layoutDisconnect.setVisibility(View.GONE);
-//            setIcon();
-//            getSNCode();
-//        } else {
-//            mBinding.layoutIsConnect.setVisibility(View.GONE);
-//            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
-//        }
+            setIcon();
+            getSNCode();
+        } else {
+            mBinding.layoutIsConnect.setVisibility(View.GONE);
+            mBinding.layoutDisconnect.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -212,7 +213,6 @@ public class HomeFragment extends BaseFragment {
                         public void run() {
                             ApronApp.SERIAL_NUMBER = s;
 //                            ApronApp.SERIAL_NUMBER = "4GCCJ9DR0A0Q6T";
-                            com.orhanobut.logger.Logger.e("SNNNNN:" + s);
                             LoginValues loginValues = new LoginValues();
                             loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
                             loginValues.setPassword(PreferenceUtils.getInstance().getUserPassword());
@@ -265,10 +265,16 @@ public class HomeFragment extends BaseFragment {
 
     private void setIcon() {
         if (ApronApp.getProductInstance() != null) {
-            mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
+            if (!TextUtils.isEmpty(ApronApp.getProductInstance().getModel().getDisplayName())){
+                mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
+            }
             mBinding.tvSn.setText(ApronApp.SERIAL_NUMBER + "");
+            Log.e("无人机类型",ApronApp.getProductInstance().getModel().toString()+"");
             switch (ApronApp.getProductInstance().getModel()) {
                 case PHANTOM_4_PRO:
+                    mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));
+                    break;
+                case PHANTOM_4_PRO_V2:
                     mBinding.ivAir.setBackground(getActivity().getResources().getDrawable(R.mipmap.ic_phantom4));
                     break;
                 case PHANTOM_4:

@@ -47,7 +47,7 @@ public class SerialNumberCallBack implements CommonCallbacks.CompletionCallbackW
     public void publish(String topic) throws MqttException {
         if (mqttAndroidClient.isConnected()) {
             ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
-            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            builder.setMethod("online").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
             registerMessage.setQos(1);
             mqttAndroidClient.publish(topic, registerMessage);
