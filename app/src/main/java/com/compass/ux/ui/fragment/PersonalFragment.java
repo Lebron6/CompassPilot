@@ -74,6 +74,14 @@ public class PersonalFragment extends BaseFragment {
                 UpdataPasswordActivity.actionStart(getActivity());
             }
         });
+        mBinding.tvLoginout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtils.getInstance().loginOut();
+                AppManager.getAppManager().finishAllActivity();
+                startActivity(new Intent(getActivity(),LoginActivity.class));
+            }
+        });
     }
 
     private void getUserInfo() {
