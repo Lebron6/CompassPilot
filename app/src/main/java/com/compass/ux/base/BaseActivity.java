@@ -8,18 +8,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.apron.mobilesdk.state.ProtoMessage;
 import com.compass.ux.callback.MqttActionCallBack;
 import com.compass.ux.callback.MqttCallBack;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.tools.AppManager;
+import com.compass.ux.xclog.XcFileLog;
 import com.orhanobut.logger.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.EventBus;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public abstract class BaseActivity extends FragmentActivity {
@@ -177,7 +183,8 @@ public abstract class BaseActivity extends FragmentActivity {
         try {
             if (getMqttInstance() != null) {
                 if(getMqttInstance().isConnected())
-                    getMqttInstance().unsubscribe(MqttConfig.MQTT_AIRLINK_STATUS);
+                    publish(MqttConfig.MQTT_REGISTER_TOPIC);
+                //getMqttInstance().unsubscribe(MqttConfig.MQTT_AIRLINK_STATUS);
                 getMqttInstance().close();
                 getMqttInstance().unregisterResources();
                 mqttAndroidClient = null;
@@ -187,5 +194,12 @@ public abstract class BaseActivity extends FragmentActivity {
         }
     }
 
+    public void publish(String topic) throws MqttException {
+            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
+            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
+            registerMessage.setQos(1);
+            getMqttInstance().publish(topic, registerMessage);
 
+    }
 }
