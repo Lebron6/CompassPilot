@@ -54,7 +54,7 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     public void initMqttClientParams() {
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, MqttConfig.EQUIPMENT_ID);
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, getRandomCode());
         mqttAndroidClient.setCallback(new MqttCallBack(mqttAndroidClient)); //设置监听订阅消息的回调
         mMqttConnectOptions = new MqttConnectOptions();
         mMqttConnectOptions.setAutomaticReconnect(true); //ltz add
@@ -64,6 +64,23 @@ public abstract class BaseActivity extends FragmentActivity {
         mMqttConnectOptions.setUserName(MqttConfig.USER_NAME); //设置用户名
         mMqttConnectOptions.setPassword(MqttConfig.USER_PASSWORD.toCharArray()); //设置密码
         doClientConnection();
+    }
+
+    public String getRandomCode() {
+        String randomcode = "";
+        // 用字符数组的方式随机
+        String model = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        char[] m = model.toCharArray();
+        for (int j = 0; j < 6; j++) {
+            char c = m[(int) (Math.random() * 36)];
+            // 保证六位随机数之间没有重复的
+            if (randomcode.contains(String.valueOf(c))) {
+                j--;
+                continue;
+            }
+            randomcode = randomcode + c;
+        }
+        return randomcode;
     }
 
     /**
