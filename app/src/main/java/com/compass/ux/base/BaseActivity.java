@@ -12,6 +12,8 @@ import com.compass.ux.callback.MqttActionCallBack;
 import com.compass.ux.callback.MqttCallBack;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.tools.AppManager;
+import com.orhanobut.logger.Logger;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -28,6 +30,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     public MqttAndroidClient mqttAndroidClient; //ltz change
     public MqttConnectOptions mMqttConnectOptions;
+
 
     protected String TAG;
     protected boolean useEventBus = false;
@@ -53,9 +56,16 @@ public abstract class BaseActivity extends FragmentActivity {
         initMqttClientParams();
     }
 
+    public MqttAndroidClient getMqttInstance(){
+        if (mqttAndroidClient==null){
+            return new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, getRandomCode());
+        }else{
+            return mqttAndroidClient;
+        }
+    }
+
     public void initMqttClientParams() {
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, getRandomCode());
-        mqttAndroidClient.setCallback(new MqttCallBack(mqttAndroidClient)); //设置监听订阅消息的回调
+        getMqttInstance().setCallback(new MqttCallBack(getMqttInstance())); //设置监听订阅消息的回调
         mMqttConnectOptions = new MqttConnectOptions();
         mMqttConnectOptions.setAutomaticReconnect(true); //ltz add
         mMqttConnectOptions.setCleanSession(true); //设置是否清除缓存
@@ -87,9 +97,9 @@ public abstract class BaseActivity extends FragmentActivity {
      * 连接MQTT服务器
      */
     public void doClientConnection() {
-        if (!mqttAndroidClient.isConnected() && isConnectIsNomarl()) {
+        if (!getMqttInstance().isConnected() && isConnectIsNomarl()) {
             try {
-                mqttAndroidClient.connect(mMqttConnectOptions, null, new MqttActionCallBack(mqttAndroidClient));
+                getMqttInstance().connect(mMqttConnectOptions, null, new MqttActionCallBack(getMqttInstance()));
             } catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -154,13 +164,28 @@ public abstract class BaseActivity extends FragmentActivity {
             EventBus.getDefault().unregister(this);
         }
         try {
-            if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
-                mqttAndroidClient.disconnect(); //断开连接
-            }
-        } catch (MqttException e) {
+            disconnect();
+        } catch (Exception e) {
             e.printStackTrace();
+            Logger.e("注销异常"+e.toString()+"-----");
         }
 //        NettyClient.getInstance().setReconnectNum(0);
 //        NettyClient.getInstance().disconnect();
     }
+
+    public  void disconnect() {
+        try {
+            if (getMqttInstance() != null) {
+                if(getMqttInstance().isConnected())
+                    getMqttInstance().unsubscribe(MqttConfig.MQTT_AIRLINK_STATUS);
+                getMqttInstance().close();
+                getMqttInstance().unregisterResources();
+                mqttAndroidClient = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
