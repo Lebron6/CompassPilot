@@ -440,7 +440,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
     private void initMission() {
-        MissionManager.getInstance().initMissionInfo(getMqttInstance());
+        MissionManager.getInstance().initMissionInfo(mqttAndroidClient);
     }
 
     private void initCamera() {
@@ -452,23 +452,23 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
     private void initRTK() {
-        RTKManager.getInstance().initRTKInfo(getMqttInstance());
+        RTKManager.getInstance().initRTKInfo(mqttAndroidClient);
     }
 
     private void initGimbal() {
-        GimbalManager.getInstance().initGimbalInfo(getMqttInstance());
+        GimbalManager.getInstance().initGimbalInfo(mqttAndroidClient);
     }
 
     private void initDiagnosticsInfomation() {
-        DiagnosticsManager.getInstance().initDiagnosticsInfo(getMqttInstance());
+        DiagnosticsManager.getInstance().initDiagnosticsInfo(mqttAndroidClient);
     }
 
     private void initBattery() {
-        BatteryManager.getInstance().initBatteryInfo(getMqttInstance());
+        BatteryManager.getInstance().initBatteryInfo(mqttAndroidClient);
     }
 
     private void initAirLink() {
-        AirLinkManager.getInstance().initLinkInfo(getMqttInstance());
+        AirLinkManager.getInstance().initLinkInfo(mqttAndroidClient);
     }
 
     private void initOcuSyncLink() {
@@ -476,7 +476,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
     private void initFlightController() {
-        FlightManager.getInstance().initFlightInfo(this, getMqttInstance());
+        FlightManager.getInstance().initFlightInfo(this, mqttAndroidClient);
     }
 
     private void initLiveStreamManager() {
@@ -507,7 +507,7 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
             builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
             registerMessage.setQos(1);
-            getMqttInstance().publish(topic, registerMessage);
+            mqttAndroidClient.publish(topic, registerMessage);
         } else {
             Logger.e("终止失败","种植失败");
             XcFileLog.getInstace().e(TAG, "推送失败：MQtt未连接");
@@ -523,9 +523,9 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
     public boolean isAlreadyConnected() {
-        if(getMqttInstance() != null){
+        if(mqttAndroidClient != null){
             try{
-                boolean result = getMqttInstance().isConnected();
+                boolean result = mqttAndroidClient.isConnected();
                 if(result){
                     return true;
                 }

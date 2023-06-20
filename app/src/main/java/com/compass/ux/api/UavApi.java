@@ -12,6 +12,7 @@ import com.compass.ux.entity.LoginResult;
 import com.compass.ux.entity.LoginSimpleResult;
 import com.compass.ux.entity.LoginValues;
 import com.compass.ux.entity.MessageResult;
+import com.compass.ux.entity.MqttLoginOutResult;
 import com.compass.ux.entity.ReplyValues;
 import com.compass.ux.entity.TaskReportResult;
 import com.compass.ux.entity.TaskReportValues;
@@ -158,4 +159,11 @@ public interface UavApi {
     @Headers("Content-Type:application/json")
     @POST("/replyEntity/api/add")
     Call<TaskReportResult> reply(@Header("authorization") String token, @Body ReplyValues replyValues);
+
+    /**
+     * 下线mqtt
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @GET("/mqtt/uav/offline")
+    Call<MqttLoginOutResult> mqttOffline(@Header("authorization") String token, @Query("uavSn") String uavSn);
 }

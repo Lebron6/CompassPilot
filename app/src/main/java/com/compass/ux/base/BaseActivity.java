@@ -8,24 +8,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.apron.mobilesdk.state.ProtoMessage;
 import com.compass.ux.callback.MqttActionCallBack;
 import com.compass.ux.callback.MqttCallBack;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.tools.AppManager;
-import com.compass.ux.xclog.XcFileLog;
-import com.orhanobut.logger.Logger;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.EventBus;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public abstract class BaseActivity extends FragmentActivity {
@@ -36,7 +28,6 @@ public abstract class BaseActivity extends FragmentActivity {
 
     public MqttAndroidClient mqttAndroidClient; //ltz change
     public MqttConnectOptions mMqttConnectOptions;
-
 
     protected String TAG;
     protected boolean useEventBus = false;
@@ -62,16 +53,9 @@ public abstract class BaseActivity extends FragmentActivity {
         initMqttClientParams();
     }
 
-    public MqttAndroidClient getMqttInstance(){
-        if (mqttAndroidClient==null){
-            return new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, getRandomCode());
-        }else{
-            return mqttAndroidClient;
-        }
-    }
-
     public void initMqttClientParams() {
-        getMqttInstance().setCallback(new MqttCallBack(getMqttInstance())); //设置监听订阅消息的回调
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), MqttConfig.SOCKET_HOST, getRandomCode());
+        mqttAndroidClient.setCallback(new MqttCallBack(mqttAndroidClient)); //设置监听订阅消息的回调
         mMqttConnectOptions = new MqttConnectOptions();
         mMqttConnectOptions.setAutomaticReconnect(true); //ltz add
         mMqttConnectOptions.setCleanSession(true); //设置是否清除缓存
@@ -103,9 +87,9 @@ public abstract class BaseActivity extends FragmentActivity {
      * 连接MQTT服务器
      */
     public void doClientConnection() {
-        if (!getMqttInstance().isConnected() && isConnectIsNomarl()) {
+        if (!mqttAndroidClient.isConnected() && isConnectIsNomarl()) {
             try {
-                getMqttInstance().connect(mMqttConnectOptions, null, new MqttActionCallBack(getMqttInstance()));
+                mqttAndroidClient.connect(mMqttConnectOptions, null, new MqttActionCallBack(mqttAndroidClient));
             } catch (MqttException e) {
                 e.printStackTrace();
             }
@@ -170,36 +154,15 @@ public abstract class BaseActivity extends FragmentActivity {
             EventBus.getDefault().unregister(this);
         }
         try {
-            disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.e("注销异常"+e.toString()+"-----");
-        }
-//        NettyClient.getInstance().setReconnectNum(0);
-//        NettyClient.getInstance().disconnect();
-    }
-
-    public  void disconnect() {
-        try {
-            if (getMqttInstance() != null) {
-                if(getMqttInstance().isConnected())
-                    publish(MqttConfig.MQTT_REGISTER_TOPIC);
-                //getMqttInstance().unsubscribe(MqttConfig.MQTT_AIRLINK_STATUS);
-                getMqttInstance().close();
-                getMqttInstance().unregisterResources();
-                mqttAndroidClient = null;
+            if (mqttAndroidClient != null && mqttAndroidClient.isConnected()) {
+                mqttAndroidClient.disconnect(); //断开连接
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void publish(String topic) throws MqttException {
-            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
-            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
-            registerMessage.setQos(1);
-            getMqttInstance().publish(topic, registerMessage);
 
     }
+
+
+
 }

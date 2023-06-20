@@ -3,6 +3,7 @@ package com.compass.ux.ui.fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.compass.ux.api.BaseUrl;
 import com.compass.ux.api.HttpUtil;
+import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseFragment;
 import com.compass.ux.databinding.FragmentPersonalBinding;
+import com.compass.ux.entity.MqttLoginOutResult;
 import com.compass.ux.entity.UserInfo;
 import com.compass.ux.tools.AppManager;
 import com.compass.ux.tools.GlideCircleTransform;
@@ -77,11 +80,43 @@ public class PersonalFragment extends BaseFragment {
         mBinding.tvLoginout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceUtils.getInstance().loginOut();
-                AppManager.getAppManager().finishAllActivity();
-                startActivity(new Intent(getActivity(),LoginActivity.class));
+                if (TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)){
+                    loginOut();
+                }else{
+                    HttpUtil httpUtil = new HttpUtil();
+                    httpUtil.createRequest2().mqttOffline(PreferenceUtils.getInstance().getUserToken(), ApronApp.SERIAL_NUMBER).enqueue(new Callback<MqttLoginOutResult>() {
+                        @Override
+                        public void onResponse(Call<MqttLoginOutResult> call, Response<MqttLoginOutResult> response) {
+                            if (response.body() != null) {
+                                switch (response.body().getCode()) {
+                                    case "200":
+                                        loginOut();
+                                        break;
+                                    default:
+                                        ToastUtil.showToast("获取用户信息失败:" + response.body().getMsg());
+                                        break;
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "网络异常:获取用户信息失败", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MqttLoginOutResult> call, Throwable t) {
+                            ToastUtil.showToast("网络异常:获取用户信息失败");
+                            Log.e("网络异常:获取用户信息失败", t.toString());
+                        }
+                    });
+                }
             }
         });
+    }
+
+    private void loginOut() {
+
+        PreferenceUtils.getInstance().loginOut();
+        AppManager.getAppManager().finishAllActivity();
+        startActivity(new Intent(getActivity(),LoginActivity.class));
     }
 
     private void getUserInfo() {
