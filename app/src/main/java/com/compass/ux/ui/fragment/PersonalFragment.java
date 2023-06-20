@@ -61,7 +61,6 @@ public class PersonalFragment extends BaseFragment {
     }
 
 
-
     @Override
     protected void initDatas() {
         getUserInfo();
@@ -80,43 +79,47 @@ public class PersonalFragment extends BaseFragment {
         mBinding.tvLoginout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)){
+                if (TextUtils.isEmpty(PreferenceUtils.getInstance().getFlyNumber())) {
                     loginOut();
-                }else{
-                    HttpUtil httpUtil = new HttpUtil();
-                    httpUtil.createRequest2().mqttOffline(PreferenceUtils.getInstance().getUserToken(), ApronApp.SERIAL_NUMBER).enqueue(new Callback<MqttLoginOutResult>() {
-                        @Override
-                        public void onResponse(Call<MqttLoginOutResult> call, Response<MqttLoginOutResult> response) {
-                            if (response.body() != null) {
-                                switch (response.body().getCode()) {
-                                    case "200":
-                                        loginOut();
-                                        break;
-                                    default:
-                                        ToastUtil.showToast("获取用户信息失败:" + response.body().getMsg());
-                                        break;
-                                }
-                            } else {
-                                Toast.makeText(getActivity(), "网络异常:获取用户信息失败", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<MqttLoginOutResult> call, Throwable t) {
-                            ToastUtil.showToast("网络异常:获取用户信息失败");
-                            Log.e("网络异常:获取用户信息失败", t.toString());
-                        }
-                    });
+                } else {
+                    offLine();
+                    loginOut();
                 }
             }
         });
     }
 
     private void loginOut() {
-
         PreferenceUtils.getInstance().loginOut();
         AppManager.getAppManager().finishAllActivity();
-        startActivity(new Intent(getActivity(),LoginActivity.class));
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+    }
+
+    private void offLine() {
+        HttpUtil httpUtil = new HttpUtil();
+        httpUtil.createRequest2().mqttOffline(PreferenceUtils.getInstance().getUserToken(), PreferenceUtils.getInstance().getFlyNumber()).enqueue(new Callback<MqttLoginOutResult>() {
+            @Override
+            public void onResponse(Call<MqttLoginOutResult> call, Response<MqttLoginOutResult> response) {
+                if (response.body() != null) {
+                    switch (response.body().getCode()) {
+                        case "200":
+                            Logger.e("飞手已下线" + "----");
+                            break;
+                        default:
+                            Logger.e("飞手下线失败" + response.body().getMsg());
+                            break;
+                    }
+                } else {
+                    Logger.e("飞手下线失败" + "网络异常");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MqttLoginOutResult> call, Throwable t) {
+                Logger.e("飞手下线失败" + "网络异常" + t.toString());
+            }
+        });
+
     }
 
     private void getUserInfo() {
@@ -130,13 +133,13 @@ public class PersonalFragment extends BaseFragment {
                         case "200":
                             RequestOptions requestOptions = RequestOptions.circleCropTransform();
                             Glide.with(PersonalFragment.this).applyDefaultRequestOptions(requestOptions).
-                                    load(BaseUrl.ipAddress2+"/oauth/image"+response.body().getResults().getUserImagePath())
+                                    load(BaseUrl.ipAddress2 + "/oauth/image" + response.body().getResults().getUserImagePath())
                                     .into(mBinding.ivUserPhoto);
                             mBinding.tvUserName.setText(response.body().getResults().getUsername());
                             mBinding.tvDep.setText(response.body().getResults().getDepartmentName());
                             mBinding.tvUserRole.setText(response.body().getResults().getRoleName());
                             mBinding.tvPhoneNum.setText(response.body().getResults().getPhone());
-                            mBinding.tvFlyTime.setText("累计飞行时长:"+response.body().getResults().getTotalFlightTime());
+                            mBinding.tvFlyTime.setText("累计飞行时长:" + response.body().getResults().getTotalFlightTime());
                             break;
                         default:
                             ToastUtil.showToast("获取用户信息失败:" + response.body().getMsg());

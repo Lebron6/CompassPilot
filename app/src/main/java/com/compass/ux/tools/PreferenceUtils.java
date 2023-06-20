@@ -32,8 +32,6 @@ public class PreferenceUtils extends BasePreference {
     //角色类型
     private String USER_ROLE = "user_role";
 
-    //DJISDK注册
-    private String REGISTER_STATUS;
 
     private String SOCKET_HOST="socket_host"; //SOCKET IP 地址
     private String SOCKET_PORT="socket_port"; //SOCKET 端口
@@ -79,13 +77,6 @@ public class PreferenceUtils extends BasePreference {
         return getString(SOCKET_HOST);
     }
 
-    public void setRegisterStatus(Boolean registerStatus) {
-        setBoolean(REGISTER_STATUS, registerStatus);
-    }
-
-    public Boolean getRegisterStatus() {
-        return getBoolean(REGISTER_STATUS);
-    }
 
     public void setLoginStatus(boolean isFirst) {
         setBoolean(LOGIN_STATUS, isFirst);

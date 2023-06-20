@@ -212,6 +212,7 @@ public class HomeFragment extends BaseFragment {
                         @Override
                         public void run() {
                             ApronApp.SERIAL_NUMBER = s;
+                            PreferenceUtils.getInstance().setFlyNumber(s);
 //                            ApronApp.SERIAL_NUMBER = "4GCCJ9DR0A0Q6T";
                             LoginValues loginValues = new LoginValues();
                             loginValues.setUsername(PreferenceUtils.getInstance().getUserName());
@@ -264,10 +265,8 @@ public class HomeFragment extends BaseFragment {
 
 
     private void setIcon() {
-        if (ApronApp.getProductInstance() != null) {
-            if (!TextUtils.isEmpty(ApronApp.getProductInstance().getModel().getDisplayName())){
+        if (ApronApp.getProductInstance() != null&&ApronApp.getProductInstance().getModel()!=null&&ApronApp.getProductInstance().getModel().getDisplayName()!=null) {
                 mBinding.tvUavNum.setText(ApronApp.getProductInstance().getModel().getDisplayName());
-            }
             mBinding.tvSn.setText(ApronApp.SERIAL_NUMBER + "");
             Log.e("无人机类型",ApronApp.getProductInstance().getModel().toString()+"");
             switch (ApronApp.getProductInstance().getModel()) {

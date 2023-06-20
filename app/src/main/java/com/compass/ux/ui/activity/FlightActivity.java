@@ -28,12 +28,14 @@ import androidx.annotation.NonNull;
 
 import com.apron.mobilesdk.state.ProtoMessage;
 import com.compass.ux.R;
+import com.compass.ux.api.HttpUtil;
 import com.compass.ux.app.ApronApp;
 import com.compass.ux.base.BaseActivity;
 import com.compass.ux.constant.Constant;
 import com.compass.ux.constant.MqttConfig;
 import com.compass.ux.entity.DataCache;
 import com.compass.ux.entity.LocalSource;
+import com.compass.ux.entity.MqttLoginOutResult;
 import com.compass.ux.manager.AccountManager;
 import com.compass.ux.manager.AirLinkManager;
 import com.compass.ux.manager.AssistantManager;
@@ -47,6 +49,8 @@ import com.compass.ux.manager.RTKManager;
 import com.compass.ux.manager.StreamManager;
 import com.compass.ux.tools.DisplayUtil;
 import com.compass.ux.tools.DroneHelper;
+import com.compass.ux.tools.PreferenceUtils;
+import com.compass.ux.tools.ToastUtil;
 import com.compass.ux.ui.view.LongTouchBtn;
 import com.compass.ux.ui.view.UavPalette;
 import com.compass.ux.ui.view.UavSettingView;
@@ -71,6 +75,9 @@ import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.ux.widget.MapWidget;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FlightActivity extends BaseActivity implements TextureView.SurfaceTextureListener {
 
@@ -268,11 +275,11 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
             }
         });
 
-        int height= QMUIDisplayHelper.getScreenHeight(this);
-        int width=QMUIDisplayHelper.getScreenWidth(this);
-        ViewGroup.LayoutParams params= uavSettingView.getLayoutParams();
-        params.width=(int)(width*0.6);
-        params.height=(int)(height);
+        int height = QMUIDisplayHelper.getScreenHeight(this);
+        int width = QMUIDisplayHelper.getScreenWidth(this);
+        ViewGroup.LayoutParams params = uavSettingView.getLayoutParams();
+        params.width = (int) (width * 0.6);
+        params.height = (int) (height);
         uavSettingView.setLayoutParams(params);
 
     }
@@ -302,10 +309,10 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
                     uavPaletteView.Toggle();
                     break;
                 case R.id.video_previewer_surface:
-                    if (uavSettingView.Toggle()==true){
+                    if (uavSettingView.Toggle() == true) {
                         uavSettingView.Toggle();
                     }
-                    if (uavPaletteView.Toggle()==true){
+                    if (uavPaletteView.Toggle() == true) {
                         uavPaletteView.Toggle();
                     }
                     break;
@@ -492,27 +499,54 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     protected void onDestroy() {
         super.onDestroy();
         isAppStarted = false;
-        try {
-            publish(MqttConfig.MQTT_REGISTER_TOPIC);
+//        try {
+//            publish(MqttConfig.MQTT_REGISTER_TOPIC);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        offLine();
     }
 
-    public void publish(String topic) throws MqttException {
-        if (isAlreadyConnected()) {
-            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
-            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
-            registerMessage.setQos(1);
-            mqttAndroidClient.publish(topic, registerMessage);
-        } else {
-            Logger.e("终止失败","种植失败");
-            XcFileLog.getInstace().e(TAG, "推送失败：MQtt未连接");
+    private void offLine() {
+        if (!TextUtils.isEmpty(ApronApp.SERIAL_NUMBER)) {
+            HttpUtil httpUtil = new HttpUtil();
+            httpUtil.createRequest2().mqttOffline(PreferenceUtils.getInstance().getUserToken(), ApronApp.SERIAL_NUMBER).enqueue(new Callback<MqttLoginOutResult>() {
+                @Override
+                public void onResponse(Call<MqttLoginOutResult> call, Response<MqttLoginOutResult> response) {
+                    if (response.body() != null) {
+                        switch (response.body().getCode()) {
+                            case "200":
+                                Logger.e("飞手已下线" + "----");
+                                break;
+                            default:
+                                Logger.e("飞手下线失败" + response.body().getMsg());
+                                break;
+                        }
+                    } else {
+                        Logger.e("飞手下线失败" + "网络异常");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MqttLoginOutResult> call, Throwable t) {
+                    Logger.e("飞手下线失败" + "网络异常"+ t.toString());
+                }
+            });
         }
     }
+//    public void publish(String topic) throws MqttException {
+//        if (isAlreadyConnected()) {
+//            ProtoMessage.Message.Builder builder=ProtoMessage.Message.newBuilder();
+//            builder.setMethod("offline").setRequestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//            MqttMessage registerMessage = new MqttMessage(builder.build().toByteArray());
+//            registerMessage.setQos(1);
+//            mqttAndroidClient.publish(topic, registerMessage);
+//        } else {
+//            Logger.e("终止失败","种植失败");
+//            XcFileLog.getInstace().e(TAG, "推送失败：MQtt未连接");
+//        }
+//    }
 
     public void showToast(final String msg) {
         runOnUiThread(new Runnable() {
@@ -523,25 +557,23 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
     public boolean isAlreadyConnected() {
-        if(mqttAndroidClient != null){
-            try{
+        if (mqttAndroidClient != null) {
+            try {
                 boolean result = mqttAndroidClient.isConnected();
-                if(result){
+                if (result) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
+
     private void initPreviewer() {
         if (mTextureView != null) {
             mTextureView.setSurfaceTextureListener(this);
@@ -617,9 +649,6 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
     }
 
 
-
-
-
     private void intiVirtualStick() {
         FlightController flightController = droneHelper.fetchFlightController();
         if (flightController != null) {
@@ -665,5 +694,6 @@ public class FlightActivity extends BaseActivity implements TextureView.SurfaceT
         }
 
     }
+
 
 }
